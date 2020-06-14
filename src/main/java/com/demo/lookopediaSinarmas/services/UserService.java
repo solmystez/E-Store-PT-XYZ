@@ -28,8 +28,6 @@ public class UserService {
 	
 	public User saveOrUpdateUser(User user) {
 		
-
-			
 			if(user.getId() == null) {//create
 				
 				Merchant merchant = new Merchant();
@@ -43,9 +41,9 @@ public class UserService {
 			}
 			
 			//bug : kalo langsung update id yg ga ad, user ke create tanpa punya cart
+			//create exception utk user yg ga ad
 			if(user.getId() != null) {//update
-//				user.setMerchant(merchantRepository.findByUser_merchant_Id(user.getId()));
-			
+//				user.setMerchant(merchantRepository.findByUserId(user.getId()));
 			}
 			
 			return userRepository.save(user);
