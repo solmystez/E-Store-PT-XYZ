@@ -1,5 +1,8 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,15 +36,16 @@ public class UserService {
 				user.setMerchant(merchant);
 				merchant.setUser(user);
 				
-//				//set relasi user with cart
-//				Cart cart = new Cart(); 
+				//set relasi user with cart
+				Cart cart = new Cart();
 //				user.setCart(cart);
-//				cart.setUser(user);
+				cart.setUser(user);
 			}
 			
 			//bug : kalo langsung update id yg ga ad, user ke create tanpa punya cart
 			if(user.getId() != null) {//update
-				user.setMerchant(merchantRepository.findByUserId(user.getId()));
+//				user.setMerchant(merchantRepository.findByUser_merchant_Id(user.getId()));
+			
 			}
 			
 			return userRepository.save(user);

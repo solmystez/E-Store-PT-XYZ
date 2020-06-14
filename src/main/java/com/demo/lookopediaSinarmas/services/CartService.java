@@ -33,7 +33,7 @@ public class CartService {
 		
 		/*
 		 * jadi kalo ada product baru buat cart detail kalo belum
-		 * pernah di add ke cart kalo udah quantity++ 
+		 * pernah di add ke cart kalo udah, quantity++ 
 		 * */
 		Product product = productRepository.findById(id).get();
 		cart = cartRepository.findById(cart.getId()).get();

@@ -9,7 +9,7 @@ public interface MerchantRepository extends CrudRepository<Merchant, Long>{
 
 //	List<Product> findByUserIdentifier(String identifier);
 	
-	Merchant findByUserId(Long id);
+//	Merchant findByUserId(Long id);
 	
 //	Merchant findByUser_merchant(String id);
 

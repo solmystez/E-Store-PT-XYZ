@@ -1,9 +1,7 @@
 package com.demo.lookopediaSinarmas.domain;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,7 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -39,15 +38,13 @@ public class User {
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "user")
 	@JsonIgnore
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<Cart> cart = new ArrayList<>();
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user_merchant")
 	@JsonIgnore
 	private Merchant merchant;
 	
-	public User() {
-
-	}
 
 	public Long getId() {
 		return id;
@@ -81,5 +78,15 @@ public class User {
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
 	}
+
+	public List<Cart> getCart() {
+		return cart;
+	}
+
+	public void setCart(List<Cart> cart) {
+		this.cart = cart;
+	}
+	
+	
 	
 }
