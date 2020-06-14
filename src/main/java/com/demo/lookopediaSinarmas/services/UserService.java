@@ -34,14 +34,14 @@ public class UserService {
 				merchant.setUser(user);
 				
 //				//set relasi user with cart
-//				Cart cart = new Cart(); 
-//				user.setCart(cart);
-//				cart.setUser(user);
+				Cart cart = new Cart(); 
+				user.setCart(cart);
+				cart.setUser(user);
 			}
 			
 			//bug : kalo langsung update id yg ga ad, user ke create tanpa punya cart
 			if(user.getId() != null) {//update
-				user.setMerchant(merchantRepository.findByUserId(user.getId()));
+//				user.setMerchant(merchantRepository.findByUserId(user.getId()));
 			}
 			
 			return userRepository.save(user);

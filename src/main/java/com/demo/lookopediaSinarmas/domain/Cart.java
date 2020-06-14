@@ -40,7 +40,7 @@ public class Cart {
 	@Column(updatable = false, unique = true)
 	private String cartSequence;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User user;

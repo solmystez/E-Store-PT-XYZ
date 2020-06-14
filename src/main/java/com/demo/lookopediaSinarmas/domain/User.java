@@ -37,9 +37,9 @@ public class User {
 //	@Column(updatable = false, unique = true)
 //	private String userIdentifier; //for seperate type member
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "user")
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "user")
 	@JsonIgnore
-	private List<Cart> cart = new ArrayList<>();
+	private Cart cart;
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user_merchant")
 	@JsonIgnore
@@ -81,5 +81,15 @@ public class User {
 	public void setMerchant(Merchant merchant) {
 		this.merchant = merchant;
 	}
-	
+
+	public Cart getCart() {
+		return cart;
+	}
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
+	}
+
+
+
 }

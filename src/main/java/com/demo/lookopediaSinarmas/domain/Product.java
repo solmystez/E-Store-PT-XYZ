@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.Min;
@@ -59,7 +60,7 @@ public class Product {
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
-	@ManyToOne(fetch = FetchType.LAZY) // mappedBy if not same in the child, will error in server
+	@OneToOne(fetch = FetchType.LAZY) // mappedBy if not same in the child, will error in server
 	@JoinColumn(name = "merchant_id", updatable = false, nullable= true)//default nullable = true
 	@JsonIgnore
 	private Merchant merchant;
