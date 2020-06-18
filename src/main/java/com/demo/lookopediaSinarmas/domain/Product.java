@@ -41,6 +41,9 @@ public class Product {
 	@Min(value = 0, message = "stock cannot less then 0 !")
 	private int productStock;
 	
+	private String productImage;
+	private String productCategory;
+	
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date created_at;
 	  
@@ -57,11 +60,15 @@ public class Product {
 //	@JsonIgnore
 //	private List<Cart> cart_product = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "product", 
+			cascade = CascadeType.ALL, 
+			orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
-	@OneToOne(fetch = FetchType.LAZY) // mappedBy if not same in the child, will error in server
-	@JoinColumn(name = "merchant_id", updatable = false, nullable= true)//default nullable = true
+	@OneToOne(fetch = FetchType.LAZY) 
+	@JoinColumn(name = "merchant_id", 
+		updatable = false, 
+		nullable= true)//default nullable = true
 	@JsonIgnore
 	private Merchant merchant;
 
@@ -73,6 +80,22 @@ public class Product {
 		this.id = id;
 	}
 	
+	public String getProductImage() {
+		return productImage;
+	}
+
+	public void setProductImage(String productImage) {
+		this.productImage = productImage;
+	}
+
+	public String getProductCategory() {
+		return productCategory;
+	}
+
+	public void setProductCategory(String productCategory) {
+		this.productCategory = productCategory;
+	}
+
 	public Merchant getMerchant() {
 		return merchant;
 	}

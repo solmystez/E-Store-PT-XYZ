@@ -22,18 +22,19 @@ public class Merchant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String merchantName;
-	private Integer balance = 0;
+	private Integer merchantBalance = 0;
 
 //	private String merchantType;//premium, usual member
 
-	private Integer productSequence = 0;
+	private Integer totalProduct = 0;
+	private String merchantAddress;
 	
 	@OneToOne
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User user_merchant;
 	
-	@OneToMany(fetch = FetchType.EAGER, 
+	@OneToMany(fetch = FetchType.LAZY, 
 			cascade = CascadeType.REFRESH, 
 			mappedBy = "merchant", orphanRemoval = true)
 	private List<Product> productList = new ArrayList<>();
@@ -54,20 +55,28 @@ public class Merchant {
 		this.merchantName = merchantName;
 	}
 
-	public Integer getBalance() {
-		return balance;
+	public Integer getMerchantBalance() {
+		return merchantBalance;
 	}
 
-	public void setBalance(Integer balance) {
-		this.balance = balance;
+	public void setMerchantBalance(Integer merchantBalance) {
+		this.merchantBalance = merchantBalance;
 	}
 
-	public Integer getProductSequence() {
-		return productSequence;
+	public Integer getTotalProduct() {
+		return totalProduct;
 	}
 
-	public void setProductSequence(Integer productSequence) {
-		this.productSequence = productSequence;
+	public void setTotalProduct(Integer totalProduct) {
+		this.totalProduct = totalProduct;
+	}
+
+	public String getMerchantAddress() {
+		return merchantAddress;
+	}
+
+	public void setMerchantAddress(String merchantAddress) {
+		this.merchantAddress = merchantAddress;
 	}
 
 	public User getUser_merchant() {

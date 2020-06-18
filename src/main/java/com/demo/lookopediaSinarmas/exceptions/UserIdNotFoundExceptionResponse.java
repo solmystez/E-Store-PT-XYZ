@@ -1,10 +1,10 @@
 package com.demo.lookopediaSinarmas.exceptions;
 
-public class UserIdExceptionResponse {
+public class UserIdNotFoundExceptionResponse {
 
 	private String userIdentifier;
 
-	public UserIdExceptionResponse(String userIdentifier) {
+	public UserIdNotFoundExceptionResponse(String userIdentifier) {
 		this.userIdentifier = userIdentifier;
 	}
 

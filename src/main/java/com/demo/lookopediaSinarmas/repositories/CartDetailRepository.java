@@ -10,7 +10,10 @@ import com.demo.lookopediaSinarmas.domain.CartDetail;
 public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 	
 	List<CartDetail> findByCartId(Long id);
-
+	List<CartDetail> findAllByCartId(Long id);
+	
+	List<CartDetail> findAllCartDetailsByCartId(Long id);
+	
 	CartDetail findAllById(Long cartDetail_id);
 	
 }

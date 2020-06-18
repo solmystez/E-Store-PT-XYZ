@@ -29,6 +29,8 @@ public class CartDetail {
     private Product product;    
 	
 	private Integer quantity = 0;
+	private Integer totalToPaid = 0;
+	private String productName;
 	
 	private CartDetail() {}
 	
@@ -61,5 +63,33 @@ public class CartDetail {
 	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getTotalToPaid() {
+		return totalToPaid;
+	}
+
+	public void setTotalToPaid(Integer totalToPaid) {
+		this.totalToPaid = totalToPaid;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	
+	
+	
+	
 	
 }

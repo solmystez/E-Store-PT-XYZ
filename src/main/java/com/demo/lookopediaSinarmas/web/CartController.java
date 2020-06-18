@@ -44,19 +44,24 @@ public class CartController {
 	}
 	
 	
-	@DeleteMapping("/deleteProductIdFromCartId/{projectId}")
-	public ResponseEntity<?> deleteProductFromCartOrSubQty(@Valid @RequestBody Cart cart, BindingResult result,
-				@PathVariable Long product_id) {
-		Cart cart1 = cartService.removeProductFromCart(product_id, cart);
-		
-		return new ResponseEntity<Cart>(cart1, HttpStatus.OK);
-		
+//	@DeleteMapping("/deleteProductIdFromCartId/{projectId}")
+//	public ResponseEntity<?> deleteProductFromCartOrSubQty(@Valid @RequestBody Cart cart, BindingResult result,
+//				@PathVariable Long product_id) {
+//		Cart cart1 = cartService.removeProductFromCart(product_id, cart);
+//		
+//		return new ResponseEntity<Cart>(cart1, HttpStatus.OK);
+//		
+//	}
+	
+	@GetMapping("/buy/{cart_id}")
+	public Iterable<CartDetail> processItem(@PathVariable Long cart_id){
+		return cartService.getCartDetailByCartId(cart_id);		
 	}
 	
 	//user cek keranjang belanjaan dia sendiri
 	@GetMapping("/getCartDetailByCartId/{cart_id}")
 	public Iterable<CartDetail> loadItemWantToBuy(@PathVariable Long cart_id){
-		return cartService.getCartDetailByCartId(cart_id);		
+		return cartService.processItem(cart_id);		
 	}
 	
 }

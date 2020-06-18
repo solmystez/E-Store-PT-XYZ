@@ -37,7 +37,7 @@ public class User {
 //	@Column(updatable = false, unique = true)
 //	private String userIdentifier; //for seperate type member
 	
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL,  mappedBy = "user")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
 	@JsonIgnore
 	private Cart cart;
 	

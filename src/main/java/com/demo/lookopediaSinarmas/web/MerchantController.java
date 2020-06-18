@@ -7,12 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.MerchantService;
@@ -27,10 +29,23 @@ public class MerchantController {
 	private MapValidationErrorService mapValidationErrorService;
 
 	@Autowired
-	private MerchantService merchantService;
+	private ProductService productService;
 	
 	@Autowired
-	private ProductService productService;
+	private MerchantService merchantService;
+	
+	
+	@PostMapping("/createMerchantToUserId/{user_id}")
+	public ResponseEntity<?> createMerchant(@Valid @RequestBody Merchant merchant, 
+		BindingResult result, @PathVariable Long user_id){
+
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		Merchant merchant1 = merchantService.createMerchant(user_id, merchant);
+		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
+	 }
+	
 	
 	@PostMapping("/createProductToMerchantId/{merchant_id}")
 	public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product, 
@@ -39,18 +54,29 @@ public class MerchantController {
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Product product1 = productService.createOrUpdateProduct(merchant_id, product);
+		Product product1 = productService.createProduct(merchant_id, product);
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-	}
+	 }
 	
-	@PostMapping("/deleteProductToMerchantId/{merchant_id}")
-	public ResponseEntity<?> deleteProductFromCart(@Valid @RequestBody Product product, 
+	@PostMapping("/updateProductWithMerchantId/{merchant_id}")
+	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
 		BindingResult result, @PathVariable Long merchant_id){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Product product1 = productService.createOrUpdateProduct(merchant_id, product);
+		Product product1 = productService.updateProduct(merchant_id, product);
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
+	 }
+	
+	@GetMapping("/findAllProductByMerchantId/{merchant_id}")
+	public Iterable<Product> loadMerchantProduct(@PathVariable Long merchant_id){
+		return productService.findAllProductsByMerchantId(merchant_id);
 	}
+	
+//	@GetMapping("/getMerchantInfo/{merchant_id}")
+//	public Iterable<Product> getMerchantInfo(@PathVariable Long merchant_id){
+//		return productService.find
+//	}
+	
 }
