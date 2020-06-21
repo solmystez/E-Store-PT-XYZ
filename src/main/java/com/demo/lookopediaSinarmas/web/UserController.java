@@ -18,6 +18,7 @@ import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.UserService;
+import com.demo.lookopediaSinarmas.validator.UserValidator;
 
 @CrossOrigin
 @RestController
@@ -33,10 +34,16 @@ public class UserController {
 	@Autowired 
 	private MapValidationErrorService mapValidationErrorService;
 	
+	@Autowired
+	private UserValidator userValidator;
+	
 	//1. create or update user
-	@PostMapping("/storeUserToDatabase")
+	//our app is lockdown because spring security
+	@PostMapping("/storeUserToDatabase")//but this route, shouldn't need a password, addRoute permitAll for this route in class SecurityConfig
 	public ResponseEntity<?> createOrUpdateUser(@Valid @RequestBody User user, BindingResult result){//@valid for get better response view
 	
+		userValidator.validate(user, result);
+		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		

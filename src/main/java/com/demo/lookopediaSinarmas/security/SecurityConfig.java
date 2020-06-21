@@ -1,5 +1,62 @@
 package com.demo.lookopediaSinarmas.security;
 
-public class SecurityConfig {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+
+@Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(
+		//for the future, if want to specify specific method level security like role based
+		//this course not do any for that, just for future, do by yourself
+		securedEnabled = true,
+		jsr250Enabled = true,
+		prePostEnabled = true
+)
+public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default security config
+	//we extends that allow us to customize thos security config method from WebSecurityConfigurerAdapter
+
+	
+	@Autowired
+	private JwtAuthenticationEntryPoint unauthorizedHandler;
+	
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {//generated from override method 
+		//.cors = cross origin request
+		http.cors().and().csrf().disable()
+			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()//in this, we didn't define how we're going to do the ExceptionHandling
+			//authenticationEntryPoint = for help handle, what first need to be thrown, when somebody not authenticated
+			
+			//another default config
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS) //this is rest API, we don't to save session or cookie this time, because we will use JSON WebToken
+			//JSON Web Token = server doesn't need hold a session, just wait valid token then server will respons
+			//Stateless : no hold state on server, because that's what redux for(hold a state)
+			
+			.and()
+			.headers().frameOptions().sameOrigin() //for some of you still using H-2 Database, need this
+			.and()
+			.authorizeRequests() //prevent secret run in the background
+			.antMatchers(//start specify some route as public
+					 "/",
+                     "/favicon.ico",
+                     "/**/*.png",
+                     "/**/*.gif",
+                     "/**/*.svg",
+                     "/**/*.jpg",
+                     "/**/*.html",
+                     "/**/*.css",
+                     "/**/*.js"			
+					).permitAll()  //every end with that,  just PermitAll for the route in spring security, 
+			.antMatchers("/api/user/**").permitAll()
+			.anyRequest().authenticated(); //this say, anything other that, need to be authenticated
+	
+	}		
+	
 
 }

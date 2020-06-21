@@ -8,4 +8,7 @@ import com.demo.lookopediaSinarmas.domain.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Long>{
 	
+	//good thing about optional object, it prevents no point or exception
+	User findByUsername(String username);
+	User getById(Long id);
 }
