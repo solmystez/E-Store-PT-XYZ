@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.demo.lookopediaSinarmas.services.CustomUserDetailService;
 
@@ -39,6 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenthicationFilter() { return new JwtAuthenticationFilter(); }
 	
 //	authentication manager builder, when login via api
 	@Override
@@ -87,6 +91,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 			.antMatchers(H2_URL).permitAll()
 			.anyRequest().authenticated(); //this say, anything other that, need to be authenticated
 	
+		
+		http.addFilterBefore(jwtAuthenthicationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}	
 	
 
