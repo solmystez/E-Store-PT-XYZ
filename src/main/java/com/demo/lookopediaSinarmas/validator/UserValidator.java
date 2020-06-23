@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 import com.demo.lookopediaSinarmas.domain.User;
 
 @Component
-public class UserValidator  implements Validator{
+public class UserValidator implements Validator{
 
 	@Override
 	public boolean supports(Class<?> clazz) {

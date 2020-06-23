@@ -40,7 +40,7 @@ public class UserService {
 			
 			if(user.getId() == null) {//create
 				
-				//set relasi user with cart
+				//set relation user with cart
 				Cart cart = new Cart(); 
 				user.setCart(cart);
 				cart.setUser(user);

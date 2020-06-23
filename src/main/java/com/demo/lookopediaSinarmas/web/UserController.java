@@ -1,10 +1,16 @@
 package com.demo.lookopediaSinarmas.web;
 
+import static com.demo.lookopediaSinarmas.security.SecurityConstants.TOKEN_PREFIX;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.repositories.UserRepository;
+import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;
+import com.demo.lookopediaSinarmas.payload.LoginRequest;
+import com.demo.lookopediaSinarmas.security.JwtTokenProvider;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.UserService;
 import com.demo.lookopediaSinarmas.validator.UserValidator;
@@ -28,14 +36,17 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
-	@Autowired
-	private UserRepository userRepository;
-	
 	@Autowired 
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@Autowired
 	private UserValidator userValidator;
+	
+	@Autowired
+	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;//process authentication request
 	
 	//1. create or update user
 	//our app is lockdown because spring security
@@ -61,5 +72,25 @@ public class UserController {
 	}
 	
 	//3. delete user
+	
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		//org.springframework.security.core.Authentication;
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(
+						loginRequest.getEmail(), 
+						loginRequest.getPassword())
+				);
+		//authenticated the user
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String jwt = TOKEN_PREFIX + jwtTokenProvider.generateToken(authentication);
+		
+		//if we get a valid username&pw, we get a token
+		return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
+	}
 	
 }
