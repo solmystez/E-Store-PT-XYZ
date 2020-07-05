@@ -50,7 +50,7 @@ public class UserController {
 	
 	//1. create or update user
 	//our app is lockdown because spring security
-	@PostMapping("/storeUserToDatabase")//but this route, shouldn't need a password, addRoute permitAll for this route in class SecurityConfig
+	@PostMapping("/register")//but this route, shouldn't need a password, addRoute permitAll for this route in class SecurityConfig
 	public ResponseEntity<?> createOrUpdateUser(@Valid @RequestBody User user, BindingResult result){//@valid for get better response view
 	
 		userValidator.validate(user, result);

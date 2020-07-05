@@ -49,7 +49,7 @@ public class Product {
 	  
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date updated_at;
-	  
+	
 	 
 //	@ManyToMany
 //	@JoinTable(
@@ -65,12 +65,29 @@ public class Product {
 			orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
-	@OneToOne(fetch = FetchType.LAZY) 
-	@JoinColumn(name = "merchant_id", 
-		updatable = false, 
-		nullable= true)//default nullable = true
-	@JsonIgnore
+//	before update to security
+//	@OneToOne(fetch = FetchType.LAZY) 
+//	@JoinColumn(name = "merchant_id", 
+//		updatable = false, 
+//		nullable= true)//default nullable = true
+//	@JsonIgnore
+//	private Merchant merchant;
+
+	
+	@ManyToOne(fetch = FetchType.LAZY)//we dont need load the merchant information, we know the project
+	@JsonIgnore//resolve infinite recursion problem
 	private Merchant merchant;
+	
+	private String merchantName;
+	
+	
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
 
 	public Long getId() {
 		return id;

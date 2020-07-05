@@ -41,4 +41,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		EmailAlreadyExistsResponse exceptionResponse = new EmailAlreadyExistsResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleMerchantNameAlreadyExists(MerchantNameAlreadyExistsException ex, WebRequest request) {
+		MerchantNameAlreadyExistsResponse exceptionResponse = new MerchantNameAlreadyExistsResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }

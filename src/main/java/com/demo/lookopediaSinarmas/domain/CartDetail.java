@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,12 +25,18 @@ public class CartDetail {
 	@JsonIgnore
     private Cart cart;
 
+	private Integer invoiceSequence = 0;
 	
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = true)
 	@JsonIgnore
     private Product product;    
 	
+    @ManyToOne
+    @JoinColumn(name = "invoice_id",nullable = true)
+	@JsonIgnore
+    private Invoice invoice;
+    
 	private Integer quantity = 0;
 	private Integer totalToPaid = 0;
 	private String productName;
@@ -38,6 +47,16 @@ public class CartDetail {
 		super();
 		this.cart = cart;
 		this.product = product;
+	}
+	
+	
+
+	public Integer getInvoiceSequence() {
+		return invoiceSequence;
+	}
+
+	public void setInvoiceSequence(Integer invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
 	}
 
 	public Cart getCart() {

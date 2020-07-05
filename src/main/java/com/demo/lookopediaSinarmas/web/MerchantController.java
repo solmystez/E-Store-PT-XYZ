@@ -1,5 +1,7 @@
 package com.demo.lookopediaSinarmas.web;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,35 +39,35 @@ public class MerchantController {
 	
 	@PostMapping("/createMerchantToUserId/{user_id}")
 	public ResponseEntity<?> createMerchant(@Valid @RequestBody Merchant merchant, 
-		BindingResult result, @PathVariable Long user_id){
+		BindingResult result,@PathVariable Long user_id, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Merchant merchant1 = merchantService.createMerchant(user_id, merchant);
+		Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName());
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
 	
 	
 	@PostMapping("/createProductToMerchantId/{merchant_id}")
 	public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product, 
-		BindingResult result, @PathVariable Long merchant_id){
+		BindingResult result, @PathVariable Long merchant_id, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Product product1 = productService.createProduct(merchant_id, product);
+		Product product1 = productService.createProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	 }
 	
 	@PostMapping("/updateProductWithMerchantId/{merchant_id}")
 	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
-		BindingResult result, @PathVariable Long merchant_id){
+		BindingResult result, @PathVariable Long merchant_id, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Product product1 = productService.updateProduct(merchant_id, product);
+		Product product1 = productService.updateProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	 }
 	
@@ -73,10 +75,5 @@ public class MerchantController {
 	public Iterable<Product> loadMerchantProduct(@PathVariable Long merchant_id){
 		return productService.findAllProductsByMerchantId(merchant_id);
 	}
-	
-//	@GetMapping("/getMerchantInfo/{merchant_id}")
-//	public Iterable<Product> getMerchantInfo(@PathVariable Long merchant_id){
-//		return productService.find
-//	}
-	
+
 }

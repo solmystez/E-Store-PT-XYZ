@@ -34,9 +34,10 @@ public class Cart {
 
 	private Integer totalItem = 0;
 	private Integer totalPrice = 0;
-	private String invoiceIdentifier;
-	private String productIdentifier;
 
+//	not paid, pick up, done
+//	private String status;
+	
 	@Column(updatable = false, unique = true)
 	private String cartSequence;
 	
@@ -84,22 +85,6 @@ public class Cart {
 
 	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
-	}
-
-	public String getInvoiceIdentifier() {
-		return invoiceIdentifier;
-	}
-
-	public void setInvoiceIdentifier(String invoiceIdentifier) {
-		this.invoiceIdentifier = invoiceIdentifier;
-	}
-
-	public String getProductIdentifier() {
-		return productIdentifier;
-	}
-
-	public void setProductIdentifier(String productIdentifier) {
-		this.productIdentifier = productIdentifier;
 	}
 
 	public String getCartSequence() {

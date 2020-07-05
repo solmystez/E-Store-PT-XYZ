@@ -88,6 +88,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
                      "/**/*.js"			
 					).permitAll()  //every end with that,  just PermitAll for the route in spring security, 
 			.antMatchers(SIGN_UP_URLS).permitAll()
+			.antMatchers("/api/product/loadAllProductOnCatalog").permitAll()
 			.antMatchers(H2_URL).permitAll()
 			.anyRequest().authenticated(); //this say, anything other that, need to be authenticated
 	

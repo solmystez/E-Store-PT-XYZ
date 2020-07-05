@@ -9,9 +9,11 @@ import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.exceptions.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
+import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
+import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
 public class ProductService {
@@ -25,16 +27,25 @@ public class ProductService {
 	@Autowired
 	MerchantRepository merchantRepository;
 
-	public Product createProduct(Long merchantId, Product product) {
+	@Autowired
+	UserRepository userRepository;
+	
+	public Product createProduct(Long merchantId, Product product, String merchantName) {
+		
+		
 		try {
 		    Merchant merchant = merchantRepository.findById(merchantId).get();
+//		    Merchant merchant1 = merchantRepository.findByMerchantName(merchantName);
+		    
+		    
+		    product.setMerchant(merchant);
+		    product.setMerchantName(merchant.getMerchantName());
+		    product.setProductCategory(product.getProductCategory().toLowerCase());
 		    
 		    Integer totalProduct = merchant.getTotalProduct();
 		    totalProduct++;		    
 		    merchant.setTotalProduct(totalProduct);
 		    
-			product.setMerchant(merchant);
-			product.setProductCategory(product.getProductCategory().toLowerCase());
 				
 			return productRepository.save(product);
 		} catch (Exception e) {
@@ -43,7 +54,21 @@ public class ProductService {
 	}
 	
 	
-	public Product updateProduct(Long merchantId, Product product) {
+	public Product updateProduct(Long merchantId, Product product, String merchantName) {
+		//when we trying to update the project that doesn't belong to that user
+		//project != null, find by db id -> null
+
+		if(product.getId() != null) {
+			Product existingProduct = productRepository.findById(product.getId()).get();
+			
+			if(existingProduct != null && (!existingProduct.getMerchantName().equals(merchantName))) {
+				throw new ProductNotFoundException("Product not found in your merchant");
+			}else if (existingProduct == null) {
+				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");
+			}
+		}
+
+		
 		try {
 		    Merchant merchant = merchantRepository.findById(merchantId).get();
 		    	    

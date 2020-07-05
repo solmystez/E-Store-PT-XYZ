@@ -10,6 +10,6 @@ public interface UserRepository extends CrudRepository<User, Long>{
 	
 	//good thing about optional object, it prevents no point or exception
 //	User findByUsername(String username);
-	User findByEmail(String email);
+	User findByEmail(String email);//uniq
 	User getById(Long id);
 }

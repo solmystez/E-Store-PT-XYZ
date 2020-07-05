@@ -43,6 +43,8 @@ public class User implements UserDetails {
 	@Transient //for match with pw, before persist, once persist not persist anymore
 	private String confirmPassword;
 	
+	private boolean hasMerchant;
+	
 	private Date created_At;
 	private Date updated_At;
 	
@@ -136,6 +138,14 @@ public class User implements UserDetails {
 	}
 	
 	
+	public boolean isHasMerchant() {
+		return hasMerchant;
+	}
+
+	public void setHasMerchant(boolean hasMerchant) {
+		this.hasMerchant = hasMerchant;
+	}
+
 	@PrePersist
 	protected void onCreate() {
 		this.created_At = new Date();

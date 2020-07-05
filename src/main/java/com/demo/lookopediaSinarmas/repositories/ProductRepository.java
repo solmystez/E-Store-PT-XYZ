@@ -18,4 +18,5 @@ public interface ProductRepository extends CrudRepository<Product, Long>{
 
 	List<Product> findProductsByProductCategory(String categoryName);
 
+	Iterable<Product> findAllByMerchantName(String merchantName);
 }
