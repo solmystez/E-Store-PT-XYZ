@@ -41,15 +41,15 @@ public class Cart {
 	@Column(updatable = false, unique = true)
 	private String cartSequence;
 	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id", updatable = false)
-	@JsonIgnore
-	private User user;
-	
-	@OneToOne
-	@JoinColumn(name = "invoice_id", updatable = false)
-	@JsonIgnore
-	private Invoice invoice;
+//	@OneToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "user_id", updatable = false)
+//	@JsonIgnore
+//	private User user;
+//	
+//	@OneToOne
+//	@JoinColumn(name = "invoice_id", updatable = false)
+//	@JsonIgnore
+//	private Invoice invoice;
 	
 //	@ManyToMany
 //	@JoinTable(
@@ -60,8 +60,8 @@ public class Cart {
 //	private List<Product> cart_product = new ArrayList<>();
 
 	
-	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<CartDetail> cart_detail = new ArrayList<>();
+//	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<CartDetail> cart_detail = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -95,28 +95,28 @@ public class Cart {
 		this.cartSequence = cartSequence;
 	}
 
-	public User getUser() {
-		return user;
-	}
+//	public User getUser() {
+//		return user;
+//	}
+//
+//	public void setUser(User user) {
+//		this.user = user;
+//	}
+//
+//	public Invoice getInvoice() {
+//		return invoice;
+//	}
+//
+//	public void setInvoice(Invoice invoice) {
+//		this.invoice = invoice;
+//	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Invoice getInvoice() {
-		return invoice;
-	}
-
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
-	}
-
-	public List<CartDetail> getCart_detail() {
-		return cart_detail;
-	}
-
-	public void setCart_detail(List<CartDetail> cart_detail) {
-		this.cart_detail = cart_detail;
-	}
+//	public List<CartDetail> getCart_detail() {
+//		return cart_detail;
+//	}
+//
+//	public void setCart_detail(List<CartDetail> cart_detail) {
+//		this.cart_detail = cart_detail;
+//	}
 	
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
+import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.MerchantService;
 import com.demo.lookopediaSinarmas.services.ProductService;
@@ -70,6 +71,14 @@ public class MerchantController {
 		Product product1 = productService.updateProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	 }
+	
+	@GetMapping("/findMerchantByUserId/{user_id}")
+	public ResponseEntity<?> findMerchant(@PathVariable Long user_id) {
+		
+		Merchant merchant = merchantService.findMerchantByUserId(user_id);
+		
+		return new ResponseEntity<Merchant>(merchant, HttpStatus.OK);
+	}
 	
 	@GetMapping("/findAllProductByMerchantId/{merchant_id}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable Long merchant_id){

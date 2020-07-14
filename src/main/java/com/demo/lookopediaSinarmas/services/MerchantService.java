@@ -25,15 +25,29 @@ public class MerchantService {
 		try {
 			User user = userRepository.findById(user_id).get();
 			user.setHasMerchant(true);
+			
 			user.setMerchant(merchant);
-			merchant.setUser(user);
+			merchant.setUserMerchant(user);
 			
 			return merchantRepository.save(merchant);
 		} catch (Exception e) {
-			throw new MerchantNameAlreadyExistsException("Merchant name already used");
+			throw new UserIdNotFoundException("User not found");
 		}
 		
 	}
+	
+	public Merchant findMerchantByUserId(Long id) {
+		Merchant merchant;
+		
+		try {
+			merchant = merchantRepository.findMerchantById(id);
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User Id '" + id + "' doesn't exist");
+		}
+		
+		return merchant;
+	}
+	
 	
 	
 

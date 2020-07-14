@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -32,15 +34,13 @@ public class Invoice {
 //	@NotBlank(message = "Invoice identifier is required")
 //	@Size(min=4, max=5, message = "Please use 4 to 5 characters")
 //	@Column(updatable = false, unique = true)
-//	private String invoiceIdentifier;
+	private String invoiceIdentifier;
 	
 	private String iProductName;
 	private Integer iProductQuantity;
 	private Integer iProductPrice;
 	private Integer iTotalPrice;
 	private Integer iGrandTotal;
-	
-	private String invoiceSequence;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -49,22 +49,15 @@ public class Invoice {
 	private Date updated_at;
 	
 	
-	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL, 
-			mappedBy = "cartD")
-	@JsonIgnore
+	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
-	@OneToOne(mappedBy = "invoice", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "user_id", updatable = false) //oto
 	@JsonIgnore
-	private Cart cart;
+	private User user;
 	
 	public Invoice() {}
-	
-//	public Invoice(CartDetail cart, Product product) {
-//		super();
-//		this.cart_detail = cart;
-//	}
 	
 	@PrePersist
 	protected void onCreate() {
@@ -76,22 +69,20 @@ public class Invoice {
 		this.updated_at = new Date();
 	}
 	
-	
-	
-	public Cart getCart() {
-		return cart;
+	public String getInvoiceIdentifier() {
+		return invoiceIdentifier;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setInvoiceIdentifier(String invoiceIdentifier) {
+		this.invoiceIdentifier = invoiceIdentifier;
 	}
 
-	public String getInvoiceSequence() {
-		return invoiceSequence;
+	public User getUser() {
+		return user;
 	}
 
-	public void setInvoiceSequence(String invoiceSequence) {
-		this.invoiceSequence = invoiceSequence;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Long getId() {

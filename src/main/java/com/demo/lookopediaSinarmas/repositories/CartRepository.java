@@ -9,9 +9,9 @@ import com.demo.lookopediaSinarmas.domain.Product;
 @Repository
 public interface CartRepository extends CrudRepository<Cart, Long>{
 	
-	Cart findByUserId(Long identifier);
-	
-	Cart save(Product product);
+//	Cart findByUserId(Long identifier);
+//	
+//	Cart save(Product product);
 	
 //	Cart findById(Long id);
 

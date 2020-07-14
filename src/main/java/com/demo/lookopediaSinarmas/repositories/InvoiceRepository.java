@@ -8,8 +8,10 @@ import com.demo.lookopediaSinarmas.domain.Invoice;
 @Repository
 public interface InvoiceRepository extends CrudRepository<Invoice, Long>{
 	
-//	Invoice findByInvoiceIdentifier(String invoiceId);
+	Invoice findByInvoiceIdentifier(String invoiceId);
 
+	Invoice findSequenceByUserId(Long id);
+	
 	@Override
 	Iterable<Invoice> findAll();
 	

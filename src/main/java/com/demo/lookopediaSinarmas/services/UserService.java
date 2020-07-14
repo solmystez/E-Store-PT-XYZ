@@ -1,10 +1,14 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.Cart;
+import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.EmailAlreadyExistsException;
@@ -40,10 +44,18 @@ public class UserService {
 			
 			if(user.getId() == null) {//create
 				
-				//set relation user with cart
-				Cart cart = new Cart(); 
-				user.setCart(cart);
-				cart.setUser(user);
+				//set relation user with invoice
+				Invoice invoice = new Invoice();
+				invoice.setUser(user);
+//				user.setInvoiceToList(invoice);
+				
+				List<Invoice> inv = new ArrayList<Invoice>();
+				if(user.getInvoice() != null) inv= user.getInvoice();
+				inv.add(invoice);
+				user.setInvoice(inv);
+				
+//				invoice.setInvoiceIdentifier("Inv" + invoice.getUser().getId() +"-" + invoice.getInvoiceSequence());
+				
 			}
 			
 			//bug : kalo langsung update id yg ga ad, user ke create tanpa punya cart
@@ -53,7 +65,7 @@ public class UserService {
 			
 			return userRepository.save(user);
 		} catch (Exception e) {
-			throw new EmailAlreadyExistsException("Email : '" + user.getEmail() + "' already exists");
+			throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
 		}
 		
 	}
@@ -70,6 +82,18 @@ public class UserService {
 		
 		return user;
 	}
-	
 
+
+	public Iterable<User> findAllUsers() {
+		return userRepository.findAll();
+	}
+	
+	public User applyInvoiceNow(Long user_id, User user) {
+		
+		user = userRepository.findById(user_id).get();
+		
+		user.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+		
+		return userRepository.save(user);
+	}
 }

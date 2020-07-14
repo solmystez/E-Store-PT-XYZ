@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;
 import com.demo.lookopediaSinarmas.payload.LoginRequest;
@@ -62,6 +64,17 @@ public class UserController {
 		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
 	}
 	
+	@PostMapping("/checkInvoiceNow/{user_id}")	
+	public ResponseEntity<?> applyInvoice(@Valid @RequestBody User user,
+			BindingResult result, @PathVariable Long user_id) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		User user1 = userService.applyInvoiceNow(user_id, user);
+				
+		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
+	}
+	
 	//2. find user 
 	@GetMapping("/getUserInfo/{user_id}")
 	public ResponseEntity<?> findUser(@PathVariable Long user_id) {
@@ -69,6 +82,11 @@ public class UserController {
 		User user = userService.findUserById(user_id);
 		
 		return new ResponseEntity<User>(user, HttpStatus.OK);
+	}
+	
+	@GetMapping("/loadAllUser")
+	public Iterable<User> loadAllProduct(){
+		return userService.findAllUsers();
 	}
 	
 	//3. delete user

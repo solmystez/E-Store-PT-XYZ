@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.Cart;
 import com.demo.lookopediaSinarmas.domain.CartDetail;
+import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.services.CartService;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 
@@ -31,29 +32,19 @@ public class CartController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/addProductToCartIdWithProductId/{product_id}")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Cart cart, BindingResult result,
-			 							@PathVariable Long product_id){
-				
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Cart cart1 = cartService.addProductToCartOrAddQty(product_id, cart);
-		return new ResponseEntity<Cart>(cart1, HttpStatus.CREATED);
-	}
+
 	
-	@PostMapping("/subProductToCartIdWithProductId/{product_id}")
-	public ResponseEntity<?> subProductToCartOrAddQty(@Valid @RequestBody Cart cart, BindingResult result,
-			 							@PathVariable Long product_id){
-				
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Cart cart1 = cartService.subQtyProductFromCartId(product_id, cart);
-		return new ResponseEntity<Cart>(cart1, HttpStatus.CREATED);
-	}
+//	@PostMapping("/subProductToCartIdWithProductId/{product_id}")
+//	public ResponseEntity<?> subProductToCartOrAddQty(@Valid @RequestBody Cart cart, BindingResult result,
+//			 							@PathVariable Long product_id){
+//				
+//		
+//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+//		if(mapError != null) return mapError;
+//		
+//		Cart cart1 = cartService.subQtyProductFromCartId(product_id, cart);
+//		return new ResponseEntity<Cart>(cart1, HttpStatus.CREATED);
+//	}
 	
 //	@DeleteMapping("/deleteProductIdFromCartId/{projectId}")
 //	public ResponseEntity<?> deleteProductFromCartOrSubQty(@Valid @RequestBody Cart cart, BindingResult result,
@@ -64,15 +55,15 @@ public class CartController {
 //		
 //	}
 	
-	@PostMapping("/buy/{cart_id}")
-	public ResponseEntity<?> processItem(@Valid @RequestBody CartDetail cartDetail, BindingResult result,@PathVariable Long cart_id){
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		CartDetail cartDetail1 = cartService.processItem(cart_id, cartDetail);
-				
-		return new ResponseEntity<CartDetail>(cartDetail1, HttpStatus.CREATED);	
-	}
+//	@PostMapping("/buy/{cart_id}")
+//	public ResponseEntity<?> processItem(@Valid @RequestBody CartDetail cartDetail, BindingResult result,@PathVariable Long cart_id){
+//		
+//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+//		if(mapError != null) return mapError;
+//		CartDetail cartDetail1 = cartService.processItem(cart_id, cartDetail);
+//				
+//		return new ResponseEntity<CartDetail>(cartDetail1, HttpStatus.CREATED);	
+//	}
 	
 	//user cek keranjang belanjaan dia sendiri
 	@GetMapping("/getCartDetailByCartId/{cart_id}")

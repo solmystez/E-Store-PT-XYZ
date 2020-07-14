@@ -36,7 +36,7 @@ public class Merchant {
 	@OneToOne
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
-	private User user_merchant;
+	private User userMerchant;
 	
 	@OneToMany(fetch = FetchType.LAZY, 
 			cascade = CascadeType.REFRESH, 
@@ -83,22 +83,17 @@ public class Merchant {
 	public void setMerchantAddress(String merchantAddress) {
 		this.merchantAddress = merchantAddress;
 	}
+	
+	
 
-	public User getUser_merchant() {
-		return user_merchant;
+	public User getUserMerchant() {
+		return userMerchant;
 	}
 
-	public void setUser_merchant(User user_merchant) {
-		this.user_merchant = user_merchant;
+	public void setUserMerchant(User userMerchant) {
+		this.userMerchant = userMerchant;
 	}
 
-	public User getUser() {
-		return user_merchant;
-	}
-
-	public void setUser(User user) {
-		this.user_merchant = user;
-	}
 
 	public List<Product> getProductList() {
 		return productList;

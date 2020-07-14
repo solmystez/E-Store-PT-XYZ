@@ -9,13 +9,15 @@ import com.demo.lookopediaSinarmas.domain.CartDetail;
 @Repository
 public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 	
-	CartDetail findByCartId(Long id);
-	List<CartDetail> findAllByCartId(Long id);
+	CartDetail findByInvoiceId(Long id);
+	List<CartDetail> findAllByInvoiceId(Long id);
 	
-	List<CartDetail> findAllCartDetailsByCartId(Long id);
+	List<CartDetail> findAllCartDetailsByInvoiceId(Long id);
 	
-	List<CartDetail> deleteAllByCartId(Long id);
+	List<CartDetail> deleteAllByInvoiceId(Long id);
 	
 	CartDetail findAllById(Long cartDetail_id);
+	
+	CartDetail findByInvoiceIdentifier(String invoiceIdentifier);
 	
 }

@@ -28,40 +28,42 @@ public class InvoiceService {
 	@Autowired
 	CartService cartService;
 	
-	public Invoice createInvoice(Long cartId, Invoice invoice) {
-		//find cart id
-		Cart cart = cartRepository.findById(cartId).get();
-		
-		Iterator<CartDetail> it = cartDetailRepository.findAllByCartId(cartId).iterator();
-
-		
-		if(!it.hasNext()) {
-			it = cart.getCart_detail().iterator();
-		}
-		
-		while(it.hasNext()) {
-			CartDetail c = it.next();
-			
-			
-		}
-		
-		CartDetail cartDetail = cartDetailRepository.findByCartId(cartId);
-		
+	
+	
+//	public Invoice createInvoice(Long cartId, Invoice invoice) {
+//		//find cart id
+//		Cart cart = cartRepository.findById(cartId).get();
+//		
+//		Iterator<CartDetail> it = cartDetailRepository.findAllByCartId(cartId).iterator();
+//
+//		
+//		if(!it.hasNext()) {
+//			it = cart.getCart_detail().iterator();
+//		}
+//		
+//		while(it.hasNext()) {
+//			CartDetail c = it.next();
+//			
+//			
+//		}
+//		
 //		CartDetail cartDetail = cartDetailRepository.findByCartId(cartId);
-		
-		//store to invoice data
-		
-		Integer invoiceSequence = cartDetail.getInvoiceSequence();
-		invoiceSequence++;
-		
-		cartDetail.setInvoiceSequence(invoiceSequence);
-		
-		invoice.setInvoiceSequence("Invoice-" + invoiceSequence);
-		//need invoice identifier for react maybe
-		
-		
-		//
-		
-		return invoiceRepository.save(invoice);
-	}
+//		
+////		CartDetail cartDetail = cartDetailRepository.findByCartId(cartId);
+//		
+//		//store to invoice data
+//		
+//		Integer invoiceSequence = cartDetail.getInvoiceSequence();
+//		invoiceSequence++;
+//		
+//		cartDetail.setInvoiceSequence(invoiceSequence);
+//		
+//		invoice.setInvoiceSequence("Invoice-" + invoiceSequence);
+//		//need invoice identifier for react maybe
+//		
+//		
+//		//
+//		
+//		return invoiceRepository.save(invoice);
+//	}
 }

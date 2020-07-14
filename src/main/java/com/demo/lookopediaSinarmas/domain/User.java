@@ -1,7 +1,9 @@
 package com.demo.lookopediaSinarmas.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -45,6 +48,9 @@ public class User implements UserDetails {
 	
 	private boolean hasMerchant;
 	
+	private String invoiceNow;
+	private Integer invoiceSequence = 1;
+	
 	private Date created_At;
 	private Date updated_At;
 	
@@ -53,17 +59,33 @@ public class User implements UserDetails {
 //	@Column(updatable = false, unique = true)
 //	private String userIdentifier; //for seperate type member
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user")
+	@OneToMany(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "user")
 	@JsonIgnore
-	private Cart cart;
+	private List<Invoice> invoice = new ArrayList<>();
 	
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL,  mappedBy = "user_merchant")
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "userMerchant")
 	@JsonIgnore
 	private Merchant merchant;
 	
 	public User() {
 
 	}
+	
+	public void setInvoiceToList(Invoice invoice) {
+		List<Invoice> invoices = null;
+			
+		if(this.getInvoice() == null) new ArrayList<>();
+		else this.getInvoice();
+		
+		invoice.setUser(this);
+		invoices.add(invoice);
+		this.setInvoice(invoices);
+	}
+	
 
 	public Long getId() {
 		return id;
@@ -71,6 +93,22 @@ public class User implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Integer getInvoiceSequence() {
+		return invoiceSequence;
+	}
+
+	public void setInvoiceSequence(Integer invoiceSequence) {
+		this.invoiceSequence = invoiceSequence;
+	}
+
+	public String getInvoiceNow() {
+		return invoiceNow;
+	}
+
+	public void setInvoiceNow(String invoiceNow) {
+		this.invoiceNow = invoiceNow;
 	}
 
 	public String getEmail() {
@@ -121,12 +159,12 @@ public class User implements UserDetails {
 		this.updated_At = updated_At;
 	}
 
-	public Cart getCart() {
-		return cart;
+	public List<Invoice> getInvoice() {
+		return invoice;
 	}
 
-	public void setCart(Cart cart) {
-		this.cart = cart;
+	public void setInvoice(List<Invoice> invoice) {
+		this.invoice = invoice;
 	}
 
 	public Merchant getMerchant() {

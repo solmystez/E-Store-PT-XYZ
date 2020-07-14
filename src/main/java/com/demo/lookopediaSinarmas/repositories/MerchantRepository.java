@@ -3,6 +3,7 @@ package com.demo.lookopediaSinarmas.repositories;
 import org.springframework.data.repository.CrudRepository;
 
 import com.demo.lookopediaSinarmas.domain.Merchant;
+import com.demo.lookopediaSinarmas.domain.User;
 
 
 public interface MerchantRepository extends CrudRepository<Merchant, Long>{
@@ -16,4 +17,6 @@ public interface MerchantRepository extends CrudRepository<Merchant, Long>{
 //	Merchant findByMerchantIdentifier(String merchantIdentifier);
 	
 	Merchant findByMerchantName(String merchantName);
+	
+	Merchant findMerchantById(Long id);
 }
