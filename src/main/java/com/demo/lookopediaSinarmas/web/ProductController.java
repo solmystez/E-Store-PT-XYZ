@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.domain.Product;
+import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.ProductService;
 
@@ -31,23 +32,17 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 	
-	
-	//addProduct to invoiceId With ProductId
-	@PostMapping("/addProductToInvoice/{product_id}/{user_id}")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Invoice invoice, BindingResult result,
-			 							@PathVariable Long product_id, @PathVariable Long user_id){
-				
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Invoice invoice1 = productService.addProductToCartDetailOrAddQty(product_id, user_id, invoice);
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
-	}
-	
 	@GetMapping("/findProductByCategory/{category_name}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable String category_name){
 		return productService.findProductByCategory(category_name);
+	}
+	
+	@GetMapping("/findProduct/{product_id}")
+	public ResponseEntity<?> findSpecificProduct(@PathVariable Long product_id) {
+		
+		Product product = productService.findProductById(product_id);
+		
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
 	}
 	
 	@GetMapping("/loadAllProductOnCatalog")
@@ -64,14 +59,5 @@ public class ProductController {
 		return new ResponseEntity<String>("Product ID '" + product_id  + "' was successfully deleted", HttpStatus.OK);
 	}
 	
-	@PostMapping("/processItem/{invoice_identifier}")
-	public ResponseEntity<?> processItem(@Valid @RequestBody Invoice invoice,
-			BindingResult result, @PathVariable String invoice_identifier) {
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if(errorMap != null) return errorMap;
-		
-		Invoice invoice1 = productService.processItem(invoice_identifier, invoice);
-				
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
-	}
+
 }

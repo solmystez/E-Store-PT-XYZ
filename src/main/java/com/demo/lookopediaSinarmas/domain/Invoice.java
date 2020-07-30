@@ -36,11 +36,11 @@ public class Invoice {
 //	@Column(updatable = false, unique = true)
 	private String invoiceIdentifier;
 	
-	private String iProductName;
-	private Integer iProductQuantity;
-	private Integer iProductPrice;
-	private Integer iTotalPrice;
-	private Integer iGrandTotal;
+//	private String iProductName;
+//	private Integer iProductQuantity;
+//	private Integer iProductPrice;
+//	private Integer iTotalPrice;
+//	private Integer iGrandTotal;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -93,45 +93,45 @@ public class Invoice {
 		this.id = id;
 	}
 
-	public String getiProductName() {
-		return iProductName;
-	}
-
-	public void setiProductName(String iProductName) {
-		this.iProductName = iProductName;
-	}
-
-	public Integer getiProductQuantity() {
-		return iProductQuantity;
-	}
-
-	public void setiProductQuantity(Integer iProductQuantity) {
-		this.iProductQuantity = iProductQuantity;
-	}
-
-	public Integer getiProductPrice() {
-		return iProductPrice;
-	}
-
-	public void setiProductPrice(Integer iProductPrice) {
-		this.iProductPrice = iProductPrice;
-	}
-
-	public Integer getiTotalPrice() {
-		return iTotalPrice;
-	}
-
-	public void setiTotalPrice(Integer iTotalPrice) {
-		this.iTotalPrice = iTotalPrice;
-	}
-
-	public Integer getiGrandTotal() {
-		return iGrandTotal;
-	}
-
-	public void setiGrandTotal(Integer iGrandTotal) {
-		this.iGrandTotal = iGrandTotal;
-	}
+//	public String getiProductName() {
+//		return iProductName;
+//	}
+//
+//	public void setiProductName(String iProductName) {
+//		this.iProductName = iProductName;
+//	}
+//
+//	public Integer getiProductQuantity() {
+//		return iProductQuantity;
+//	}
+//
+//	public void setiProductQuantity(Integer iProductQuantity) {
+//		this.iProductQuantity = iProductQuantity;
+//	}
+//
+//	public Integer getiProductPrice() {
+//		return iProductPrice;
+//	}
+//
+//	public void setiProductPrice(Integer iProductPrice) {
+//		this.iProductPrice = iProductPrice;
+//	}
+//
+//	public Integer getiTotalPrice() {
+//		return iTotalPrice;
+//	}
+//
+//	public void setiTotalPrice(Integer iTotalPrice) {
+//		this.iTotalPrice = iTotalPrice;
+//	}
+//
+//	public Integer getiGrandTotal() {
+//		return iGrandTotal;
+//	}
+//
+//	public void setiGrandTotal(Integer iGrandTotal) {
+//		this.iGrandTotal = iGrandTotal;
+//	}
 
 	public Date getCreated_at() {
 		return created_at;

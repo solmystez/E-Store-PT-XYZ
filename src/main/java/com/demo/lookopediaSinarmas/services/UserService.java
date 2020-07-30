@@ -7,13 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
 import com.demo.lookopediaSinarmas.domain.Invoice;
-import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.CartRepository;
+import com.demo.lookopediaSinarmas.repositories.InvoiceRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
@@ -24,10 +22,10 @@ public class UserService {
 	UserRepository userRepository;
 	
 	@Autowired
-	CartRepository cartRepository;
+	MerchantRepository merchantRepository;
 	
 	@Autowired
-	MerchantRepository merchantRepository;
+	InvoiceRepository invoiceRepository;
 	
 	@Autowired//comes up with spring security
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -44,21 +42,8 @@ public class UserService {
 			
 			if(user.getId() == null) {//create
 				
-				//set relation user with invoice
-				Invoice invoice = new Invoice();
-				invoice.setUser(user);
-//				user.setInvoiceToList(invoice);
-				
-				List<Invoice> inv = new ArrayList<Invoice>();
-				if(user.getInvoice() != null) inv= user.getInvoice();
-				inv.add(invoice);
-				user.setInvoice(inv);
-				
-//				invoice.setInvoiceIdentifier("Inv" + invoice.getUser().getId() +"-" + invoice.getInvoiceSequence());
-				
 			}
 			
-			//bug : kalo langsung update id yg ga ad, user ke create tanpa punya cart
 			if(user.getId() != null) {//update
 				//user.setMerchant(merchantRepository.findByUserId(user.getId()));
 			}
@@ -90,10 +75,35 @@ public class UserService {
 	
 	public User applyInvoiceNow(Long user_id, User user) {
 		
-		user = userRepository.findById(user_id).get();
+		try {
+			user = userRepository.findById(user_id).get();
+			user.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			
+			Invoice invoice = new Invoice();
+			invoice.setUser(user);
+//			user.setInvoiceToList(invoice);
+			
+			List<Invoice> inv = new ArrayList<Invoice>();
+			if(user.getInvoice() != null) inv= user.getInvoice();
+			inv.add(invoice);
+			user.setInvoice(inv);
+			
+			invoice.setInvoiceIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			
+//			Invoice invoice = invoiceRepository.findByUserId(user_id);//gblh
+//			invoice.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			
+			return userRepository.save(user);
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User Id '" + user_id + "' doesn't exist");
+		}
+	}
+	
+	public Invoice applyInvoiceIdentifier(String invoiceNow, Invoice invoice) {
 		
-		user.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
-		
-		return userRepository.save(user);
+//		invoice = invoiceRepository.findByInvoiceNow(invoiceNow);
+//		
+//		invoice.setInvoiceIdentifier(invoiceNow);
+		return invoiceRepository.save(invoice);
 	}
 }

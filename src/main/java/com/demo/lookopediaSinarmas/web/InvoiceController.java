@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.Cart;
+import com.demo.lookopediaSinarmas.domain.CartDetail;
 import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.services.InvoiceService;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
@@ -29,15 +31,26 @@ public class InvoiceController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-//	@PostMapping("/makeInvoiceFromCartId/{cart_id}")
-//	public ResponseEntity<?> makeInvoiceFromCartId(@Valid @RequestBody Invoice invoice, BindingResult result,
-//			 							@PathVariable Long cart_id){
-//				
-//		
-//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-//		if(mapError != null) return mapError;
-//		
-//		Invoice invoice1 = invoiceService.createInvoice(cart_id, invoice);
-//		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
-//	}
+	@GetMapping("/loadAllInvoice/{user_id}")
+	public Iterable<Invoice> loadAllInvoiceUser(@PathVariable Long user_id){
+		return invoiceService.loadAllInvoiceByUserId(user_id);	
+	}
+	
+	//buat tombol bayar : generate new invoice, user invoice_now updated
+	@PostMapping("/processItem/{invoice_identifier}/{user_id}")
+	public ResponseEntity<?> processItem(@Valid @RequestBody Invoice invoice,
+			BindingResult result, @PathVariable String invoice_identifier, @PathVariable Long user_id) {
+		
+		
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		Invoice invoice1 = invoiceService.processItem(invoice_identifier, user_id);
+				
+		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+	}
+	
+
+	
+	
 }

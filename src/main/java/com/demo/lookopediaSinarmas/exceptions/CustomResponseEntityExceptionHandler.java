@@ -47,4 +47,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		MerchantNameAlreadyExistsResponse exceptionResponse = new MerchantNameAlreadyExistsResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleInvoiceNotFound(InvoiceNotFoundException ex, WebRequest request) {
+		InvoiceNotFoundResponse exceptionResponse = new InvoiceNotFoundResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }

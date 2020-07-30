@@ -11,9 +11,11 @@ import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.exceptions.InvoiceNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
 import com.demo.lookopediaSinarmas.repositories.InvoiceRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
@@ -29,127 +31,8 @@ public class ProductService {
 	@Autowired
 	MerchantRepository merchantRepository;
 
-	@Autowired
-	UserRepository userRepository;
-	
-	@Autowired
-	InvoiceRepository invoiceRepository;
-	
-	@Autowired
-	CartDetailRepository cartDetailRepository;
-	
-//	public Invoice findInvoiceNow(Long user_id) {
-//		User user = userRepository.findById(user_id).get();
-//		Invoice invoiceSeq = invoiceRepository.findSequenceByUserId(user_id);
-//		
-//		user.setInvoiceNow("inv" + user_id +"-" + invoiceSeq);
-//		return invoiceSeq;
-//	}
-	
-	public Invoice addProductToCartDetailOrAddQty(Long product_id, Long user_id, Invoice invoice) {
-		
-		try {
-			//check status cart 1. paid = generate new cart, 
-			//if invoice null || invoice.status != paid
-			//
-			
-			//check cart ini udh prnh bkin invoice-n blm
-			//kalo blom bkin inv1-1, inv1-2 ( 1- = user 1 )
 
-			//case : item di delete smua(prevent bikin invoice 1-2) <= after /buy
-			//hasInvoice? boolean
-			
-//		Invoice invoice = new Invoice(cart.getId(), sequenceInvoce);
-			
-			
-			
-			/*
-			 * product prtama di add ke cart? kalo udah quantity++ 
-			 * */
-
-			Product product = productRepository.findById(product_id).get();
-			User user = userRepository.findById(user_id).get();
-			
-			//!!! find by inv-ident for first time
-			invoice = invoiceRepository.findById(invoice.getId()).get();	
-//		invoice.setInvoiceIdentifier("Inv" + user.getId() +"-" + invoice.getInvoiceSequence());
-			
-			int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1		
-			int totalForPaid = 0;
-			
-			Invoice tempInvoice = null;
-			
-			Iterator<CartDetail> it = product.getCart_detail().iterator();
-//		Iterator<CartDetail> ic = invoice.getCart_detail().iterator();
-			
-			if(!it.hasNext()) {
-				it = invoice.getCart_detail().iterator();
-				invoice.setInvoiceIdentifier("Inv" + user.getId() +"-" + user.getInvoiceSequence());
-				int stock = product.getProductStock();
-				stock--;
-				if(stock < 0) {
-					System.out.println("out of stock");
-				}
-				product.setProductStock(stock);
-				
-			}
-			
-			
-			
-			while(it.hasNext()){//validasi kalo stock gblh kurang dr db
-				CartDetail c = it.next();
-				
-				if(c.getInvoice().getId().equals(invoice.getId()) 
-						&&  c.getProduct().getId().equals(product.getId())) {
-					
-					int stock = product.getProductStock();
-					stock--;
-					if(stock < 0) {
-						System.out.println("out of stock");
-//					break;
-						return null;
-					}
-					product.setProductStock(stock);
-//				i.setiProductName(c.getProduct().getProductName());
-					
-					//set product nya ke invoice jg
-//				invoice.setiProductName(c.getProduct().getProductName());
-					
-					c.setProductName(c.getProduct().getProductName());
-					c.setQuantity(c.getQuantity()+1);
-					c.setTotalToPaid(totalForPaid + c.getProduct().getProductPrice() * c.getQuantity());
-					cartDetailRepository.save(c);
-					flag = 0;
-					tempInvoice = c.getInvoice();
-					break;
-				}
-			}
-			
-			//create cart detail kalo belom pernah di add ke cart
-			if(flag == 1) {
-				CartDetail currDetail= new CartDetail(invoice,product);
-				currDetail.setInvoiceIdentifier("Inv" + user.getId() +"-" + user.getInvoiceSequence());
-				invoice.setInvoiceIdentifier("Inv" + user.getId() +"-" + user.getInvoiceSequence());
-				currDetail.setQuantity(1);
-				currDetail.setTotalToPaid(totalForPaid + product.getProductPrice());
-				currDetail.setProductName(product.getProductName());
-				currDetail.setInvoice(invoice);
-				currDetail.setProduct(product);
-				cartDetailRepository.save(currDetail);
-
-				// add cart detail ke cart
-				invoice.getCart_detail().add(currDetail);
-				product.getCart_detail().add(currDetail);
-				productRepository.save(product);
-				tempInvoice = invoiceRepository.save(invoice);
-				
-			}
-			return tempInvoice;
-		} catch (Exception e) {
-			throw new ProductNotFoundException("Product not found");
-		}
-		
-	}
+	
 	
 	public Product createProduct(Long merchantId, Product product, String merchantName) {
 
@@ -203,28 +86,11 @@ public class ProductService {
 	}
 	
 
-	public Invoice processItem(String invoice_identifier, Invoice invoice) {	
-		
-//		CartDetail cartDetail = cartDetailRepository.findByInvoiceIdentifier(invoice_identifier);
-		
-		//find By invoice identifier
-		invoice = invoiceRepository.findByInvoiceIdentifier(invoice_identifier);
-		
-		User user = userRepository.findById(invoice.getUser().getId()).get();
-		
-		Integer invSeq = 0;
-		if(user.getInvoice() !=null) invSeq = user.getInvoiceSequence();
-		invSeq++;
-		user.setInvoiceSequence(invSeq);
-		
-		
-		Invoice invoice1 = new Invoice();
-		invoice1.setUser(user);
-		invoice1.setInvoiceIdentifier(user.getInvoiceNow());
-		return invoiceRepository.save(invoice1);
-	}
+
 	
 	public Iterable<Product> findAllProducts() {
+//		User user = find
+//		userService.applyInvoiceNow(user_id, user);
 		return productRepository.findAll(); 
 	}
 	
@@ -236,7 +102,19 @@ public class ProductService {
 		return productRepository.findProductsByProductCategory(categoryName.toLowerCase()); 
 	}
 	
+	public Product findProductById(Long product_id) {
+		
+		Product product;
+		
+		try {
+			product = productRepository.findById(product_id).get();
 	
+		} catch (Exception e) {
+			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
+		}
+		
+		return product;
+	}
 	
 
 	public void deleteProductById(Long product_id) {

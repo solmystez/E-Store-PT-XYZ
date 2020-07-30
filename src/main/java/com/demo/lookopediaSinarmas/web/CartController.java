@@ -1,7 +1,10 @@
 package com.demo.lookopediaSinarmas.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +14,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
 import com.demo.lookopediaSinarmas.domain.CartDetail;
 import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.services.CartService;
@@ -32,43 +35,45 @@ public class CartController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-
-	
-//	@PostMapping("/subProductToCartIdWithProductId/{product_id}")
-//	public ResponseEntity<?> subProductToCartOrAddQty(@Valid @RequestBody Cart cart, BindingResult result,
-//			 							@PathVariable Long product_id){
-//				
-//		
-//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-//		if(mapError != null) return mapError;
-//		
-//		Cart cart1 = cartService.subQtyProductFromCartId(product_id, cart);
-//		return new ResponseEntity<Cart>(cart1, HttpStatus.CREATED);
-//	}
-	
-//	@DeleteMapping("/deleteProductIdFromCartId/{projectId}")
-//	public ResponseEntity<?> deleteProductFromCartOrSubQty(@Valid @RequestBody Cart cart, BindingResult result,
-//				@PathVariable Long product_id) {
-//		Cart cart1 = cartService.removeProductFromCart(product_id, cart);
-//		
-//		return new ResponseEntity<Cart>(cart1, HttpStatus.OK);
-//		
-//	}
-	
-//	@PostMapping("/buy/{cart_id}")
-//	public ResponseEntity<?> processItem(@Valid @RequestBody CartDetail cartDetail, BindingResult result,@PathVariable Long cart_id){
-//		
-//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-//		if(mapError != null) return mapError;
-//		CartDetail cartDetail1 = cartService.processItem(cart_id, cartDetail);
-//				
-//		return new ResponseEntity<CartDetail>(cartDetail1, HttpStatus.CREATED);	
-//	}
-	
-	//user cek keranjang belanjaan dia sendiri
-	@GetMapping("/getCartDetailByCartId/{cart_id}")
-	public Iterable<CartDetail> loadItemWantToBuy(@PathVariable Long cart_id){
-		return cartService.getCartDetailByCartId(cart_id);		
+	//addProduct to invoice With ProductId
+	@PostMapping("/addProductToInvoice/{product_id}/{user_id}")
+	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Invoice invoice, BindingResult result,
+			 							@PathVariable Long product_id, @PathVariable Long user_id){
+				
+		
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		Invoice invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
+		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
 	}
 	
+	@PostMapping("/subProductToInvoice/{product_id}/{user_id}")
+	public ResponseEntity<?> subProductFromCart(@Valid @RequestBody Invoice invoice, BindingResult result,
+			 							@PathVariable Long product_id, @PathVariable Long user_id){
+				
+		
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		Invoice invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
+		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+	}
+	
+	//user cek keranjang belanjaan dia sendiri
+	@GetMapping("/getCartDetail/{invoice_now}")
+	public Iterable<CartDetail> loadItemWantToBuy(@PathVariable String invoice_now){
+		return cartService.getCartDetailByInvoiceIdentifier(invoice_now);		
+	}
+
+	//delete product di cart, bukan delete product
+	@DeleteMapping("/deleteProductFromCart/{product_id}/{invoiceIdentifier}")
+	public ResponseEntity<?> deleteProductFromCart(@PathVariable String invoiceIdentifier,
+				@PathVariable Long product_id) {
+		List<CartDetail> cart1 = cartService.removeProductFromCart(product_id, invoiceIdentifier);
+		
+		return new ResponseEntity<List<CartDetail>>(cart1, HttpStatus.OK);
+		
+	}
+
 }

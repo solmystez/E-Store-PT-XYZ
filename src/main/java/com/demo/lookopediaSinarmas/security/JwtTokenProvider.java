@@ -40,6 +40,11 @@ public class JwtTokenProvider {
 			claims.put("id", (Long.toString(user.getId())));
 			claims.put("email", user.getEmail());
 			claims.put("username", user.getUsername());
+			claims.put("password", user.getPassword());
+//			claims.put("hasMerchant", user.get hasmerchant);//boolean not read??
+			claims.put("invoiceNow", user.getInvoiceNow());
+			claims.put("invoiceSequence", user.getInvoiceSequence());
+			
 			//throw roles in here too
 			
 			//this is we start build our jsonWebToken
