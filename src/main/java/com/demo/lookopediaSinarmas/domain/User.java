@@ -3,7 +3,9 @@ package com.demo.lookopediaSinarmas.domain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -63,7 +65,7 @@ public class User implements UserDetails {
 			cascade = CascadeType.ALL,
 			mappedBy = "user")
 	@JsonIgnore
-	private List<Invoice> invoice = new ArrayList<>();
+	private Set<Invoice> invoice = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
@@ -75,16 +77,16 @@ public class User implements UserDetails {
 
 	}
 	
-	public void setInvoiceToList(Invoice invoice) {
-		List<Invoice> invoices = null;
-			
-		if(this.getInvoice() == null) new ArrayList<>();
-		else this.getInvoice();
-		
-		invoice.setUser(this);
-		invoices.add(invoice);
-		this.setInvoice(invoices);
-	}
+//	public void setInvoiceToList(Invoice invoice) {
+//		List<Invoice> invoices = null;
+//			
+//		if(this.getInvoice() == null) new ArrayList<>();
+//		else this.getInvoice();
+//		
+//		invoice.setUser(this);
+//		invoices.add(invoice);
+//		this.setInvoice(invoices);
+//	}
 	
 
 	public Long getId() {
@@ -159,11 +161,11 @@ public class User implements UserDetails {
 		this.updated_At = updated_At;
 	}
 
-	public List<Invoice> getInvoice() {
+	public Set<Invoice> getInvoice() {
 		return invoice;
 	}
 
-	public void setInvoice(List<Invoice> invoice) {
+	public void setInvoice(Set<Invoice> invoice) {
 		this.invoice = invoice;
 	}
 

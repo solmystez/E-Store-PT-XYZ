@@ -75,16 +75,16 @@ public class UserController {
 		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/checkInvoiceIdentifier/{user_invoiceNow}")	//next postMapping kena effect jwt filter after /login
-	public ResponseEntity<?> applyInvoiceIdentifier(@Valid @RequestBody Invoice invoice,
-			BindingResult result, @PathVariable String user_invoiceNow) {
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if(errorMap != null) return errorMap;
-		//belom di block validate jwt filter
-		Invoice invoice1 = userService.applyInvoiceIdentifier(user_invoiceNow, invoice);
-				
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
-	}
+//	@PostMapping("/checkInvoiceIdentifier/{user_invoiceNow}")	//next postMapping kena effect jwt filter after /login
+//	public ResponseEntity<?> applyInvoiceIdentifier(@Valid @RequestBody Invoice invoice,
+//			BindingResult result, @PathVariable String user_invoiceNow) {
+//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+//		if(errorMap != null) return errorMap;
+//		//belom di block validate jwt filter
+//		Invoice invoice1 = userService.applyInvoiceIdentifier(user_invoiceNow, invoice);
+//				
+//		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+//	}
 	
 	//2. find user 
 	@GetMapping("/getUserInfo/{user_id}")

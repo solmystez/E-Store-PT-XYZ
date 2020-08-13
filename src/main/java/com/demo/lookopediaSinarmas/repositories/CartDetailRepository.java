@@ -14,7 +14,7 @@ public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 	
 	//opsi 1
 	//delete return nya void
-	//findall -> pencet delete-> delete service(delte  findall) ->list all di update
+	//findall -> pencet delete-> delete service(delete  findall) ->list all di update
 	@Modifying
 	@Query(value = "delete from cart_detail  "
 			+ " where invoice_identifier=:invoice_identifier "
@@ -25,7 +25,7 @@ public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 			@Param("product_id") Long productId);
 	
 	//opsi 2
-//	List<CartDetail> removeByInvoiceIdentifier();
+
 	
 	
 	

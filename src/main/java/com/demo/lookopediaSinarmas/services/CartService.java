@@ -111,6 +111,7 @@ public class CartService {
 			Iterator<CartDetail> it = product.getCart_detail().iterator();
 		
 			if(!it.hasNext()) {
+				
 				it = invoice.getCart_detail().iterator();
 				invoice.setInvoiceIdentifier(user.getInvoiceNow());
 				int stock = product.getProductStock();

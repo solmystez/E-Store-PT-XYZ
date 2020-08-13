@@ -1,7 +1,10 @@
 package com.demo.lookopediaSinarmas.services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -76,19 +79,30 @@ public class UserService {
 	public User applyInvoiceNow(Long user_id, User user) {
 		
 		try {
+			
+			//1. find user id
 			user = userRepository.findById(user_id).get();
 			user.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+
+			Set<Invoice> inv = user.getInvoice();
 			
-			Invoice invoice = new Invoice();
-			invoice.setUser(user);
-//			user.setInvoiceToList(invoice);
+//			System.out.println(inv);
+//			System.out.println(user.getInvoiceNow());
 			
-			List<Invoice> inv = new ArrayList<Invoice>();
-			if(user.getInvoice() != null) inv= user.getInvoice();
-			inv.add(invoice);
-			user.setInvoice(inv);
+			Invoice invoice = invoiceRepository.findByInvoiceIdentifier(user.getInvoiceNow());
+			if(user.getInvoiceNow() == null  || invoice == null) {
+				invoice = new Invoice();
+				invoice.setUser(user);
+				invoice.setInvoiceIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
+								
+				inv.add(invoice);
+				user.setInvoice(inv);
+				
+			}
 			
-			invoice.setInvoiceIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			
+			
+			
 			
 //			Invoice invoice = invoiceRepository.findByUserId(user_id);//gblh
 //			invoice.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());

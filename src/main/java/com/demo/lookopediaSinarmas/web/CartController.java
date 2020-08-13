@@ -73,7 +73,6 @@ public class CartController {
 		List<CartDetail> cart1 = cartService.removeProductFromCart(product_id, invoiceIdentifier);
 		
 		return new ResponseEntity<List<CartDetail>>(cart1, HttpStatus.OK);
-		
 	}
 
 }
