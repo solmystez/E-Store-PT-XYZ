@@ -11,6 +11,7 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -57,7 +58,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 		return super.authenticationManager();
 	}
 	
-	
+	 @Override
+	 public void configure(WebSecurity web) throws Exception {
+	  //@formatter:off
+//	     super.configure(web);
+//	     web.httpFirewall(defaultHttpFirewall());
+	  web.ignoring().antMatchers("/v2/api-docs",
+	                     "/configuration/ui",
+	                     "/swagger-resources/**",
+	                     "/configuration/security",
+	                     "/hystrix.stream",
+	                     "/ng-table/**", "/webjars/**", "/bootstrap/**", "/modules/**", "/scripts/**",
+	         "/index.html", "/assets/**", "/", "/routes", "/favicon.ico");
+	 }
+
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {//generated from override method 
@@ -89,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 					).permitAll()  //every end with that,  just PermitAll for the route in spring security, 
 			.antMatchers(SIGN_UP_URLS).permitAll()
 			.antMatchers("/api/product/loadAllProductOnCatalog").permitAll()
+			.antMatchers("/swagger-ui.html").permitAll()
 			.antMatchers(H2_URL).permitAll()
 			.anyRequest().authenticated(); //this say, anything other that, need to be authenticated
 	

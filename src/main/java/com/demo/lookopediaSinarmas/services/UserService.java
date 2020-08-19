@@ -99,11 +99,7 @@ public class UserService {
 				user.setInvoice(inv);
 				
 			}
-			
-			
-			
-			
-			
+
 //			Invoice invoice = invoiceRepository.findByUserId(user_id);//gblh
 //			invoice.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
 			
