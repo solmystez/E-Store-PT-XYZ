@@ -22,6 +22,19 @@ public class CartDetail {
 //	@JsonIgnore
 //    private Cart cart;
 	
+//	*ex: cart code 
+//	@ManyToMany
+//	@JoinTable(
+//			name = "cart_detail",
+//			joinColumns = @JoinColumn(name="cart_id"),
+//			inverseJoinColumns = @JoinColumn(name="product_id")
+//			)
+//	private List<Product> cart_product = new ArrayList<>();
+
+	
+//	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+//	private List<CartDetail> cart_detail = new ArrayList<>();
+	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = true)
 	@JsonIgnore
@@ -31,6 +44,8 @@ public class CartDetail {
     @JoinColumn(name = "invoice_id",nullable = true)
 	@JsonIgnore
     private Invoice invoice;
+    
+    private Long p_id;
     
 	private Integer quantity = 0;
 	private Integer totalToPaid = 0;
@@ -45,6 +60,14 @@ public class CartDetail {
 		super();
 		this.invoice = invoice;
 		this.product = product;
+	}
+
+	public Long getP_id() {
+		return p_id;
+	}
+
+	public void setP_id(Long p_id) {
+		this.p_id = p_id;
 	}
 
 	public String getInvoiceIdentifier() {

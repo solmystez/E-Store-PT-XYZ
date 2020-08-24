@@ -73,6 +73,13 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private Merchant merchant;
 	
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "user")
+	@JsonIgnore
+	private List<Address> address = new ArrayList<>();
+	
 	public User() {
 
 	}

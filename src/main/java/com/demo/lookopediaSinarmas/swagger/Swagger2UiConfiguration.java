@@ -32,7 +32,7 @@ public class Swagger2UiConfiguration extends WebMvcConfigurerAdapter  {
 
 	private ApiInfo metadata() {
 		return new ApiInfoBuilder()//
-	        .title("New Core")//
+	        .title("Sinarmas Project mini e-commerce")//
 	        .description("Spring Boot 2.1.3")
 //	        .version("1.0.0")//
 //	        .license("MIT License").licenseUrl("http://opensource.org/licenses/MIT")//

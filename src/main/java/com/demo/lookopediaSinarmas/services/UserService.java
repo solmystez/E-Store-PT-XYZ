@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -115,5 +117,11 @@ public class UserService {
 //		
 //		invoice.setInvoiceIdentifier(invoiceNow);
 		return invoiceRepository.save(invoice);
+	}
+
+
+	public User addUserAddress(Long user_id, User user) {
+		
+		return null;
 	}
 }

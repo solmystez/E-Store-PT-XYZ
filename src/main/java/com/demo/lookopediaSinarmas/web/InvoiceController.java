@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
-import com.demo.lookopediaSinarmas.domain.CartDetail;
 import com.demo.lookopediaSinarmas.domain.Invoice;
 import com.demo.lookopediaSinarmas.services.InvoiceService;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;

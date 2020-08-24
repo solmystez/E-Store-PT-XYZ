@@ -75,6 +75,18 @@ public class UserController {
 		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
 	}
 	
+	@PostMapping("/addAddress/{user_id}")	
+	public ResponseEntity<?> addAddress(@Valid @RequestBody User user,
+			BindingResult result, @PathVariable Long user_id) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		//belom di block validate jwt filter
+		User user1 = userService.addUserAddress(user_id, user);
+				
+		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
+	}
+	
+	
 //	@PostMapping("/checkInvoiceIdentifier/{user_invoiceNow}")	//next postMapping kena effect jwt filter after /login
 //	public ResponseEntity<?> applyInvoiceIdentifier(@Valid @RequestBody Invoice invoice,
 //			BindingResult result, @PathVariable String user_invoiceNow) {

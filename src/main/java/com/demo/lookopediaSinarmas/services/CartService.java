@@ -81,7 +81,7 @@ public class CartService {
 			
 			
 //			product prtama kali add ke cart? kalo udah quantity++ 
-			 
+			
 
 			Product product;
 			try {
@@ -114,13 +114,14 @@ public class CartService {
 				
 				it = invoice.getCart_detail().iterator();
 				invoice.setInvoiceIdentifier(user.getInvoiceNow());
+				
 				int stock = product.getProductStock();
 				stock--;
 				if(stock < 0) {
 					System.out.println("out of stock");
 				}
 				product.setProductStock(stock);
-				
+
 			}
 			
 			while(it.hasNext()){
@@ -137,13 +138,15 @@ public class CartService {
 						return null;
 					}
 					product.setProductStock(stock);
-
+					
 					//set product nya ke invoice jg
 //					invoice.setiProductName(c.getProduct().getProductName());
 					
 					c.setProductName(c.getProduct().getProductName());
 					c.setQuantity(c.getQuantity()+1);
 					c.setTotalToPaid(totalForPaid + c.getProduct().getProductPrice() * c.getQuantity());
+					c.setStatus("Not Paid");
+					c.setP_id(product_id);
 					cartDetailRepository.save(c);
 					flag = 0;
 					tempInvoice = c.getInvoice();
