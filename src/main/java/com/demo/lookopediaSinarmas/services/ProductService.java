@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.CartDetail;
-import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
@@ -17,7 +17,7 @@ import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
-import com.demo.lookopediaSinarmas.repositories.InvoiceRepository;
+import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;

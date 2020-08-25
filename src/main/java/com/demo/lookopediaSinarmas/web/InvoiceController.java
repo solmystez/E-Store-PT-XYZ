@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Invoice;
-import com.demo.lookopediaSinarmas.services.InvoiceService;
+import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.services.OrderService;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 
 @CrossOrigin
@@ -24,28 +24,28 @@ import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 public class InvoiceController {
 
 	@Autowired
-	private InvoiceService invoiceService;
+	private OrderService invoiceService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@GetMapping("/loadAllInvoice/{user_id}")
-	public Iterable<Invoice> loadAllInvoiceUser(@PathVariable Long user_id){
+	public Iterable<Order> loadAllInvoiceUser(@PathVariable Long user_id){
 		return invoiceService.loadAllInvoiceByUserId(user_id);	
 	}
 	
 	//buat tombol bayar : generate new invoice, user invoice_now updated
 	@PostMapping("/processItem/{invoice_identifier}/{user_id}")
-	public ResponseEntity<?> processItem(@Valid @RequestBody Invoice invoice,
+	public ResponseEntity<?> processItem(@Valid @RequestBody Order invoice,
 			BindingResult result, @PathVariable String invoice_identifier, @PathVariable Long user_id) {
 		
 		
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;
 		
-		Invoice invoice1 = invoiceService.processItem(invoice_identifier, user_id);
+		Order invoice1 = invoiceService.processItem(invoice_identifier, user_id);
 				
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+		return new ResponseEntity<Order>(invoice1, HttpStatus.CREATED);
 	}
 	
 

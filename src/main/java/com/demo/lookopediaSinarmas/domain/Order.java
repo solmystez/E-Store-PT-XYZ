@@ -14,33 +14,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Invoice {
+@Table(name = "orders")
+public class Order {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-//	@NotBlank(message = "Invoice Name is required")
-//	private String invoiceName;
-//	
-//	@NotBlank(message = "Invoice identifier is required")
-//	@Size(min=4, max=5, message = "Please use 4 to 5 characters")
-//	@Column(updatable = false, unique = true)
-	private String invoiceIdentifier;
-	
-//	private String iProductName;
-//	private Integer iProductQuantity;
-//	private Integer iProductPrice;
-//	private Integer iTotalPrice;
-//	private Integer iGrandTotal;
+
+	private String orderIdentifier;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -49,15 +38,17 @@ public class Invoice {
 	private Date updated_at;
 	
 	
-	@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "order", 
+			cascade = CascadeType.ALL, 
+			orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-//	@JoinColumn(name = "user_id", updatable = false) //oto
+	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User user;
 	
-	public Invoice() {}
+	public Order() {}
 	
 	@PrePersist
 	protected void onCreate() {
@@ -69,12 +60,12 @@ public class Invoice {
 		this.updated_at = new Date();
 	}
 	
-	public String getInvoiceIdentifier() {
-		return invoiceIdentifier;
+	public String getOrderIdentifier() {
+		return orderIdentifier;
 	}
 
-	public void setInvoiceIdentifier(String invoiceIdentifier) {
-		this.invoiceIdentifier = invoiceIdentifier;
+	public void setOrderIdentifier(String orderIdentifier) {
+		this.orderIdentifier = orderIdentifier;
 	}
 
 	public User getUser() {

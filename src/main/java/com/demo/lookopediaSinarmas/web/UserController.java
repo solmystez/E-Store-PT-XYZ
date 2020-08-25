@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;

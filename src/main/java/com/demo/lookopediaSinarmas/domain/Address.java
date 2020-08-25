@@ -5,6 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
@@ -21,8 +22,9 @@ public class Address {
 	private String address;
 
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
 	@JsonIgnore
-	private User user;
+	private User userAddress;
 	
 	
 	public Long getId() {

@@ -50,22 +50,17 @@ public class User implements UserDetails {
 	
 	private boolean hasMerchant;
 	
-	private String invoiceNow;
+	private String orderNow;
 	private Integer invoiceSequence = 1;
 	
 	private Date created_At;
 	private Date updated_At;
 	
-//	@NotBlank(message = "User identifier is required")
-//	@Size(min=4, max=5, message = "Please use 4 to 5 characters")
-//	@Column(updatable = false, unique = true)
-//	private String userIdentifier; //for seperate type member
-	
 	@OneToMany(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
 			mappedBy = "user")
 	@JsonIgnore
-	private Set<Invoice> invoice = new HashSet<>();
+	private Set<Order> order = new HashSet<>();
 	
 	@OneToOne(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
@@ -76,7 +71,7 @@ public class User implements UserDetails {
 	
 	@OneToMany(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
-			mappedBy = "user")
+			mappedBy = "userAddress")
 	@JsonIgnore
 	private List<Address> address = new ArrayList<>();
 	
@@ -112,12 +107,12 @@ public class User implements UserDetails {
 		this.invoiceSequence = invoiceSequence;
 	}
 
-	public String getInvoiceNow() {
-		return invoiceNow;
+	public String getOrderNow() {
+		return orderNow;
 	}
 
-	public void setInvoiceNow(String invoiceNow) {
-		this.invoiceNow = invoiceNow;
+	public void setOrderNow(String orderNow) {
+		this.orderNow = orderNow;
 	}
 
 	public String getEmail() {
@@ -168,12 +163,20 @@ public class User implements UserDetails {
 		this.updated_At = updated_At;
 	}
 
-	public Set<Invoice> getInvoice() {
-		return invoice;
+	public Set<Order> getOrder() {
+		return order;
 	}
 
-	public void setInvoice(Set<Invoice> invoice) {
-		this.invoice = invoice;
+	public void setOrder(Set<Order> order) {
+		this.order = order;
+	}
+
+	public List<Address> getAddress() {
+		return address;
+	}
+
+	public void setAddress(List<Address> address) {
+		this.address = address;
 	}
 
 	public Merchant getMerchant() {

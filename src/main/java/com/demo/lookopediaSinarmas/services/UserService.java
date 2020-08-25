@@ -1,23 +1,17 @@
 package com.demo.lookopediaSinarmas.services;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.InvoiceRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
+import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
@@ -30,7 +24,7 @@ public class UserService {
 	MerchantRepository merchantRepository;
 	
 	@Autowired
-	InvoiceRepository invoiceRepository;
+	OrderRepository orderRepository;
 	
 	@Autowired//comes up with spring security
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -84,21 +78,21 @@ public class UserService {
 			
 			//1. find user id
 			user = userRepository.findById(user_id).get();
-			user.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			user.setOrderNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
 
-			Set<Invoice> inv = user.getInvoice();
+			Set<Order> inv = user.getOrder();
 			
 //			System.out.println(inv);
 //			System.out.println(user.getInvoiceNow());
 			
-			Invoice invoice = invoiceRepository.findByInvoiceIdentifier(user.getInvoiceNow());
-			if(user.getInvoiceNow() == null  || invoice == null) {
-				invoice = new Invoice();
-				invoice.setUser(user);
-				invoice.setInvoiceIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			Order order = orderRepository.findByOrderIdentifier(user.getOrderNow());
+			if(user.getOrderNow() == null  || order == null) {
+				order = new Order();
+				order.setUser(user);
+				order.setOrderIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
 								
-				inv.add(invoice);
-				user.setInvoice(inv);
+				inv.add(order);
+				user.setOrder(inv);
 				
 			}
 
@@ -111,12 +105,12 @@ public class UserService {
 		}
 	}
 	
-	public Invoice applyInvoiceIdentifier(String invoiceNow, Invoice invoice) {
+	public Order applyInvoiceIdentifier(String invoiceNow, Order order) {
 		
 //		invoice = invoiceRepository.findByInvoiceNow(invoiceNow);
 //		
 //		invoice.setInvoiceIdentifier(invoiceNow);
-		return invoiceRepository.save(invoice);
+		return orderRepository.save(order);
 	}
 
 

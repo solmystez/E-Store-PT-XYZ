@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.CartDetail;
-import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.services.CartService;
 import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 
@@ -37,27 +37,27 @@ public class CartController {
 	
 	//addProduct to invoice With ProductId
 	@PostMapping("/addProductToInvoice/{product_id}/{user_id}")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Invoice invoice, BindingResult result,
+	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Order invoice, BindingResult result,
 			 							@PathVariable Long product_id, @PathVariable Long user_id){
 				
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Invoice invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+		Order invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
+		return new ResponseEntity<Order>(invoice1, HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/subProductToInvoice/{product_id}/{user_id}")
-	public ResponseEntity<?> subProductFromCart(@Valid @RequestBody Invoice invoice, BindingResult result,
+	public ResponseEntity<?> subProductFromCart(@Valid @RequestBody Order invoice, BindingResult result,
 			 							@PathVariable Long product_id, @PathVariable Long user_id){
 				
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Invoice invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
-		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
+		Order invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
+		return new ResponseEntity<Order>(invoice1, HttpStatus.CREATED);
 	}
 	
 	//user cek keranjang belanjaan dia sendiri

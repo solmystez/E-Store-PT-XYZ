@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.CartDetail;
-import com.demo.lookopediaSinarmas.domain.Invoice;
+import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.InvoiceNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
-import com.demo.lookopediaSinarmas.repositories.InvoiceRepository;
+import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
-public class InvoiceService {
+public class OrderService {
 	
 	@Autowired
-	InvoiceRepository invoiceRepository;
+	OrderRepository invoiceRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -30,12 +30,12 @@ public class InvoiceService {
 	UserService userService;
 	
 	
-	public Invoice processItem(String invoice_identifier, Long user_id) {	
+	public Order processItem(String invoice_identifier, Long user_id) {	
 		
-		Invoice invoice = null;
+		Order invoice = null;
 		User user = null;
 		
-		invoice = invoiceRepository.findByInvoiceIdentifier(invoice_identifier);
+		invoice = invoiceRepository.findByOrderIdentifier(invoice_identifier);
 		if(invoice == null) {
 			throw new InvoiceNotFoundException("invoice not found");
 		}
@@ -43,11 +43,11 @@ public class InvoiceService {
 		user = userRepository.findById(invoice.getUser().getId()).get();
 	
 		Integer invSeq = 0;
-		if(user.getInvoice() != null) invSeq = user.getInvoiceSequence();
+		if(user.getOrder() != null) invSeq = user.getInvoiceSequence();
 		invSeq++;
 		user.setInvoiceSequence(invSeq);
 		
-		CartDetail cartDetail = cartDetailRepository.findByInvoiceIdentifier(invoice_identifier);
+		CartDetail cartDetail = cartDetailRepository.findByOrderIdentifier(invoice_identifier);
 
 		Integer merchantBal = 0;
 
@@ -60,7 +60,7 @@ public class InvoiceService {
 
 	}
 
-	public List<Invoice> loadAllInvoiceByUserId(Long user_id) {
+	public List<Order> loadAllInvoiceByUserId(Long user_id) {
 		return invoiceRepository.findAllByUserId(user_id);
 	}
 	

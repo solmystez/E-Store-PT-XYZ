@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,10 +41,10 @@ public class CartDetail {
 	@JsonIgnore
     private Product product;    
 	
-    @ManyToOne
-    @JoinColumn(name = "invoice_id",nullable = true)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_ide",nullable = true)
 	@JsonIgnore
-    private Invoice invoice;
+    private Order order;
     
     private Long p_id;
     
@@ -52,13 +53,13 @@ public class CartDetail {
 	private String productName;
 	
 	private String status;
-	private String invoiceIdentifier;
+	private String orderIdentifier;
 	
 	private CartDetail() {}
 	
-	public CartDetail(Invoice invoice, Product product) {
+	public CartDetail(Order order, Product product) {
 		super();
-		this.invoice = invoice;
+		this.order = order;
 		this.product = product;
 	}
 
@@ -70,12 +71,12 @@ public class CartDetail {
 		this.p_id = p_id;
 	}
 
-	public String getInvoiceIdentifier() {
-		return invoiceIdentifier;
+	public String getOrderIdentifier() {
+		return orderIdentifier;
 	}
 
-	public void setInvoiceIdentifier(String invoiceIdentifier) {
-		this.invoiceIdentifier = invoiceIdentifier;
+	public void setOrderIdentifier(String orderIdentifier) {
+		this.orderIdentifier = orderIdentifier;
 	}
 
 	public String getStatus() {
@@ -85,13 +86,13 @@ public class CartDetail {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	public Invoice getInvoice() {
-		return invoice;
+	
+	public Order getOrder() {
+		return order;
 	}
 
-	public void setInvoice(Invoice invoice) {
-		this.invoice = invoice;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
 	public Product getProduct() {
