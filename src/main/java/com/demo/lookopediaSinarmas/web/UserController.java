@@ -64,8 +64,8 @@ public class UserController {
 		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/checkInvoiceNow/{user_id}")	//next postMapping kena effect jwt filter after /login
-	public ResponseEntity<?> applyInvoice(@Valid @RequestBody User user,
+	@PostMapping("/trackOrder/{user_id}")	//next postMapping kena effect jwt filter after /login
+	public ResponseEntity<?> trackOrder(@Valid @RequestBody User user,
 			BindingResult result, @PathVariable Long user_id) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;

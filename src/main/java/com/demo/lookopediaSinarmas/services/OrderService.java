@@ -7,9 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.CartDetail;
 import com.demo.lookopediaSinarmas.domain.Order;
-import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.InvoiceNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -18,7 +17,7 @@ import com.demo.lookopediaSinarmas.repositories.UserRepository;
 public class OrderService {
 	
 	@Autowired
-	OrderRepository invoiceRepository;
+	OrderRepository orderRepository;
 	
 	@Autowired
 	UserRepository userRepository;
@@ -30,24 +29,24 @@ public class OrderService {
 	UserService userService;
 	
 	
-	public Order processItem(String invoice_identifier, Long user_id) {	
+	public Order processItem(String order_identifier, Long user_id) {	
 		
-		Order invoice = null;
+		Order order = null;
 		User user = null;
 		
-		invoice = invoiceRepository.findByOrderIdentifier(invoice_identifier);
-		if(invoice == null) {
-			throw new InvoiceNotFoundException("invoice not found");
+		order = orderRepository.findByOrderIdentifier(order_identifier);
+		if(order == null) {
+			throw new OrderNotFoundException("order not found");
 		}
 		
-		user = userRepository.findById(invoice.getUser().getId()).get();
+		user = userRepository.findById(order.getUser().getId()).get();
 	
 		Integer invSeq = 0;
-		if(user.getOrder() != null) invSeq = user.getInvoiceSequence();
+		if(user.getOrder() != null) invSeq = user.getOrderSequence();
 		invSeq++;
-		user.setInvoiceSequence(invSeq);
+		user.setOrderSequence(invSeq);
 		
-		CartDetail cartDetail = cartDetailRepository.findByOrderIdentifier(invoice_identifier);
+		CartDetail cartDetail = cartDetailRepository.findByOrderIdentifier(order_identifier);
 
 		Integer merchantBal = 0;
 
@@ -56,12 +55,12 @@ public class OrderService {
 					
 		userService.applyInvoiceNow(user_id, user);
 
-		return invoiceRepository.save(invoice);
+		return orderRepository.save(order);
 
 	}
 
 	public List<Order> loadAllInvoiceByUserId(Long user_id) {
-		return invoiceRepository.findAllByUserId(user_id);
+		return orderRepository.findAllByUserId(user_id);
 	}
 	
 }

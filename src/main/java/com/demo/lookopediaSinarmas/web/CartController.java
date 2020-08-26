@@ -36,7 +36,7 @@ public class CartController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	//addProduct to invoice With ProductId
-	@PostMapping("/addProductToInvoice/{product_id}/{user_id}")
+	@PostMapping("/addProduct/{product_id}/{user_id}")
 	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Order invoice, BindingResult result,
 			 							@PathVariable Long product_id, @PathVariable Long user_id){
 				
@@ -63,7 +63,7 @@ public class CartController {
 	//user cek keranjang belanjaan dia sendiri
 	@GetMapping("/getCartDetail/{invoice_now}")
 	public Iterable<CartDetail> loadItemWantToBuy(@PathVariable String invoice_now){
-		return cartService.getCartDetailByInvoiceIdentifier(invoice_now);		
+		return cartService.getCartDetailByOrderIdentifier(invoice_now);		
 	}
 
 	//delete product di cart, bukan delete product

@@ -42,8 +42,8 @@ public class JwtTokenProvider {
 			claims.put("username", user.getUsername());
 			claims.put("password", user.getPassword());
 //			claims.put("hasMerchant", user.get hasmerchant);//boolean not read??
-			claims.put("orderNow", user.getOrderNow());
-			claims.put("invoiceSequence", user.getInvoiceSequence());
+			claims.put("orderNow", user.getTrackOrder());
+			claims.put("invoiceSequence", user.getOrderSequence());
 			
 			//throw roles in here too
 			

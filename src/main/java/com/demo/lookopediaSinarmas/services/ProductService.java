@@ -11,7 +11,7 @@ import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.InvoiceNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
@@ -89,8 +89,6 @@ public class ProductService {
 
 	
 	public Iterable<Product> findAllProducts() {
-//		User user = find
-//		userService.applyInvoiceNow(user_id, user);
 		return productRepository.findAll(); 
 	}
 	

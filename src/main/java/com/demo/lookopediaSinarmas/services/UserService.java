@@ -78,26 +78,23 @@ public class UserService {
 			
 			//1. find user id
 			user = userRepository.findById(user_id).get();
-			user.setOrderNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
+			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
 
-			Set<Order> inv = user.getOrder();
+			Set<Order> ord = user.getOrder();
 			
 //			System.out.println(inv);
 //			System.out.println(user.getInvoiceNow());
 			
-			Order order = orderRepository.findByOrderIdentifier(user.getOrderNow());
-			if(user.getOrderNow() == null  || order == null) {
+			Order order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
+			if(user.getTrackOrder() == null  || order == null) {
 				order = new Order();
 				order.setUser(user);
-				order.setOrderIdentifier("inv" + user.getId() + "-" + user.getInvoiceSequence());
+				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
 								
-				inv.add(order);
-				user.setOrder(inv);
+				ord.add(order);
+				user.setOrder(ord);
 				
 			}
-
-//			Invoice invoice = invoiceRepository.findByUserId(user_id);//gblh
-//			invoice.setInvoiceNow("inv" + user.getId() + "-" + user.getInvoiceSequence());
 			
 			return userRepository.save(user);
 		} catch (Exception e) {
@@ -105,7 +102,7 @@ public class UserService {
 		}
 	}
 	
-	public Order applyInvoiceIdentifier(String invoiceNow, Order order) {
+	public Order applyOrderIdentifier(String invoiceNow, Order order) {
 		
 //		invoice = invoiceRepository.findByInvoiceNow(invoiceNow);
 //		

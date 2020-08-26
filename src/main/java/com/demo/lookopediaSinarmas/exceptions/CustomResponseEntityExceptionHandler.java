@@ -49,8 +49,8 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	}
 	
 	@ExceptionHandler
-	public final ResponseEntity<Object> handleInvoiceNotFound(InvoiceNotFoundException ex, WebRequest request) {
-		InvoiceNotFoundResponse exceptionResponse = new InvoiceNotFoundResponse(ex.getMessage());
+	public final ResponseEntity<Object> handleInvoiceNotFound(OrderNotFoundException ex, WebRequest request) {
+		OrderNotFoundResponse exceptionResponse = new OrderNotFoundResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

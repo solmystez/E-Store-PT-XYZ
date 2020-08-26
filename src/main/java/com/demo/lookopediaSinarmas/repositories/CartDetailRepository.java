@@ -15,14 +15,14 @@ public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 	//opsi 1
 	//delete return nya void
 	//findall -> pencet delete-> delete service(delete  findall) ->list all di update
-//	@Modifying
-//	@Query(value = "delete from cart_detail  "
-//			+ " where order_identifier=:order_identifier "
-//			+ " and "
-//			+ " product_id=:product_id", nativeQuery = true)
-//	void deleteCartDetailByInvoiceIdentifierAndProductId(
-//			@Param("order_identifier") String invoiceIdentifier, 
-//			@Param("product_id") Long productId);
+	@Modifying
+	@Query(value = "delete from cart_detail  "
+			+ " where order_identifier=:order_identifier "
+			+ " and "
+			+ " product_id=:product_id", nativeQuery = true)
+	void deleteCartDetailByOrderIdentifierAndProductId(
+			@Param("order_identifier") String invoiceIdentifier, 
+			@Param("product_id") Long productId);
 	
 	//opsi 2
 

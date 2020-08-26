@@ -12,7 +12,7 @@ import com.demo.lookopediaSinarmas.domain.CartDetail;
 import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.InvoiceNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
@@ -44,38 +44,31 @@ public class CartService {
 	UserService userService;
 	
 	//load all item before go to /buy
-	public List<CartDetail> getCartDetailByInvoiceIdentifier(String invoice_now) {
+	public List<CartDetail> getCartDetailByOrderIdentifier(String order_now) {
 		
 		List<CartDetail> cartDetail = null;
 	
-		cartDetail = cartDetailRepository.findAllByOrderIdentifier(invoice_now);
+		cartDetail = cartDetailRepository.findAllByOrderIdentifier(order_now);
 
 		return cartDetail;
 	}
 	
 	//delete product on cart, not delete product
 	@Transactional
-	public List<CartDetail> removeProductFromCart(Long product_id, String invoiceIdentifier) {
+	public List<CartDetail> removeProductFromCart(Long product_id, String orderIdentifier) {
 
 		try {
-//		   cartDetailRepository.deleteCartDetailByInvoiceIdentifierAndProductId(invoiceIdentifier, product_id);
+		   cartDetailRepository.deleteCartDetailByOrderIdentifierAndProductId(orderIdentifier, product_id);
 		} catch (Exception e) {
 			System.err.println(e);
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
-		return cartDetailRepository.findAllByOrderIdentifier(invoiceIdentifier);
+		return cartDetailRepository.findAllByOrderIdentifier(orderIdentifier);
 	
 	}
 	
 	public Order addProductToCartOrAddQty(Long product_id, Long user_id, Order order) {
 		
-//		try {
-			//check status cart 1. paid = generate new cart, 
-			//if invoice null || invoice.status != paid
-			
-			
-//			product prtama kali add ke cart? kalo udah quantity++ 
-			
 
 			Product product;
 			try {
@@ -94,20 +87,20 @@ public class CartService {
 		
 			order = orderRepository.findByOrderIdentifier(order.getOrderIdentifier());
 			if(order == null) {
-				throw new InvoiceNotFoundException("invoice not found");
+				throw new OrderNotFoundException("order not found");
 			}
 			
 			int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1		
 			int totalForPaid = 0;
 			
-			Order tempInvoice = null;
+			Order tempOrder = null;
 			
 			Iterator<CartDetail> it = product.getCart_detail().iterator();
 		
 			if(!it.hasNext()) {
 				
 				it = order.getCart_detail().iterator();
-				order.setOrderIdentifier(user.getOrderNow());
+				order.setOrderIdentifier(user.getTrackOrder());
 				
 				int stock = product.getProductStock();
 				stock--;
@@ -133,8 +126,8 @@ public class CartService {
 					}
 					product.setProductStock(stock);
 					
-					//set product nya ke invoice jg
-//					invoice.setiProductName(c.getProduct().getProductName());
+					//set product nya ke order jg
+//					order.setiProductName(c.getProduct().getProductName());
 					
 					c.setProductName(c.getProduct().getProductName());
 					c.setQuantity(c.getQuantity()+1);
@@ -143,7 +136,7 @@ public class CartService {
 					c.setP_id(product_id);
 					cartDetailRepository.save(c);
 					flag = 0;
-					tempInvoice = c.getOrder();
+					tempOrder = c.getOrder();
 					break;
 				}
 			}
@@ -151,8 +144,8 @@ public class CartService {
 			//create cart detail kalo belom pernah di add ke cart
 			if(flag == 1) {
 				CartDetail currDetail= new CartDetail(order,product);
-				currDetail.setOrderIdentifier(user.getOrderNow());
-				order.setOrderIdentifier(user.getOrderNow());
+				currDetail.setOrderIdentifier(user.getTrackOrder());
+				order.setOrderIdentifier(user.getTrackOrder());
 				currDetail.setQuantity(1);
 				currDetail.setTotalToPaid(totalForPaid + product.getProductPrice());
 				currDetail.setProductName(product.getProductName());
@@ -164,10 +157,10 @@ public class CartService {
 				order.getCart_detail().add(currDetail);
 				product.getCart_detail().add(currDetail);
 				productRepository.save(product);
-				tempInvoice = orderRepository.save(order);
+				tempOrder = orderRepository.save(order);
 				
 			}
-			return tempInvoice;
+			return tempOrder;
 		
 	}
 	

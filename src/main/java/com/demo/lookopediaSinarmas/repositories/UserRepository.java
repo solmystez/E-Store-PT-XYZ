@@ -13,5 +13,5 @@ public interface UserRepository extends CrudRepository<User, Long>{
 //	User findByUsername(String username);
 	User findByEmail(String email);//uniq
 	User getById(Long id);
-	Order findByOrderNow(String orderIdentifier);
+	Order findByTrackOrder(String orderIdentifier);
 }

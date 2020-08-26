@@ -1,6 +1,6 @@
 package com.demo.lookopediaSinarmas.exceptions;
 
-public class InvoiceNotFoundResponse {
+public class OrderNotFoundResponse {
 
 	String invoiceIdentifier;
 
@@ -12,7 +12,7 @@ public class InvoiceNotFoundResponse {
 		this.invoiceIdentifier = invoiceIdentifier;
 	}
 	
-	public InvoiceNotFoundResponse(String invoiceIdentifier) {
+	public OrderNotFoundResponse(String invoiceIdentifier) {
 		this.invoiceIdentifier = invoiceIdentifier;
 	}
 	

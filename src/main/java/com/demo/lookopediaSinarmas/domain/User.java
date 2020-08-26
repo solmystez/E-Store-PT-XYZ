@@ -50,8 +50,8 @@ public class User implements UserDetails {
 	
 	private boolean hasMerchant;
 	
-	private String orderNow;
-	private Integer invoiceSequence = 1;
+	private String trackOrder;
+	private Integer orderSequence = 1;
 	
 	private Date created_At;
 	private Date updated_At;
@@ -99,20 +99,20 @@ public class User implements UserDetails {
 		this.id = id;
 	}
 	
-	public Integer getInvoiceSequence() {
-		return invoiceSequence;
+	public Integer getOrderSequence() {
+		return orderSequence;
 	}
 
-	public void setInvoiceSequence(Integer invoiceSequence) {
-		this.invoiceSequence = invoiceSequence;
+	public void setOrderSequence(Integer orderSequence) {
+		this.orderSequence = orderSequence;
 	}
 
-	public String getOrderNow() {
-		return orderNow;
+	public String getTrackOrder() {
+		return trackOrder;
 	}
 
-	public void setOrderNow(String orderNow) {
-		this.orderNow = orderNow;
+	public void setTrackOrder(String trackOrder) {
+		this.trackOrder = trackOrder;
 	}
 
 	public String getEmail() {
