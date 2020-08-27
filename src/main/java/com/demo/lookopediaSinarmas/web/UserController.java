@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.domain.Address;
 import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
@@ -76,14 +77,14 @@ public class UserController {
 	}
 	
 	@PostMapping("/addAddress/{user_id}")	
-	public ResponseEntity<?> addAddress(@Valid @RequestBody User user,
+	public ResponseEntity<?> addAddress(@Valid @RequestBody Address address,
 			BindingResult result, @PathVariable Long user_id) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;
 		//belom di block validate jwt filter
-		User user1 = userService.addUserAddress(user_id, user);
+		Address address1 = userService.addUserAddress(user_id, address);
 				
-		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
+		return new ResponseEntity<Address>(address1, HttpStatus.CREATED);
 	}
 	
 	

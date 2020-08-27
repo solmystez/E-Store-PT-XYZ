@@ -35,10 +35,10 @@ public class Product {
 	@NotBlank(message = "Product description is required")
 	private String productDescription;
 
-	@Min(value = 0, message = "price cannot less then 0 !")
+	@Min(value = 0, message = "Price cannot less then 0 !")
 	private int productPrice;
 
-	@Min(value = 0, message = "stock cannot less then 0 !")
+	@Min(value = 0, message = "Stock cannot less then 0 !")
 	private int productStock;
 	
 	private String productImage;

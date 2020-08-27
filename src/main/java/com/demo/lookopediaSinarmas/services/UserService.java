@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.demo.lookopediaSinarmas.domain.Address;
 import com.demo.lookopediaSinarmas.domain.Order;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
+import com.demo.lookopediaSinarmas.repositories.UserAddressRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class UserService {
 	
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	UserAddressRepository userAddressRepository;
 	
 	@Autowired//comes up with spring security
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -111,8 +116,16 @@ public class UserService {
 	}
 
 
-	public User addUserAddress(Long user_id, User user) {
+	public Address addUserAddress(Long user_id, Address user_address) {
 		
-		return null;
+		User user = userRepository.findById(user_id).get();
+		
+//		Address newAdr = new Address();
+		
+		user_address.setUserAddress(user);
+		
+		user_address.setAddress(user_address.getAddress());
+		
+		return userAddressRepository.save(user_address);
 	}
 }

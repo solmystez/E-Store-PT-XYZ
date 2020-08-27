@@ -18,15 +18,22 @@ public class Address {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "address is required")
+	@NotBlank(message = "Address is required")
 	private String address;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
-	private User userAddress;
+	private User userAddress;	
 	
-	
+	public User getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(User userAddress) {
+		this.userAddress = userAddress;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -42,7 +42,7 @@ public class CartDetail {
     private Product product;    
 	
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_ide",nullable = true)
+    @JoinColumn(name = "order_id",nullable = true)
 	@JsonIgnore
     private Order order;
     
