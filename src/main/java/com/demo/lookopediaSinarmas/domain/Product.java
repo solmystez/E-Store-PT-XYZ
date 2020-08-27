@@ -42,7 +42,7 @@ public class Product {
 	private int productStock;
 	
 	private String productImage;
-	private String productCategory;
+
 	
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date created_at;
@@ -65,14 +65,20 @@ public class Product {
 			orphanRemoval = true)
 	private List<CartDetail> cart_detail = new ArrayList<>();
 	
-//	before update to security
-//	@OneToOne(fetch = FetchType.LAZY) 
-//	@JoinColumn(name = "merchant_id", 
-//		updatable = false, 
-//		nullable= true)//default nullable = true
-//	@JsonIgnore
-//	private Merchant merchant;
-
+	@OneToMany(mappedBy = "productComment", 
+			cascade = CascadeType.ALL, 
+			orphanRemoval = true)
+	private List<Comment> comment = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "productRating", 
+		cascade = CascadeType.ALL, 
+		orphanRemoval = true)
+	private List<Rating> rating = new ArrayList<>();
+	
+	@OneToOne
+	@JoinColumn(name = "category_id", updatable = false)
+	@JsonIgnore
+	private Category productCategory;
 	
 	@ManyToOne(fetch = FetchType.LAZY)//we dont need load the merchant information, we know the project
 	@JsonIgnore//resolve infinite recursion problem
@@ -87,6 +93,22 @@ public class Product {
 
 	public void setMerchantName(String merchantName) {
 		this.merchantName = merchantName;
+	}
+	
+	public List<Rating> getRating() {
+		return rating;
+	}
+
+	public void setRating(List<Rating> rating) {
+		this.rating = rating;
+	}
+
+	public Category getProductCategory() {
+		return productCategory;
+	}
+
+	public void setProductCategory(Category productCategory) {
+		this.productCategory = productCategory;
 	}
 
 	public Long getId() {
@@ -103,14 +125,6 @@ public class Product {
 
 	public void setProductImage(String productImage) {
 		this.productImage = productImage;
-	}
-
-	public String getProductCategory() {
-		return productCategory;
-	}
-
-	public void setProductCategory(String productCategory) {
-		this.productCategory = productCategory;
 	}
 
 	public Merchant getMerchant() {
@@ -153,8 +167,13 @@ public class Product {
 		this.productStock = productStock;
 	}
 	
+	public List<Comment> getComment() {
+		return comment;
+	}
 
-
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
 
 	public List<CartDetail> getCart_detail() {
 		return cart_detail;

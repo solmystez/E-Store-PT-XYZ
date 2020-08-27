@@ -75,6 +75,18 @@ public class User implements UserDetails {
 	@JsonIgnore
 	private List<Address> address = new ArrayList<>();
 	
+	@OneToMany(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "userComment")
+	@JsonIgnore
+	private List<Comment> comment = new ArrayList<>();
+	
+	@OneToMany(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "userRating")
+	@JsonIgnore
+	private List<Rating> rating = new ArrayList<>();
+	
 	public User() {
 
 	}
@@ -93,6 +105,22 @@ public class User implements UserDetails {
 
 	public Long getId() {
 		return id;
+	}
+
+	public List<Comment> getComment() {
+		return comment;
+	}
+
+	public void setComment(List<Comment> comment) {
+		this.comment = comment;
+	}
+
+	public List<Rating> getRating() {
+		return rating;
+	}
+
+	public void setRating(List<Rating> rating) {
+		this.rating = rating;
 	}
 
 	public void setId(Long id) {

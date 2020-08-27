@@ -43,7 +43,7 @@ public class ProductService {
 		    
 		    product.setMerchant(merchant);
 		    product.setMerchantName(merchant.getMerchantName());
-		    product.setProductCategory(product.getProductCategory().toLowerCase());
+//		    product.setProductCategory(product.getProductCategory().toLowerCase());
 		    
 		    Integer totalProduct = merchant.getTotalProduct();
 		    totalProduct++;		    
@@ -76,7 +76,7 @@ public class ProductService {
 		    Merchant merchant = merchantRepository.findById(merchantId).get();
 		    	    
 			product.setMerchant(merchant);
-			product.setProductCategory(product.getProductCategory().toLowerCase());
+//			product.setProductCategory(product.getProductCategory().toLowerCase());
 			
 			return productRepository.save(product);
 		} catch (Exception e) {

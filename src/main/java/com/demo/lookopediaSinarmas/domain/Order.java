@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -36,6 +37,16 @@ public class Order {
 	private Date created_at;
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date updated_at;
+	
+	@OneToOne
+	@JoinColumn(name = "courier_id", updatable = false)
+	@JsonIgnore
+	private Courier courier;
+	
+	@OneToOne
+	@JoinColumn(name = "voucher_id", updatable = false)
+	@JsonIgnore
+	private Voucher voucher;
 	
 	
 	@OneToMany(mappedBy = "order", 
@@ -146,6 +157,22 @@ public class Order {
 
 	public void setCart_detail(List<CartDetail> cart_detail) {
 		this.cart_detail = cart_detail;
+	}
+
+	public Courier getCourier() {
+		return courier;
+	}
+
+	public void setCourier(Courier courier) {
+		this.courier = courier;
+	}
+
+	public Voucher getVoucher() {
+		return voucher;
+	}
+
+	public void setVoucher(Voucher voucher) {
+		this.voucher = voucher;
 	}
 
 

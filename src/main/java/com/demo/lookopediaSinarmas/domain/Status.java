@@ -7,25 +7,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Category {
+public class Status {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
-	@NotBlank(message = "Category Name is Required !")
-	private String categoryName;
+	
+	private String statusType;	
 	
 	@OneToOne(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
-			mappedBy = "productCategory")
+			mappedBy = "status")
 	@JsonIgnore
-	private Product product;
+	private Transaction transaction;
 	
 	public Long getId() {
 		return id;
@@ -35,20 +33,21 @@ public class Category {
 		this.id = id;
 	}
 
-	public String getCategoryName() {
-		return categoryName;
+	public String getStatusType() {
+		return statusType;
 	}
 
-	public void setCategoryName(String categoryName) {
-		this.categoryName = categoryName;
+	public void setStatusType(String statusType) {
+		this.statusType = statusType;
 	}
 
-	public Product getProduct() {
-		return product;
+	public Transaction getTransaction() {
+		return transaction;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
 	}
-	
+
+
 }
