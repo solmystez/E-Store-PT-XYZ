@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.domain.Category;
 import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
@@ -31,9 +32,6 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
-
-	@Autowired 
-	private CategoryService categoryService;
 	
 	@Autowired
 	private CommentService commentService;
@@ -70,6 +68,4 @@ public class ProductController {
 
 		return new ResponseEntity<String>("Product ID '" + product_id  + "' was successfully deleted", HttpStatus.OK);
 	}
-	
-
 }

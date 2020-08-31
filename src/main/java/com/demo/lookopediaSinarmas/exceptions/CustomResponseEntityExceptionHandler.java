@@ -53,4 +53,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		OrderNotFoundResponse exceptionResponse = new OrderNotFoundResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> handleCategoryNameAlreadyExists(CategoryAlreadyExistsException ex, WebRequest request) {
+		CategoryAlreadyExistsResponse exceptionResponse = new CategoryAlreadyExistsResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }

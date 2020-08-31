@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.domain;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,6 +20,7 @@ public class Category {
 	private Long category_id;
 
 	@NotBlank(message = "Category Name is Required !")
+	@Column(unique = true)
 	private String categoryName;
 	
 	@OneToOne(fetch = FetchType.LAZY,
