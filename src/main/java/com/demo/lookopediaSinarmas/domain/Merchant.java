@@ -42,7 +42,6 @@ public class Merchant {
 			cascade = CascadeType.REFRESH, 
 			mappedBy = "merchant", orphanRemoval = true)
 	private List<Product> productList = new ArrayList<>();
-	
 
 	public Long getId() {
 		return id;
@@ -83,8 +82,6 @@ public class Merchant {
 	public void setMerchantAddress(String merchantAddress) {
 		this.merchantAddress = merchantAddress;
 	}
-	
-	
 
 	public User getUserMerchant() {
 		return userMerchant;
@@ -94,7 +91,6 @@ public class Merchant {
 		this.userMerchant = userMerchant;
 	}
 
-
 	public List<Product> getProductList() {
 		return productList;
 	}
@@ -102,7 +98,6 @@ public class Merchant {
 	public void setProductList(List<Product> productList) {
 		this.productList = productList;
 	}
-	
-	
+
 	
 }

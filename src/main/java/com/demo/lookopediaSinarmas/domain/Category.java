@@ -16,7 +16,7 @@ public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long category_id;
 
 	@NotBlank(message = "Category Name is Required !")
 	private String categoryName;
@@ -26,13 +26,13 @@ public class Category {
 			mappedBy = "productCategory")
 	@JsonIgnore
 	private Product product;
-	
-	public Long getId() {
-		return id;
+
+	public Long getCategory_id() {
+		return category_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCategory_id(Long category_id) {
+		this.category_id = category_id;
 	}
 
 	public String getCategoryName() {

@@ -8,15 +8,15 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.CartDetail;
-import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.domain.Cart;
+import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
+import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
@@ -29,7 +29,7 @@ public class CartService {
 	OrderRepository orderRepository;
 
 	@Autowired
-	CartDetailRepository cartDetailRepository;
+	CartRepository cartDetailRepository;
 
 	@Autowired
 	ProductRepository productRepository;
@@ -44,9 +44,9 @@ public class CartService {
 	UserService userService;
 	
 	//load all item before go to /buy
-	public List<CartDetail> getCartDetailByOrderIdentifier(String order_now) {
+	public List<Cart> getCartDetailByOrderIdentifier(String order_now) {
 		
-		List<CartDetail> cartDetail = null;
+		List<Cart> cartDetail = null;
 	
 		cartDetail = cartDetailRepository.findAllByOrderIdentifier(order_now);
 
@@ -55,7 +55,7 @@ public class CartService {
 	
 	//delete product on cart, not delete product
 	@Transactional
-	public List<CartDetail> removeProductFromCart(Long product_id, String orderIdentifier) {
+	public List<Cart> removeProductFromCart(Long product_id, String orderIdentifier) {
 
 		try {
 		   cartDetailRepository.deleteCartDetailByOrderIdentifierAndProductId(orderIdentifier, product_id);
@@ -67,7 +67,7 @@ public class CartService {
 	
 	}
 	
-	public Order addProductToCartOrAddQty(Long product_id, Long user_id, Order order) {
+	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, Orders order) {
 		
 
 			Product product;
@@ -93,9 +93,9 @@ public class CartService {
 			int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1		
 			int totalForPaid = 0;
 			
-			Order tempOrder = null;
+			Orders tempOrder = null;
 			
-			Iterator<CartDetail> it = product.getCart_detail().iterator();
+			Iterator<Cart> it = product.getCart_detail().iterator();
 		
 			if(!it.hasNext()) {
 				
@@ -112,7 +112,7 @@ public class CartService {
 			}
 			
 			while(it.hasNext()){
-				CartDetail c = it.next();
+				Cart c = it.next();
 				
 				if(c.getOrder().getId().equals(order.getId()) 
 						&&  c.getProduct().getId().equals(product.getId())) {
@@ -143,7 +143,7 @@ public class CartService {
 			
 			//create cart detail kalo belom pernah di add ke cart
 			if(flag == 1) {
-				CartDetail currDetail= new CartDetail(order,product);
+				Cart currDetail= new Cart(order,product);
 				currDetail.setOrderIdentifier(user.getTrackOrder());
 				order.setOrderIdentifier(user.getTrackOrder());
 				currDetail.setQuantity(1);

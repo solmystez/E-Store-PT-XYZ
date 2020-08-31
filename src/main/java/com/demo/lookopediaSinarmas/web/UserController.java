@@ -21,14 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;
 import com.demo.lookopediaSinarmas.payload.LoginRequest;
 import com.demo.lookopediaSinarmas.security.JwtTokenProvider;
-import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.UserService;
+import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.validator.UserValidator;
 
 @CrossOrigin
@@ -54,7 +54,7 @@ public class UserController {
 	//1. create or update user
 	//our app is lockdown because spring security
 	@PostMapping("/register")//but this route, shouldn't need a password, addRoute permitAll for this route in class SecurityConfig
-	public ResponseEntity<?> createOrUpdateUser(@Valid @RequestBody User user, BindingResult result){//@valid for get better response view
+	public ResponseEntity<?> createOrUpdateUser(@Valid @RequestBody User user, BindingResult result){
 	
 		userValidator.validate(user, result);
 		
@@ -77,7 +77,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/addAddress/{user_id}")	
-	public ResponseEntity<?> addAddress(@Valid @RequestBody Address address,
+	public ResponseEntity<?> addUserAddress(@Valid @RequestBody Address address,
 			BindingResult result, @PathVariable Long user_id) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;

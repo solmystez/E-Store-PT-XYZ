@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.services;
+package com.demo.lookopediaSinarmas.services.otherService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

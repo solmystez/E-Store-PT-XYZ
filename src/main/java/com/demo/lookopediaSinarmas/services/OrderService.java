@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.CartDetail;
-import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.domain.Cart;
+import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.CartDetailRepository;
+import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
@@ -23,15 +23,15 @@ public class OrderService {
 	UserRepository userRepository;
 	
 	@Autowired
-	CartDetailRepository cartDetailRepository;
+	CartRepository cartDetailRepository;
 	
 	@Autowired 
 	UserService userService;
 	
 	
-	public Order processItem(String order_identifier, Long user_id) {	
+	public Orders processItem(String order_identifier, Long user_id) {	
 		
-		Order order = null;
+		Orders order = null;
 		User user = null;
 		
 		order = orderRepository.findByOrderIdentifier(order_identifier);
@@ -46,7 +46,7 @@ public class OrderService {
 		invSeq++;
 		user.setOrderSequence(invSeq);
 		
-		CartDetail cartDetail = cartDetailRepository.findByOrderIdentifier(order_identifier);
+		Cart cartDetail = cartDetailRepository.findByOrderIdentifier(order_identifier);
 
 		Integer merchantBal = 0;
 
@@ -59,7 +59,7 @@ public class OrderService {
 
 	}
 
-	public List<Order> loadAllInvoiceByUserId(Long user_id) {
+	public List<Orders> loadAllInvoiceByUserId(Long user_id) {
 		return orderRepository.findAllByUserId(user_id);
 	}
 	

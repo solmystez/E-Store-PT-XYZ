@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.services;
+package com.demo.lookopediaSinarmas.services.otherService;
 
 import java.util.HashMap;
 import java.util.Map;

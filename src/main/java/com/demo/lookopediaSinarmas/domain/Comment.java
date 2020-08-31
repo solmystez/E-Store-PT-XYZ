@@ -14,7 +14,7 @@ public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long comment_id;
 	
 	private String comment_message;
 	
@@ -28,12 +28,12 @@ public class Comment {
 	@JsonIgnore
 	private User userComment;
 
-	public Long getId() {
-		return id;
+	public Long getComment_id() {
+		return comment_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setComment_id(Long comment_id) {
+		this.comment_id = comment_id;
 	}
 
 	public String getComment_message() {

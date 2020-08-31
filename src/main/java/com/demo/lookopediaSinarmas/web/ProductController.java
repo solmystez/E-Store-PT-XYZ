@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
+import com.demo.lookopediaSinarmas.services.CategoryService;
+import com.demo.lookopediaSinarmas.services.CommentService;
 import com.demo.lookopediaSinarmas.services.ProductService;
+import com.demo.lookopediaSinarmas.services.RatingService;
+import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
 @RestController
@@ -27,11 +30,20 @@ import com.demo.lookopediaSinarmas.services.ProductService;
 public class ProductController {
 	
 	@Autowired
+	private ProductService productService;
+
+	@Autowired 
+	private CategoryService categoryService;
+	
+	@Autowired
+	private CommentService commentService;
+	
+	@Autowired
+	private RatingService ratingService;
+	
+	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 
-	@Autowired
-	private ProductService productService;
-	
 	@GetMapping("/findProductByCategory/{category_name}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable String category_name){
 		return productService.findProductByCategory(category_name);

@@ -7,7 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.Order;
+import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
@@ -85,14 +85,14 @@ public class UserService {
 			user = userRepository.findById(user_id).get();
 			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
 
-			Set<Order> ord = user.getOrder();
+			Set<Orders> ord = user.getOrder();
 			
 //			System.out.println(inv);
 //			System.out.println(user.getInvoiceNow());
 			
-			Order order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
+			Orders order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
 			if(user.getTrackOrder() == null  || order == null) {
-				order = new Order();
+				order = new Orders();
 				order.setUser(user);
 				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
 								
@@ -107,7 +107,7 @@ public class UserService {
 		}
 	}
 	
-	public Order applyOrderIdentifier(String invoiceNow, Order order) {
+	public Orders applyOrderIdentifier(String invoiceNow, Orders order) {
 		
 //		invoice = invoiceRepository.findByInvoiceNow(invoiceNow);
 //		
@@ -124,7 +124,7 @@ public class UserService {
 		
 		user_address.setUserAddress(user);
 		
-		user_address.setAddress(user_address.getAddress());
+		user_address.setAddress_label(user_address.getAddress_label());
 		
 		return userAddressRepository.save(user_address);
 	}

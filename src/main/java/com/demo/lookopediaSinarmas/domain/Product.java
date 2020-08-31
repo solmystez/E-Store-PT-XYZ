@@ -63,7 +63,7 @@ public class Product {
 	@OneToMany(mappedBy = "product", 
 			cascade = CascadeType.ALL, 
 			orphanRemoval = true)
-	private List<CartDetail> cart_detail = new ArrayList<>();
+	private List<Cart> cart_detail = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "productComment", 
 			cascade = CascadeType.ALL, 
@@ -175,11 +175,11 @@ public class Product {
 		this.comment = comment;
 	}
 
-	public List<CartDetail> getCart_detail() {
+	public List<Cart> getCart_detail() {
 		return cart_detail;
 	}
 
-	public void setCart_detail(List<CartDetail> cart_detail) {
+	public void setCart_detail(List<Cart> cart_detail) {
 		this.cart_detail = cart_detail;
 	}
 

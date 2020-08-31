@@ -21,7 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.services.CustomUserDetailService;
+import com.demo.lookopediaSinarmas.services.otherService.CustomUserDetailService;
 
 
 

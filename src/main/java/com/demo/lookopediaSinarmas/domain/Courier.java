@@ -16,7 +16,7 @@ public class Courier {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long courier_id;
 	
 	private String courierName;
 	private String courierDescription;
@@ -26,13 +26,21 @@ public class Courier {
 			cascade = CascadeType.ALL,
 			mappedBy = "courier")
 	@JsonIgnore
-	private Order order;
+	private Orders order;
 	
-	public Long getId() {
-		return id;
+	public Long getCourier_id() {
+		return courier_id;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	
+	public void setCourier_id(Long courier_id) {
+		this.courier_id = courier_id;
+	}
+	
+	public Orders getOrder() {
+		return order;
+	}
+	public void setOrder(Orders order) {
+		this.order = order;
 	}
 	public String getCourierName() {
 		return courierName;

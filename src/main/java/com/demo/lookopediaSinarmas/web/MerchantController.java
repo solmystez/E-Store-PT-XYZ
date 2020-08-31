@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.services.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.services.MerchantService;
 import com.demo.lookopediaSinarmas.services.ProductService;
+import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
 @RestController

@@ -12,11 +12,11 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class CartDetail {
+public class Cart {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long cart_id;
 	
 //	@ManyToOne(fetch = FetchType.EAGER)
 //    @JoinColumn(name = "cart_id", nullable = true)
@@ -44,7 +44,7 @@ public class CartDetail {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id",nullable = true)
 	@JsonIgnore
-    private Order order;
+    private Orders order;
     
     private Long p_id;
     
@@ -55,9 +55,9 @@ public class CartDetail {
 	private String status;
 	private String orderIdentifier;
 	
-	private CartDetail() {}
+	private Cart() {}
 	
-	public CartDetail(Order order, Product product) {
+	public Cart(Orders order, Product product) {
 		super();
 		this.order = order;
 		this.product = product;
@@ -87,11 +87,11 @@ public class CartDetail {
 		this.status = status;
 	}
 	
-	public Order getOrder() {
+	public Orders getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(Orders order) {
 		this.order = order;
 	}
 
@@ -111,12 +111,12 @@ public class CartDetail {
 		this.quantity = quantity;
 	}
 
-	public Long getId() {
-		return id;
+	public Long getCart_id() {
+		return cart_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCart_id(Long cart_id) {
+		this.cart_id = cart_id;
 	}
 
 	public Integer getTotalToPaid() {

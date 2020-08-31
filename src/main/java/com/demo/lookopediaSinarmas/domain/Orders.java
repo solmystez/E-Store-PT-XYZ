@@ -17,14 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Table;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "orders")
-public class Order {
+public class Orders {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,14 +51,14 @@ public class Order {
 	@OneToMany(mappedBy = "order", 
 			cascade = CascadeType.ALL, 
 			orphanRemoval = true)
-	private List<CartDetail> cart_detail = new ArrayList<>();
+	private List<Cart> cart_detail = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User user;
 	
-	public Order() {}
+	public Orders() {}
 	
 	@PrePersist
 	protected void onCreate() {
@@ -151,11 +150,11 @@ public class Order {
 		this.updated_at = updated_at;
 	}
 
-	public List<CartDetail> getCart_detail() {
+	public List<Cart> getCart_detail() {
 		return cart_detail;
 	}
 
-	public void setCart_detail(List<CartDetail> cart_detail) {
+	public void setCart_detail(List<Cart> cart_detail) {
 		this.cart_detail = cart_detail;
 	}
 

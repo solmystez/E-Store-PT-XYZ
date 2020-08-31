@@ -26,7 +26,7 @@ public class Voucher {
 			cascade = CascadeType.ALL,
 			mappedBy = "voucher")
 	@JsonIgnore
-	private Order order;
+	private Orders order;
 
 	public Long getId() {
 		return id;
@@ -68,11 +68,11 @@ public class Voucher {
 		this.voucherDescription = voucherDescription;
 	}
 
-	public Order getOrder() {
+	public Orders getOrder() {
 		return order;
 	}
 
-	public void setOrder(Order order) {
+	public void setOrder(Orders order) {
 		this.order = order;
 	}
 	

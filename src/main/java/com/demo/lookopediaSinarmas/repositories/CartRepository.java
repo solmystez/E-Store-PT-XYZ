@@ -8,9 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.demo.lookopediaSinarmas.domain.CartDetail;
+import com.demo.lookopediaSinarmas.domain.Cart;
 @Repository
-public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
+public interface CartRepository extends CrudRepository<Cart, Long>{
 	
 	//opsi 1
 	//delete return nya void
@@ -26,18 +26,11 @@ public interface CartDetailRepository extends CrudRepository<CartDetail, Long>{
 	
 	//opsi 2
 
-	
-	
-	
-	CartDetail findByOrderIdentifier(String orderIdentifier);
+	Cart findByOrderIdentifier(String orderIdentifier);
 
-	List<CartDetail> findAllByOrderIdentifier(String invoice_now);
+	List<Cart> findAllByOrderIdentifier(String invoice_now);
 	
-	List<CartDetail> findAllCartDetailsByOrderId(Long id);
-	
-	List<CartDetail> deleteAllByOrderId(Long id);
-	
-	CartDetail findAllById(Long cartDetail_id);
+	List<Cart> deleteAllByOrderId(Long id);
 	
 	
 }

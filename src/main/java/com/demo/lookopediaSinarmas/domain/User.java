@@ -60,10 +60,10 @@ public class User implements UserDetails {
 			cascade = CascadeType.ALL,
 			mappedBy = "user")
 	@JsonIgnore
-	private Set<Order> order = new HashSet<>();
+	private Set<Orders> order = new HashSet<>();
 	
-	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,
+	@OneToOne(fetch = FetchType.EAGER,
+			cascade = CascadeType.REFRESH,
 			mappedBy = "userMerchant")
 	@JsonIgnore
 	private Merchant merchant;
@@ -191,11 +191,11 @@ public class User implements UserDetails {
 		this.updated_At = updated_At;
 	}
 
-	public Set<Order> getOrder() {
+	public Set<Orders> getOrder() {
 		return order;
 	}
 
-	public void setOrder(Set<Order> order) {
+	public void setOrder(Set<Orders> order) {
 		this.order = order;
 	}
 

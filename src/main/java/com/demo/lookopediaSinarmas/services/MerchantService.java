@@ -40,7 +40,7 @@ public class MerchantService {
 		Merchant merchant;
 		
 		try {
-			merchant = merchantRepository.findMerchantById(id);
+			merchant = merchantRepository.findMerchantByUserMerchantId(id);
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User Id '" + id + "' doesn't exist");
 		}

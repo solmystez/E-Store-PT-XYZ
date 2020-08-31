@@ -15,8 +15,8 @@ import com.demo.lookopediaSinarmas.domain.User;
 @Repository
 public interface UserAddressRepository extends CrudRepository<Address, Long> {
 	
-	List<Address> findByAddress(String address);	
-
+//	List<Address> findByUser_Id(Long id);
+	
 //	@Query(value = "select * from Address "
 //			+ "where user_id=:user_id", nativeQuery = true)
 //	Address findAllAddressByUserId(@Param("user_id") Long user_id);
