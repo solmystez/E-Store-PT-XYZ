@@ -50,7 +50,7 @@ public class MerchantController {
 	 }
 	
 	
-	@PostMapping("/createProductToMerchantId/{merchant_id}")
+	@PostMapping("/createProduct/{merchant_id}")
 	public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product, 
 		BindingResult result, @PathVariable Long merchant_id, Principal principal){
 
@@ -59,9 +59,9 @@ public class MerchantController {
 		
 		Product product1 = productService.createProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-	 }
+	}
 	
-	@PostMapping("/updateProductWithMerchantId/{merchant_id}")
+	@PostMapping("/updateProduct/{merchant_id}")
 	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
 		BindingResult result, @PathVariable Long merchant_id, Principal principal){
 
@@ -72,15 +72,15 @@ public class MerchantController {
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	 }
 	
-	@GetMapping("/findMerchantByUserId/{user_id}")
-	public ResponseEntity<?> findMerchant(@PathVariable Long user_id) {
+	@GetMapping("/findMerchant/{user_id}")
+	public ResponseEntity<?> findMerchantByUserId(@PathVariable Long user_id) {
 		
 		Merchant merchant = merchantService.findMerchantByUserId(user_id);
 		
 		return new ResponseEntity<Merchant>(merchant, HttpStatus.OK);
 	}
 	
-	@GetMapping("/findAllProductByMerchantId/{merchant_id}")
+	@GetMapping("/loadMerchantProduct/{merchant_id}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable Long merchant_id){
 		return productService.findAllProductsByMerchantId(merchant_id);
 	}

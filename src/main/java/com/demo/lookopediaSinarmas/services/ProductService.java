@@ -34,12 +34,13 @@ public class ProductService {
 
 	
 	
-	public Product createProduct(Long merchantId, Product product, String merchantName) {
-
-		try {
-		    Merchant merchant = merchantRepository.findById(merchantId).get();
-//		    Merchant merchant1 = merchantRepository.findByMerchantName(merchantName);
-		    
+	public Product createProduct(Long merchant_id, Product product, String merchantName) {
+		
+//		try {
+		    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
+		    if(merchant == null) {
+		    	throw new MerchantNotFoundException("Merchant not found");		    	
+		    }
 		    
 		    product.setMerchant(merchant);
 		    product.setMerchantName(merchant.getMerchantName());
@@ -51,9 +52,9 @@ public class ProductService {
 		    
 				
 			return productRepository.save(product);
-		} catch (Exception e) {
-			throw new MerchantNotFoundException("merchant not found");
-		}
+//		} catch (Exception e) {
+//			throw new MerchantNotFoundException("Merchant not found");
+//		}
 	}
 	
 	
@@ -61,8 +62,8 @@ public class ProductService {
 		//when we trying to update the project that doesn't belong to that user
 		//project != null, find by db id -> null
 
-		if(product.getId() != null) {
-			Product existingProduct = productRepository.findById(product.getId()).get();
+		if(product.getProduct_id() != null) {
+			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
 			
 			if(existingProduct != null && (!existingProduct.getMerchantName().equals(merchantName))) {
 				throw new ProductNotFoundException("Product not found in your merchant");
@@ -85,7 +86,8 @@ public class ProductService {
 
 	}
 	
-
+	//for findProduct
+	//if (!product.getMerchantName.equal(merchant name)) throw new exception
 
 	
 	public Iterable<Product> findAllProducts() {

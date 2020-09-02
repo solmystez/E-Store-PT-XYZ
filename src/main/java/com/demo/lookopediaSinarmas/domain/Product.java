@@ -27,7 +27,7 @@ public class Product {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long product_id;
 
 	@NotBlank(message = "Product Name is required")
 	private String productName;
@@ -110,15 +110,15 @@ public class Product {
 	public void setProductCategory(Category productCategory) {
 		this.productCategory = productCategory;
 	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
+	public Long getProduct_id() {
+		return product_id;
+	}
+
+	public void setProduct_id(Long product_id) {
+		this.product_id = product_id;
+	}
+
 	public String getProductImage() {
 		return productImage;
 	}

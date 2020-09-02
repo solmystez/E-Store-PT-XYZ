@@ -115,7 +115,7 @@ public class CartService {
 				Cart c = it.next();
 				
 				if(c.getOrder().getId().equals(order.getId()) 
-						&&  c.getProduct().getId().equals(product.getId())) {
+						&&  c.getProduct().getProduct_id().equals(product.getProduct_id())) {
 					
 					int stock = product.getProductStock();
 					stock--;
