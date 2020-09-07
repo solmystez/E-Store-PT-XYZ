@@ -46,9 +46,9 @@ public class OrderService {
 		invSeq++;
 		user.setOrderSequence(invSeq);
 		
-		Cart cartDetail = cartDetailRepository.findByOrderIdentifier(order_identifier);
+//		Cart cartDetail = cartDetailRepository.findByOrderIdentifier(order_identifier);
 
-		Integer merchantBal = 0;
+//		Integer merchantBal = 0;
 
 		
 //		merchant.setMerchantBalance(cartDetail.getTotalToPaid());

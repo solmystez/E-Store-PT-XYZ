@@ -129,11 +129,12 @@ public class CartService {
 					//set product nya ke order jg
 //					order.setiProductName(c.getProduct().getProductName());
 					
-					c.setProductName(c.getProduct().getProductName());
 					c.setQuantity(c.getQuantity()+1);
-					c.setTotalToPaid(totalForPaid + c.getProduct().getProductPrice() * c.getQuantity());
-					c.setStatus("Not Paid");
-					c.setP_id(product_id);
+					c.setP_id(product.getProduct_id());
+					c.setP_name(product.getProductName());
+					c.setP_price(product.getProductPrice());
+					c.setP_qty(product.getProductStock());
+					c.setP_description(product.getProductDescription());
 					cartDetailRepository.save(c);
 					flag = 0;
 					tempOrder = c.getOrder();
@@ -147,10 +148,13 @@ public class CartService {
 				currDetail.setOrderIdentifier(user.getTrackOrder());
 				order.setOrderIdentifier(user.getTrackOrder());
 				currDetail.setQuantity(1);
-				currDetail.setTotalToPaid(totalForPaid + product.getProductPrice());
-				currDetail.setProductName(product.getProductName());
 				currDetail.setOrder(order);
 				currDetail.setProduct(product);
+				currDetail.setP_id(product_id);
+				currDetail.setP_name(product.getProductName());
+				currDetail.setP_price(product.getProductPrice());
+				currDetail.setP_qty(product.getProductStock());
+				currDetail.setP_description(product.getProductDescription());
 				cartDetailRepository.save(currDetail);
 
 				// add cart detail ke cart

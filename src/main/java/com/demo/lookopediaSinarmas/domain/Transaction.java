@@ -18,6 +18,12 @@ public class Transaction {
 	
 	private String orderIdentifier;
 
+	private String invoice;
+	
+	@OneToOne
+	@JoinColumn(name = "order_id", updatable = false)
+	@JsonIgnore
+	private Orders order;
 	
 	@OneToOne
 	@JoinColumn(name = "status_id", updatable = false)
@@ -30,6 +36,14 @@ public class Transaction {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(String invoice) {
+		this.invoice = invoice;
 	}
 
 	public String getOrderIdentifier() {

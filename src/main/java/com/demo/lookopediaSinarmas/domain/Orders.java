@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -29,7 +29,11 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "orderIdentifier must be not null")
 	private String orderIdentifier;
+	
+	private Integer total_price;
+	
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -46,6 +50,12 @@ public class Orders {
 	@JoinColumn(name = "voucher_id", updatable = false)
 	@JsonIgnore
 	private Voucher voucher;
+	
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,
+			mappedBy = "order")
+	@JsonIgnore
+	private Transaction transaction;
 	
 	
 	@OneToMany(mappedBy = "order", 
@@ -69,13 +79,37 @@ public class Orders {
 	protected void onUpdate() {
 		this.updated_at = new Date();
 	}
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
+
 	public String getOrderIdentifier() {
 		return orderIdentifier;
 	}
 
 	public void setOrderIdentifier(String orderIdentifier) {
 		this.orderIdentifier = orderIdentifier;
+	}
+	
+	public Integer getTotal_price() {
+		return total_price;
+	}
+
+	public void setTotal_price(Integer total_price) {
+		this.total_price = total_price;
 	}
 
 	public User getUser() {
@@ -86,53 +120,6 @@ public class Orders {
 		this.user = user;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-//	public String getiProductName() {
-//		return iProductName;
-//	}
-//
-//	public void setiProductName(String iProductName) {
-//		this.iProductName = iProductName;
-//	}
-//
-//	public Integer getiProductQuantity() {
-//		return iProductQuantity;
-//	}
-//
-//	public void setiProductQuantity(Integer iProductQuantity) {
-//		this.iProductQuantity = iProductQuantity;
-//	}
-//
-//	public Integer getiProductPrice() {
-//		return iProductPrice;
-//	}
-//
-//	public void setiProductPrice(Integer iProductPrice) {
-//		this.iProductPrice = iProductPrice;
-//	}
-//
-//	public Integer getiTotalPrice() {
-//		return iTotalPrice;
-//	}
-//
-//	public void setiTotalPrice(Integer iTotalPrice) {
-//		this.iTotalPrice = iTotalPrice;
-//	}
-//
-//	public Integer getiGrandTotal() {
-//		return iGrandTotal;
-//	}
-//
-//	public void setiGrandTotal(Integer iGrandTotal) {
-//		this.iGrandTotal = iGrandTotal;
-//	}
 
 	public Date getCreated_at() {
 		return created_at;
@@ -172,9 +159,5 @@ public class Orders {
 
 	public void setVoucher(Voucher voucher) {
 		this.voucher = voucher;
-	}
-
-
-	
-	
+	}	
 }

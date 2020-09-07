@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,25 +16,7 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cart_id;
-	
-//	@ManyToOne(fetch = FetchType.EAGER)
-//    @JoinColumn(name = "cart_id", nullable = true)
-//	@JsonIgnore
-//    private Cart cart;
-	
-//	*ex: cart code 
-//	@ManyToMany
-//	@JoinTable(
-//			name = "cart_detail",
-//			joinColumns = @JoinColumn(name="cart_id"),
-//			inverseJoinColumns = @JoinColumn(name="product_id")
-//			)
-//	private List<Product> cart_product = new ArrayList<>();
 
-	
-//	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
-//	private List<CartDetail> cart_detail = new ArrayList<>();
-	
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = true)
 	@JsonIgnore
@@ -46,14 +27,15 @@ public class Cart {
 	@JsonIgnore
     private Orders order;
     
-    private Long p_id;
-    
 	private Integer quantity = 0;
-	private Integer totalToPaid = 0;
-	private String productName;
 	
-	private String status;
 	private String orderIdentifier;
+	
+	private Long p_id;
+	private int p_qty;
+	private Long p_price;
+	private String p_name;
+	private String p_description;
 	
 	private Cart() {}
 	
@@ -63,13 +45,6 @@ public class Cart {
 		this.product = product;
 	}
 
-	public Long getP_id() {
-		return p_id;
-	}
-
-	public void setP_id(Long p_id) {
-		this.p_id = p_id;
-	}
 
 	public String getOrderIdentifier() {
 		return orderIdentifier;
@@ -79,13 +54,6 @@ public class Cart {
 		this.orderIdentifier = orderIdentifier;
 	}
 
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
 	
 	public Orders getOrder() {
 		return order;
@@ -119,24 +87,47 @@ public class Cart {
 		this.cart_id = cart_id;
 	}
 
-	public Integer getTotalToPaid() {
-		return totalToPaid;
+	public Long getP_id() {
+		return p_id;
 	}
 
-	public void setTotalToPaid(Integer totalToPaid) {
-		this.totalToPaid = totalToPaid;
+	public void setP_id(Long p_id) {
+		this.p_id = p_id;
 	}
 
-	public String getProductName() {
-		return productName;
+	public String getP_name() {
+		return p_name;
 	}
 
-	public void setProductName(String productName) {
-		this.productName = productName;
+	public void setP_name(String p_name) {
+		this.p_name = p_name;
+	}
+
+
+	public Long getP_price() {
+		return p_price;
+	}
+
+	public void setP_price(Long p_price) {
+		this.p_price = p_price;
+	}
+
+	public String getP_description() {
+		return p_description;
+	}
+
+	public void setP_description(String p_description) {
+		this.p_description = p_description;
+	}
+
+	public int getP_qty() {
+		return p_qty;
+	}
+
+	public void setP_qty(int p_qty) {
+		this.p_qty = p_qty;
 	}
 	
 	
-	
-	
-	
+
 }

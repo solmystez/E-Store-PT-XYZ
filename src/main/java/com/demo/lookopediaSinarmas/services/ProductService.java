@@ -36,7 +36,7 @@ public class ProductService {
 	
 	public Product createProduct(Long merchant_id, Product product, String merchantName) {
 		
-//		try {
+		try {
 		    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
 		    if(merchant == null) {
 		    	throw new MerchantNotFoundException("Merchant not found");		    	
@@ -52,9 +52,9 @@ public class ProductService {
 		    
 				
 			return productRepository.save(product);
-//		} catch (Exception e) {
-//			throw new MerchantNotFoundException("Merchant not found");
-//		}
+		} catch (Exception e) {
+			throw new MerchantNotFoundException("Merchant not found");
+		}
 	}
 	
 	

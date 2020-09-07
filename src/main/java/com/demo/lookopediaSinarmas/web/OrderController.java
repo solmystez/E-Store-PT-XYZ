@@ -30,7 +30,7 @@ public class OrderController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@GetMapping("/loadAllOrder/{user_id}")
-	public Iterable<Orders> loadAllInvoiceUser(@PathVariable Long user_id){
+	public Iterable<Orders> loadAllIOrderUser(@PathVariable Long user_id){
 		return orderService.loadAllInvoiceByUserId(user_id);	
 	}
 	
@@ -48,6 +48,4 @@ public class OrderController {
 	}
 	
 
-	
-	
 }
