@@ -36,7 +36,7 @@ public class Product {
 	private String productDescription;
 
 	@Min(value = 0, message = "Price cannot less then 0 !")
-	private Long productPrice;
+	private int productPrice;
 
 	@Min(value = 0, message = "Stock cannot less then 0 !")
 	private int productStock;
@@ -151,11 +151,12 @@ public class Product {
 		this.productDescription = productDescription;
 	}
 
-	public Long getProductPrice() {
+
+	public int getProductPrice() {
 		return productPrice;
 	}
 
-	public void setProductPrice(Long productPrice) {
+	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
 

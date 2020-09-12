@@ -59,4 +59,10 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		CategoryAlreadyExistsResponse exceptionResponse = new CategoryAlreadyExistsResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> productStockLimit(ProductStockLimitException ex, WebRequest request) {
+		ProductStockLimitExceptionResponse exceptionResponse = new ProductStockLimitExceptionResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
 }

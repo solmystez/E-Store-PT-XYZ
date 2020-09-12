@@ -33,7 +33,7 @@ public class Cart {
 	
 	private Long p_id;
 	private int p_qty;
-	private Long p_price;
+	private int p_price;
 	private String p_name;
 	private String p_description;
 	
@@ -45,6 +45,14 @@ public class Cart {
 		this.product = product;
 	}
 
+
+	public int getP_price() {
+		return p_price;
+	}
+
+	public void setP_price(int p_price) {
+		this.p_price = p_price;
+	}
 
 	public String getOrderIdentifier() {
 		return orderIdentifier;
@@ -104,13 +112,7 @@ public class Cart {
 	}
 
 
-	public Long getP_price() {
-		return p_price;
-	}
 
-	public void setP_price(Long p_price) {
-		this.p_price = p_price;
-	}
 
 	public String getP_description() {
 		return p_description;

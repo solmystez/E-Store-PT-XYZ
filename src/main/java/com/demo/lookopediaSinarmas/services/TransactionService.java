@@ -11,7 +11,12 @@ public class TransactionService {
 	@Autowired
 	TransactionRepository transactionRepository;
 	
-	//generate random ident for invoice
-	//check status here
+	//transactionService ini ngatur buat bikin 'paid' 
 	
+	//if transaction status set == paid
+	//-. --stock product in merchant <= terjadi pas bkin orderNumber(orderService), bkn disini
+	//-. send totalPrice to merchant
+	
+	
+	//1. find lg cart yg mana, 
 }

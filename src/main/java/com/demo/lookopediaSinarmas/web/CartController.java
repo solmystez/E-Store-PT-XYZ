@@ -54,7 +54,7 @@ public class CartController {
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Orders invoice1 = cartService.addProductToCartOrAddQty(product_id, user_id, invoice);
+		Orders invoice1 = cartService.subProductInCart(product_id, user_id, invoice);
 		return new ResponseEntity<Orders>(invoice1, HttpStatus.CREATED);
 	}
 	

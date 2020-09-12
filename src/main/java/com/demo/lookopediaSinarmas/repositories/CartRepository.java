@@ -12,11 +12,11 @@ import com.demo.lookopediaSinarmas.domain.Cart;
 @Repository
 public interface CartRepository extends CrudRepository<Cart, Long>{
 	
-	//opsi 1
+
 	//delete return nya void
 	//findall -> pencet delete-> delete service(delete  findall) ->list all di update
 	@Modifying
-	@Query(value = "delete from cart_detail  "
+	@Query(value = "delete from cart  "
 			+ " where order_identifier=:order_identifier "
 			+ " and "
 			+ " product_id=:product_id", nativeQuery = true)
@@ -24,7 +24,8 @@ public interface CartRepository extends CrudRepository<Cart, Long>{
 			@Param("order_identifier") String invoiceIdentifier, 
 			@Param("product_id") Long productId);
 	
-	//opsi 2
+//	@Query(value = "find from cart_detail")
+
 
 	Cart findByOrderIdentifier(String orderIdentifier);
 

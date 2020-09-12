@@ -31,7 +31,7 @@ public class OrderController {
 	
 	@GetMapping("/loadAllOrder/{user_id}")
 	public Iterable<Orders> loadAllIOrderUser(@PathVariable Long user_id){
-		return orderService.loadAllInvoiceByUserId(user_id);	
+		return orderService.loadAllOrderByUserId(user_id);	
 	}
 	
 	@PostMapping("/processItem/{order_identifier}/{user_id}")
