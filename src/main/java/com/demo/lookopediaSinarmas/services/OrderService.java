@@ -45,13 +45,13 @@ public class OrderService {
 		//-. set transaction status 'Not Paid'
 		//-. generate order_number
 		
-		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
-		
+		Orders order = null;
+		order = orderRepository.findByOrderIdentifier(order_identifier);
 		if(order == null) {
 			throw new OrderNotFoundException("order not found");
 		}
 		
-		
+		User user = null;
 		//1. temuin cart yg mana yg mau di proses + product apa aja 
 		//brati findByOrderIdentifier > tampung ke list
 		//=======gmn gw mainin object masing" nya ?
@@ -73,11 +73,10 @@ public class OrderService {
 			merchant.setMerchantBalance(tempPrice);
 		}
 		
-		
 		order.setTotal_price(tempPrice);
+
 			
-		
-		User user = userRepository.findById(order.getUser().getId()).get();
+		user = userRepository.findById(order.getUser().getId()).get();
 	
 		Integer invSeq = 0;
 		if(user.getOrder() != null) invSeq = user.getOrderSequence();
@@ -88,6 +87,7 @@ public class OrderService {
 		userService.applyInvoiceNow(user_id, user);
 
 		return orderRepository.save(order);
+
 	}
 
 	public List<Orders> loadAllOrderByUserId(Long user_id) {

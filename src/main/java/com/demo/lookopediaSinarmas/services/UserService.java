@@ -43,6 +43,15 @@ public class UserService {
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			user.setConfirmPassword("");//for postman result, we don't need another encode
 			
+			
+			if(user.getId() == null) {//create
+				
+			}
+			
+			if(user.getId() != null) {//update
+				//user.setMerchant(merchantRepository.findByUserId(user.getId()));
+			}
+			
 			return userRepository.save(user);
 		} catch (Exception e) {
 			throw new EmailAlreadyExistsException(user.getEmail() + " already exists");

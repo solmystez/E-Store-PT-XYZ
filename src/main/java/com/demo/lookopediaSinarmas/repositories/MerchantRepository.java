@@ -17,7 +17,6 @@ public interface MerchantRepository extends CrudRepository<Merchant, Long>{
 //	Merchant getMerchantByUserId (Long id);
 	
 	Merchant findByMerchantName(String merchantName);
-
 	
 	
 }

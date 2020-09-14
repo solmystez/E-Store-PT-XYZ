@@ -28,8 +28,6 @@ public class Merchant {
 	@Column(unique = true)
 	private String merchantName;
 	
-	private String userName;
-	
 	private Integer merchantBalance = 0;
 
 	private Integer totalProduct = 0;
@@ -99,14 +97,6 @@ public class Merchant {
 
 	public void setProductList(List<Product> productList) {
 		this.productList = productList;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	
