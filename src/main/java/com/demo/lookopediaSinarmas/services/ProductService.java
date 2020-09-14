@@ -1,26 +1,17 @@
 package com.demo.lookopediaSinarmas.services;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
-import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
-import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.CartRepository;
-import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
-import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
 public class ProductService {
@@ -35,7 +26,7 @@ public class ProductService {
 	
 	
 	public Product createProduct(Long merchant_id, Product product, String merchantName) {
-		
+				
 		try {
 		    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
 		    if(merchant == null) {
@@ -59,9 +50,8 @@ public class ProductService {
 	
 	
 	public Product updateProduct(Long merchantId, Product product, String merchantName) {
-		//when we trying to update the project that doesn't belong to that user
-		//project != null, find by db id -> null
-
+	
+		//prevent update product that doesn't belong to this merchant
 		if(product.getProduct_id() != null) {
 			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
 			

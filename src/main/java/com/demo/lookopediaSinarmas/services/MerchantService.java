@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.User;
 import com.demo.lookopediaSinarmas.exceptions.MerchantNameAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -29,13 +30,17 @@ public class MerchantService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-//		if(user == null) throw new UserIdNotFoundException("User not found");
 		
 		try {
 			user.setHasMerchant(true);
 			
 			user.setMerchant(merchant);
 			merchant.setUserMerchant(user);
+			merchant.setUserName(user.getUsername());
+			
+			if(merchant.getId() != null) {
+				merchant.setUserMerchant(userRepository.findById(user_id).get());
+			}
 			
 			return merchantRepository.save(merchant);
 		} catch (Exception e) {

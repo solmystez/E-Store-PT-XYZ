@@ -1,10 +1,19 @@
 package com.demo.lookopediaSinarmas.web;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.domain.Courier;
 import com.demo.lookopediaSinarmas.services.CourierService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
@@ -18,4 +27,19 @@ public class CourierController {
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
+	
+	@PostMapping("/create")
+	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Courier courier, BindingResult result){
+		
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		Courier courier1 = courierService.createOrUpdateCourier(courier);
+		return new ResponseEntity<Courier>(courier1, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/loadAll")
+	public Iterable<Courier> loadAllProduct(){
+		return courierService.getCourierList();
+	}
 }
