@@ -43,8 +43,6 @@ public class Product {
 	
 	private String productImage;
 
-	@NotBlank(message = "Product category name is required !")
-	private String productCategoryName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date created_at;
@@ -87,15 +85,8 @@ public class Product {
 	private Merchant merchant;
 	
 	private String merchantName;
-		
-	public String getProductCategoryName() {
-		return productCategoryName;
-	}
-
-	public void setProductCategoryName(String productCategoryName) {
-		this.productCategoryName = productCategoryName;
-	}
-
+	
+	
 	public String getMerchantName() {
 		return merchantName;
 	}
