@@ -60,9 +60,17 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>42.2.12</version>
+		</dependency>
 		
 		
 		
+		
+		<!-- spring security -->
 		
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
