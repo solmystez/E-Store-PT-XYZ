@@ -1,12 +1,9 @@
 package com.demo.lookopediaSinarmas.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.Category;
-import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.exceptions.CategoryAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
 import com.demo.lookopediaSinarmas.repositories.CategoryRepository;
@@ -30,7 +27,7 @@ public class CategoryService {
 		return categoryRepository.findAll();
 	}
 	
-public void deleteCategoryById(Long category_id) {
+	public void deleteCategoryById(Long category_id) {
 		
 		try {
 			Category category = categoryRepository.findById(category_id).get();

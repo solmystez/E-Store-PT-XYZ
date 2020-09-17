@@ -15,7 +15,7 @@ public class Voucher {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long voucher_id;
 	
 	private String voucherName;
 	private String voucherCode;
@@ -28,12 +28,12 @@ public class Voucher {
 	@JsonIgnore
 	private Orders order;
 
-	public Long getId() {
-		return id;
+	public Long getVoucher_id() {
+		return voucher_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setVoucher_id(Long voucher_id) {
+		this.voucher_id = voucher_id;
 	}
 
 	public String getVoucherName() {

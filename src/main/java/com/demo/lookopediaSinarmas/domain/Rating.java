@@ -53,4 +53,13 @@ public class Rating {
 	public void setProductRating(Product productRating) {
 		this.productRating = productRating;
 	}
+
+	public User getUserRating() {
+		return userRating;
+	}
+
+	public void setUserRating(User userRating) {
+		this.userRating = userRating;
+	}
+	
 }

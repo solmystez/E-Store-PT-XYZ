@@ -10,16 +10,16 @@ public class Image {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long image_id;
 	
 	private String imageName;
 
-	public Long getId() {
-		return id;
+	public Long getImage_id() {
+		return image_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setImage_id(Long image_id) {
+		this.image_id = image_id;
 	}
 
 	public String getImageName() {

@@ -6,8 +6,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -18,9 +18,12 @@ public class Courier {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long courier_id;
 	
+	@NotBlank(message = "Courier Name is Required")
 	private String courierName;
 	private String courierDescription;
-	private String courierPrice;
+	
+	@NotBlank(message = "Courier price is required")
+	private int courierPrice;
 	
 	@OneToOne(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
@@ -54,10 +57,10 @@ public class Courier {
 	public void setCourierDescription(String courierDescription) {
 		this.courierDescription = courierDescription;
 	}
-	public String getCourierPrice() {
+	public int getCourierPrice() {
 		return courierPrice;
 	}
-	public void setCourierPrice(String courierPrice) {
+	public void setCourierPrice(int courierPrice) {
 		this.courierPrice = courierPrice;
-	}	
+	}
 }

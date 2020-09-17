@@ -14,7 +14,7 @@ public class Transaction {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long transaction_id;
 	
 	private String orderIdentifier;
 
@@ -29,15 +29,23 @@ public class Transaction {
 	@JoinColumn(name = "status_id", updatable = false)
 	@JsonIgnore
 	private Status status;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 	
+	public Long getTransaction_id() {
+		return transaction_id;
+	}
+
+	public void setTransaction_id(Long transaction_id) {
+		this.transaction_id = transaction_id;
+	}
+
+	public Orders getOrder() {
+		return order;
+	}
+
+	public void setOrder(Orders order) {
+		this.order = order;
+	}
+
 	public String getInvoice() {
 		return invoice;
 	}

@@ -15,7 +15,7 @@ public class Status {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long status_id;
 	
 	private String statusType;	
 	
@@ -24,13 +24,13 @@ public class Status {
 			mappedBy = "status")
 	@JsonIgnore
 	private Transaction transaction;
-	
-	public Long getId() {
-		return id;
+
+	public Long getStatus_id() {
+		return status_id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setStatus_id(Long status_id) {
+		this.status_id = status_id;
 	}
 
 	public String getStatusType() {
