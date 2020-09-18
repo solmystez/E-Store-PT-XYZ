@@ -24,9 +24,6 @@ public interface CartRepository extends CrudRepository<Cart, Long>{
 			@Param("order_identifier") String invoiceIdentifier, 
 			@Param("product_id") Long productId);
 	
-//	@Query(value = "find from cart_detail")
-
-
 	Cart findByOrderIdentifier(String orderIdentifier);
 
 	List<Cart> findAllByOrderIdentifier(String invoice_now);

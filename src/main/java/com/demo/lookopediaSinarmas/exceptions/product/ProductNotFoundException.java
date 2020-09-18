@@ -1,12 +1,12 @@
-package com.demo.lookopediaSinarmas.exceptions;
+package com.demo.lookopediaSinarmas.exceptions.product;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
-public class ProductIdException extends RuntimeException{
+public class ProductNotFoundException extends RuntimeException {
 
-	public ProductIdException(String message) {
+	public ProductNotFoundException(String message) {
 		super(message);
 	}
 	

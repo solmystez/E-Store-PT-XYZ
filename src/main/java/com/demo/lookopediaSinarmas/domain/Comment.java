@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,12 +19,12 @@ public class Comment {
 	
 	private String comment_message;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id", updatable = false)
 	@JsonIgnore
 	private Product productComment;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User userComment;

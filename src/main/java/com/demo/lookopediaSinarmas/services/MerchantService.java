@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.MerchantNameAlreadyExistsException;
-import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 

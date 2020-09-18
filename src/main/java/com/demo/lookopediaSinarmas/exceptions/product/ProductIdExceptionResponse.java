@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.exceptions;
+package com.demo.lookopediaSinarmas.exceptions.product;
 
 public class ProductIdExceptionResponse {
 

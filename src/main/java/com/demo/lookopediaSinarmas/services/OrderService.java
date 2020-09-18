@@ -9,7 +9,7 @@ import com.demo.lookopediaSinarmas.domain.Cart;
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;

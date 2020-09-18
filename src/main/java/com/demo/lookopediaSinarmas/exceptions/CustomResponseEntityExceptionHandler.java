@@ -8,6 +8,27 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsResponse;
+import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFountExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsResponse;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsResponse;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundResponse;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductIdExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundExceptionResponse;
+
 @ControllerAdvice
 @RestController
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
@@ -63,6 +84,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler
 	public final ResponseEntity<Object> productStockLimit(ProductStockLimitException ex, WebRequest request) {
 		ProductStockLimitExceptionResponse exceptionResponse = new ProductStockLimitExceptionResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> commentNotFound(CommentNotFoundException ex, WebRequest request) {
+		CommentNotFountExceptionResponse exceptionResponse = new CommentNotFountExceptionResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

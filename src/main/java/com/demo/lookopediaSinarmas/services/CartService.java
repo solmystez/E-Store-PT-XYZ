@@ -12,11 +12,11 @@ import com.demo.lookopediaSinarmas.domain.Cart;
 import com.demo.lookopediaSinarmas.domain.Orders;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.OrderNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.ProductIdException;
-import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.ProductStockLimitException;
-import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
@@ -48,7 +48,6 @@ public class CartService {
 	public List<Cart> getCartDetailByOrderIdentifier(String order_now) {
 		
 		List<Cart> cartDetail = null;
-	
 		cartDetail = cartDetailRepository.findAllByOrderIdentifier(order_now);
 
 		return cartDetail;
@@ -58,11 +57,10 @@ public class CartService {
 	@Transactional
 	public List<Cart> removeProductFromCart(Long product_id, String orderIdentifier) {
 
-		try {
-		    		
+		try { 		
 			cartDetailRepository.deleteCartDetailByOrderIdentifierAndProductId(orderIdentifier, product_id);
 		} catch (Exception e) {
-			System.err.println(e);
+//			System.err.println(e);
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
 		return cartDetailRepository.findAllByOrderIdentifier(orderIdentifier);
@@ -234,7 +232,6 @@ public class CartService {
 			
 		}
 		return tempOrder;
-	
-}
+	}
 	
 }

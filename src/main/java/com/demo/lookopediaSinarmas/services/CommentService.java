@@ -1,13 +1,16 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.domain.Comment;
 import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
-import com.demo.lookopediaSinarmas.exceptions.ProductNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CommentRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -46,4 +49,17 @@ public class CommentService {
 		
 		return commentRepository.save(comment);
 	}
+	
+	public List<Comment> removeCommentFromProduct(Long product_id, Long user_id) {
+	
+//		try {
+//			commentRepository.deleteComment(product_id, user_id);
+//		} catch (Exception e) {
+//			throw new CommentNotFoundException("No Comment found");
+//		}
+//	
+//		return commentRepository.findAllByProductId(product_id);
+		return null;
+	}
+	
 }

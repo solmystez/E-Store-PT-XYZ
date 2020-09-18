@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.exceptions;
+package com.demo.lookopediaSinarmas.exceptions.user;
 
 public class UserIdNotFoundExceptionResponse {
 
