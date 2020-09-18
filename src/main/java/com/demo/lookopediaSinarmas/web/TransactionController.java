@@ -33,15 +33,6 @@ public class TransactionController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/createStatusType")
-	public ResponseEntity<?> processItem(@Valid @RequestBody Status status, BindingResult result) {
 
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if(errorMap != null) return errorMap;
-		
-		Status status1 = transactionService.
-				
-		return new ResponseEntity<Status>(status1, HttpStatus.CREATED);
-	}
 	
 }

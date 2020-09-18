@@ -15,14 +15,14 @@ public interface CommentRepository extends CrudRepository<Comment, Long>{
 
 //	List<Comment> findAllByProductId(Long product_id);
 
-//	@Modifying
-//	@Query(value = "delete from comment "
-//			+ "where product_id:=product_id "
-//			+ "and "
-//			+ "user_id=:user_id", nativeQuery = true)
-//	void deleteCommentByUserIdAndProductId(
-//			@Param("product_id") Long productId,
-//			@Param("user_id") Long userId);
+	@Modifying
+	@Query(value = "delete from comment "
+			+ "where product_id=:product_id "
+			+ "and "
+			+ "user_id=:user_id", nativeQuery = true)
+	void deleteCommentByUserIdAndProductId(
+			@Param("product_id") Long productId,
+			@Param("user_id") Long userId);
 
 //	If you want to provide an object as param, you can do something like this.
 //	@Query("UPDATE Entity E SET E.name = :#{#entity.name}")
