@@ -16,8 +16,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,6 +41,7 @@ public class Product {
 	private int productPrice;
 
 	@Min(value = 0, message = "Stock cannot less then 0 !")
+	@Max(value = 999999, message ="Stock too much")
 	private int productStock;
 	
 	private String productImage;
@@ -86,7 +89,17 @@ public class Product {
 	
 	private String merchantName;
 	
+	@NotBlank(message = "product category must be input")
+	private String productCategoryName;
 	
+	public String getProductCategoryName() {
+		return productCategoryName;
+	}
+
+	public void setProductCategoryName(String productCategoryName) {
+		this.productCategoryName = productCategoryName;
+	}
+
 	public String getMerchantName() {
 		return merchantName;
 	}

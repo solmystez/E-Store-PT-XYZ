@@ -13,8 +13,12 @@ import com.demo.lookopediaSinarmas.domain.Comment;
 @Repository
 public interface CommentRepository extends CrudRepository<Comment, Long>{
 
-//	List<Comment> findAllByProductId(Long product_id);
+//	@Query(value = "Select * From comment c"
+//			+ "where c.product_id=:product_id")
+//	void findAllCommentByProductId(@Param("product_id") Long product_id);
 
+//	List<Comment> findAllByProductid(Long id);
+	
 	@Modifying
 	@Query(value = "delete from comment "
 			+ "where product_id=:product_id "
