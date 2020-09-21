@@ -17,7 +17,7 @@ public interface CommentRepository extends CrudRepository<Comment, Long>{
 //			+ "where c.product_id=:product_id")
 //	void findAllCommentByProductId(@Param("product_id") Long product_id);
 
-//	List<Comment> findAllByProductid(Long id);
+//	List<Comment> findAllByProductId(Long id);
 	
 	@Modifying
 	@Query(value = "delete from comment "

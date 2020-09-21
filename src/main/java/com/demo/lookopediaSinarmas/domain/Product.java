@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -19,7 +21,6 @@ import javax.persistence.PreUpdate;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +45,8 @@ public class Product {
 	@Max(value = 999999, message ="Stock too much")
 	private int productStock;
 	
-	private String productImage;
+	@Lob
+	private byte[] productImage;
 
 	
 	@JsonFormat(pattern = "yyyy-mm-dd") 
@@ -130,14 +132,6 @@ public class Product {
 
 	public void setProduct_id(Long product_id) {
 		this.product_id = product_id;
-	}
-
-	public String getProductImage() {
-		return productImage;
-	}
-
-	public void setProductImage(String productImage) {
-		this.productImage = productImage;
 	}
 
 	public Merchant getMerchant() {
