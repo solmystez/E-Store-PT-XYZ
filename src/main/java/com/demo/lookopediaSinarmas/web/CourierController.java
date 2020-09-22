@@ -31,7 +31,7 @@ public class CourierController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("/create")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Courier courier, BindingResult result){
+	public ResponseEntity<?> createCourier(@Valid @RequestBody Courier courier, BindingResult result){
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
@@ -46,7 +46,7 @@ public class CourierController {
 	}
 	
 	@DeleteMapping("/deleteCourier/{courier_id}")
-	public ResponseEntity<?> deleteProduct(@PathVariable Long courier_id){
+	public ResponseEntity<?> deleteCourier(@PathVariable Long courier_id){
 		
 		courierService.deleteCourierById(courier_id);
 

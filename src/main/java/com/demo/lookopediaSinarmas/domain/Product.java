@@ -18,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -46,9 +48,11 @@ public class Product {
 	private int productStock;
 	
 	@Lob
+//	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
 	private byte[] productImage;
 
-	
+//	@Temporal(TemporalType.TIMESTAMP)
+//	@Column(name = "created_date", nullable = false)
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date created_at;
 	  

@@ -32,7 +32,7 @@ public class CommentController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	@PostMapping("/postComment/{product_id}/{user_id}")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Comment comment, BindingResult result,
+	public ResponseEntity<?> addCommentToProductWithUserId(@Valid @RequestBody Comment comment, BindingResult result,
 				@PathVariable Long product_id, @PathVariable Long user_id){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
@@ -44,7 +44,7 @@ public class CommentController {
 
 	
 	@DeleteMapping("/deleteComment/{product_id}/{user_id}")
-	public ResponseEntity<?> deleteProductFromCart(@PathVariable Long user_id,
+	public ResponseEntity<?> deleteCommentFromProductWithUserId(@PathVariable Long user_id,
 			@PathVariable Long product_id) {
 	List<Comment> comment1 = commentService.removeCommentFromProduct(product_id, user_id);
 	
