@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,7 +23,7 @@ public class Courier {
 	private String courierName;
 	private String courierDescription;
 	
-	@NotBlank(message = "Courier price is required")
+	@Min(value = 0, message = "Courier price cannot less then 0 !")
 	private int courierPrice;
 	
 	@OneToOne(fetch = FetchType.LAZY,

@@ -64,7 +64,7 @@ public class MerchantController {
 	@PostMapping("/updateProduct/{merchant_id}")
 	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
 		BindingResult result, @PathVariable Long merchant_id, Principal principal){
-
+		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
@@ -85,4 +85,45 @@ public class MerchantController {
 		return productService.findAllProductsByMerchantId(merchant_id);
 	}
 
+	
+	//another image code example
+//	@PostMapping("/createProduct/{merchant_id}")
+//	public ResponseEntity<?> createNewProduct(@Valid @RequestBody Product product, 
+//		BindingResult result, @PathVariable Long merchant_id, @RequestParam("file") MultipartFile file,
+//		Principal principal,  HttpServletRequest request){
+//
+//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+//		if(mapError != null) return mapError;
+//		
+//		try {
+//			String fileName = file.getOriginalFilename();
+//			String path = request.getServletContext().getRealPath("") 
+//					+ UPLOAD_DIR + File.separator + fileName;
+//			
+//			saveFile(file.getInputStream(), path);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		Product product1 = productService.createProduct(merchant_id, product, principal.getName(), file);
+//		
+//		
+//		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
+//	}
+//	
+//	private void saveFile(InputStream inputStream, String path) {
+//		try {
+//			OutputStream outputStream = new FileOutputStream(new File(path));
+//			int read = 0;
+//			byte[] bytes = new byte[1024];
+//			while((read = inputStream.read(bytes)) != -1) {
+//				outputStream.write(bytes, 0, read);
+//			}
+//			outputStream.flush();
+//			outputStream.close();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }

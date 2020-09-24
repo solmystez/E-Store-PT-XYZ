@@ -16,6 +16,8 @@ public class LookopediaSinarmasApplication {
 	}
 	
 	public static void main(String[] args) {
+		//create folder "upload" at startup if not created
+//		new File()
 		SpringApplication.run(LookopediaSinarmasApplication.class, args);
 	}
 

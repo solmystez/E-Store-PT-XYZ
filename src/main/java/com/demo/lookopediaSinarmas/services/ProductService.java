@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.demo.lookopediaSinarmas.domain.Merchant;
 import com.demo.lookopediaSinarmas.domain.Product;
@@ -22,11 +23,8 @@ public class ProductService {
 	@Autowired
 	MerchantRepository merchantRepository;
 
-
-	
-	
 	public Product createProduct(Long merchant_id, Product product, String merchantName) {
-				
+
 		try {
 		    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
 		    if(merchant == null) {
