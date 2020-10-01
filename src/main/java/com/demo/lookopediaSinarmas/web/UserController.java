@@ -2,15 +2,27 @@ package com.demo.lookopediaSinarmas.web;
 
 import static com.demo.lookopediaSinarmas.security.SecurityConstants.TOKEN_PREFIX;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.nio.file.Paths;
+import java.util.Base64;
+
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +30,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.Orders;
-import com.demo.lookopediaSinarmas.domain.Product;
 import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;
 import com.demo.lookopediaSinarmas.payload.LoginRequest;
+import com.demo.lookopediaSinarmas.repositories.UserRepository;
 import com.demo.lookopediaSinarmas.security.JwtTokenProvider;
+import com.demo.lookopediaSinarmas.services.ImageService;
 import com.demo.lookopediaSinarmas.services.UserService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.validator.UserValidator;
@@ -36,6 +52,12 @@ import com.demo.lookopediaSinarmas.validator.UserValidator;
 @RequestMapping("/api/user")
 public class UserController {
 
+	private static Logger log = LoggerFactory.getLogger(UserController.class);
+	public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
+	
+	@Autowired
+	UserRepository userRepository;
+	
 	@Autowired
 	private UserService userService;
 	
@@ -46,7 +68,13 @@ public class UserController {
 	private UserValidator userValidator;
 	
 	@Autowired
+	ImageService imageService;
+	
+	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	
+	@Autowired//comes up with spring security
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	AuthenticationManager authenticationManager;//process authentication request
@@ -62,7 +90,7 @@ public class UserController {
 		if(mapError != null) return mapError;
 		
 		User user1 = userService.saveOrUpdateUser(user);
-		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
+		return new ResponseEntity<User>(user1,HttpStatus.CREATED);
 	}
 	
 	@PostMapping("/trackOrder/{user_id}")	//next postMapping kena effect jwt filter after /login
@@ -87,17 +115,16 @@ public class UserController {
 		return new ResponseEntity<Address>(address1, HttpStatus.CREATED);
 	}
 	
-	
-//	@PostMapping("/checkInvoiceIdentifier/{user_invoiceNow}")	//next postMapping kena effect jwt filter after /login
-//	public ResponseEntity<?> applyInvoiceIdentifier(@Valid @RequestBody Invoice invoice,
-//			BindingResult result, @PathVariable String user_invoiceNow) {
-//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-//		if(errorMap != null) return errorMap;
-//		//belom di block validate jwt filter
-//		Invoice invoice1 = userService.applyInvoiceIdentifier(user_invoiceNow, invoice);
-//				
-//		return new ResponseEntity<Invoice>(invoice1, HttpStatus.CREATED);
-//	}
+	@PostMapping("/saveProfilePicture/{user_id}")
+	public ResponseEntity<?> saveProfilePicture(@PathVariable Long user_id,
+			BindingResult result, @RequestParam("profilePicture") MultipartFile file) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		//belom di block validate jwt filter
+		User user1 = userService.saveProfilePicture(user_id, file);
+				
+		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
+	}
 	
 	//2. find user 
 	@GetMapping("/getUserInfo/{user_id}")
@@ -135,4 +162,6 @@ public class UserController {
 		return ResponseEntity.ok(new JWTLoginSuccessResponse(true, jwt));
 	}
 	
+	
+
 }

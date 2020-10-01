@@ -105,6 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 			.antMatchers("/api/product/loadAllProductOnCatalog").permitAll()
 			.antMatchers("/swagger-ui.html").permitAll()
 			.antMatchers("/api/product/findProduct/{product_id}").permitAll()
+			.antMatchers("/api/image/**").permitAll()
 			.antMatchers(H2_URL).permitAll()
 			.anyRequest().authenticated(); //this say, anything other that, need to be authenticated
 	

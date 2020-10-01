@@ -1,10 +1,18 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.demo.lookopediaSinarmas.domain.Address;
 import com.demo.lookopediaSinarmas.domain.Orders;
@@ -36,12 +44,27 @@ public class UserService {
 	
 	public User saveOrUpdateUser(User user) {
 		try {
-			//1. Username has to be unique(custom exception)
+//			HttpHeaders headers = new HttpHeaders();
 			
+			//save file locally
+			
+//			String fileName = file.getOriginalFilename();
+//			String filePath = Paths.get(upload)
+//			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
+//			stream.write(file.getBytes());
+//			stream.close();
+			
+			
+			
+			
+			
+			
+			
+			//1. Username has to be unique(custom exception)
 			//2. make sure password and confirmPassword match
 			//we don't persist or show the confirmPassword
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-			user.setConfirmPassword("");//for postman result, we don't need another encode
+			user.setConfirmPassword("");//for postman result, we don't need another encode			
 			
 			return userRepository.save(user);
 		} catch (Exception e) {
@@ -118,5 +141,31 @@ public class UserService {
 		user_address.setAddress_label(user_address.getAddress_label());
 		
 		return userAddressRepository.save(user_address);
+	}
+
+
+	public User saveProfilePicture(Long user_id, MultipartFile file) {
+		
+		User user = userRepository.findById(user_id).get();
+		
+		String fileName = file.getOriginalFilename();
+		
+		if(!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream stream = 
+						new BufferedOutputStream(new FileOutputStream(new File("uploaded")));
+				stream.write(bytes);
+                stream.close();
+                
+                user.setProfilePicture(bytes);
+                
+                return userRepository.save(user);
+			} catch (Exception e) {
+				throw new UserIdNotFoundException("failed to upload");
+			}
+		}
+		
+		return null;
 	}
 }

@@ -1,5 +1,9 @@
 package com.demo.lookopediaSinarmas.repositories;
 
+import javax.transaction.Transactional;
+
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,4 +18,9 @@ public interface UserRepository extends CrudRepository<User, Long>{
 	User findByEmail(String email);//uniq
 	User getById(Long id);
 	Orders findByTrackOrder(String orderIdentifier);
+	
+//	@Transactional
+//	@Modifying
+//	@Query("delete from User u where u.id = like ?1 and profileFilePicture like ?2")
+//	public void deleteUserWithFile(Long id, String fileName);
 }

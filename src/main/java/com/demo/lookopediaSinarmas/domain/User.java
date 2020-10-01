@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
@@ -49,6 +50,13 @@ public class User implements UserDetails {
 	
 	@Transient //for match with pw, before persist, once persist not persist anymore
 	private String confirmPassword;
+	
+	@Lob
+	@Column(name = "profilePicture", length = Integer.MAX_VALUE, nullable = true)
+	private byte[] profilePicture;
+	
+//	@NotBlank(message = "profile picture cannot blank")
+	private String profileFilePicture;
 	
 	private boolean hasMerchant;
 	
@@ -104,9 +112,24 @@ public class User implements UserDetails {
 //		this.setInvoice(invoices);
 //	}
 	
-
 	public Long getId() {
 		return id;
+	}
+
+	public byte[] getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(byte[] profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public String getProfileFilePicture() {
+		return profileFilePicture;
+	}
+
+	public void setProfileFilePicture(String profileFilePicture) {
+		this.profileFilePicture = profileFilePicture;
 	}
 
 	public List<Comment> getComment() {

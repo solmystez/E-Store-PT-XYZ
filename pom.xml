@@ -15,7 +15,7 @@
 	<description>Project 1 Lookopedia</description>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>9</java.version>
 	</properties>
 
 	<dependencies>
@@ -29,6 +29,7 @@
 		    <scope>runtime</scope>
 		    <version>1.4.199</version>
 		</dependency>
+
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
