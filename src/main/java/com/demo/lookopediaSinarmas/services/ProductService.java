@@ -1,12 +1,5 @@
 package com.demo.lookopediaSinarmas.services;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.nio.file.Paths;
-import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +16,6 @@ import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 
 @Service
 public class ProductService {
-	
-	public static String uploadDirectory = System.getProperty("user.dir") + "/uploads";
-
 
 	@Autowired
 	ProductRepository productRepository;
@@ -36,11 +26,10 @@ public class ProductService {
 	public Product createProduct(Long merchant_id, Product product, String merchantName) {
 
 		try {
-		    Merchant merchant = merchantRepository.findMerchantByUserMerchantUsername(merchantName);
-		    
-		    //here the progress logic i made it now from some website tutorial
-//		    String upImg = uploadImage(product.getProductImagePicture());
-//		    product.setProductImagePicture(upImg);
+		    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
+		    if(merchant == null) {
+		    	throw new MerchantNotFoundException("Merchant not found");		    	
+		    }
 		    
 		    product.setMerchant(merchant);
 		    product.setMerchantName(merchant.getMerchantName());
@@ -49,7 +38,8 @@ public class ProductService {
 		    Integer totalProduct = merchant.getTotalProduct();
 		    totalProduct++;		    
 		    merchant.setTotalProduct(totalProduct);
-		    		
+		    
+				
 			return productRepository.save(product);
 		} catch (Exception e) {
 			throw new MerchantNotFoundException("Merchant not found");
@@ -119,40 +109,11 @@ public class ProductService {
 		
 		try {
 			Product product = productRepository.findById(product_id).get();
-			productRepository.delete(product);	
+			 productRepository.delete(product);	
 		} catch (Exception e) {
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
 	}
 	
-	
-	//upload image to base64 string
-	private String uploadImage(String imageVal) throws Exception {
-		
-			byte[] decodedBytes = Base64.getDecoder().decode(imageVal);
-			String decodedString = new String(decodedBytes);
-			
-			
-//			FileInputStream imageStream = new FileInputStream(imageVal);
-//			byte[] imageByte = imageStream.readAllBytes();
-//			String imageString = Base64.getEncoder().encodeToString(imageByte);
-			
-//			byte[] imageByte2 = org.apache.tomcat.util.codec.binary.Base64.decodeBase64(imageVal);
-	
-			//save file local
-			String filePath = Paths.get(uploadDirectory).toString();
-			FileWriter fileWriter = new FileWriter(filePath);
-			fileWriter.write(decodedString);
-			fileWriter.close();
-//			imageStream.close();
-			
-//			new FileOutputStream(filePath).write(decodedString);
-			
-//			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(filePath)));
-//			stream.write(filePath.getBytes());
-//			stream.close();
-//			
-			return decodedString;
-	}
 	
 }

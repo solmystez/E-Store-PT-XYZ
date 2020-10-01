@@ -20,7 +20,6 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -52,10 +51,6 @@ public class Product {
 	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
 	private byte[] productImage;
 
-//	@Transient
-	@Column(length = 3000) 
-	private String productImagePicture;
-	
 //	@Temporal(TemporalType.TIMESTAMP)
 //	@Column(name = "created_date", nullable = false)
 	@JsonFormat(pattern = "yyyy-mm-dd") 
@@ -103,15 +98,6 @@ public class Product {
 	@NotBlank(message = "product category must be input")
 	private String productCategoryName;
 	
-	
-	public String getProductImagePicture() {
-		return productImagePicture;
-	}
-
-	public void setProductImagePicture(String productImagePicture) {
-		this.productImagePicture = productImagePicture;
-	}
-
 	public String getProductCategoryName() {
 		return productCategoryName;
 	}
