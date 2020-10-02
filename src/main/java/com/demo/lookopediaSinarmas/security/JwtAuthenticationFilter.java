@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.services.otherService.CustomUserDetailService;
 
 

@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.web;
+package com.demo.lookopediaSinarmas.controller;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
-import com.demo.lookopediaSinarmas.domain.Orders;
+import com.demo.lookopediaSinarmas.entity.Cart;
+import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.services.CartService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 

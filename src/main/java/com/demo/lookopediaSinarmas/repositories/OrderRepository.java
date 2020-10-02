@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.demo.lookopediaSinarmas.domain.Orders;
+import com.demo.lookopediaSinarmas.entity.Orders;
 
 @Repository
 public interface OrderRepository extends CrudRepository<Orders, Long>{

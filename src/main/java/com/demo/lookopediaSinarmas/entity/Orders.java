@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.domain;
+package com.demo.lookopediaSinarmas.entity;
 
 import java.util.ArrayList;
 import java.util.Date;

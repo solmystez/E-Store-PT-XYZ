@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
-import com.demo.lookopediaSinarmas.domain.Merchant;
-import com.demo.lookopediaSinarmas.domain.Orders;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Cart;
+import com.demo.lookopediaSinarmas.entity.Merchant;
+import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;

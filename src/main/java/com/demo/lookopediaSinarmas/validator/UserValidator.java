@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.User;
 
 @Component
 public class UserValidator implements Validator{

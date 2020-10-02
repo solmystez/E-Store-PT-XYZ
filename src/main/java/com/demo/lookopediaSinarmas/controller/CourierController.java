@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.web;
+package com.demo.lookopediaSinarmas.controller;
 
 import javax.validation.Valid;
 
@@ -15,41 +15,41 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Category;
-import com.demo.lookopediaSinarmas.services.CategoryService;
+import com.demo.lookopediaSinarmas.entity.Courier;
+import com.demo.lookopediaSinarmas.services.CourierService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/category")
-public class CategoryController {
-
-	@Autowired 
-	private CategoryService categoryService;
+@RequestMapping("/api/courier")
+public class CourierController {
+	
+	@Autowired
+	private CourierService courierService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/saveCategory")
-	public ResponseEntity<?> saveCategoryData(@Valid @RequestBody Category category, BindingResult result){
+	@PostMapping("/create")
+	public ResponseEntity<?> createCourier(@Valid @RequestBody Courier courier, BindingResult result){
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Category category1 = categoryService.saveCategory(category);
-		return new ResponseEntity<Category>(category1, HttpStatus.CREATED);
+		Courier courier1 = courierService.createOrUpdateCourier(courier);
+		return new ResponseEntity<Courier>(courier1, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/loadCategory")
-	public Iterable<Category> loadAllCategory(){
-		return categoryService.loadAllCategoryList();
+	@GetMapping("/loadAll")
+	public Iterable<Courier> loadAllProduct(){
+		return courierService.getCourierList();
 	}
 	
-	@DeleteMapping("/deleteCategory/{category_id}")
-	public ResponseEntity<?> deleteProduct(@PathVariable Long category_id){
+	@DeleteMapping("/deleteCourier/{courier_id}")
+	public ResponseEntity<?> deleteCourier(@PathVariable Long courier_id){
 		
-		categoryService.deleteCategoryById(category_id);
+		courierService.deleteCourierById(courier_id);
 
-		return new ResponseEntity<String>("Category ID '" + category_id  + "' was successfully deleted", HttpStatus.OK);
+		return new ResponseEntity<String>("Courier ID '" + courier_id  + "' was successfully deleted", HttpStatus.OK);
 	}
 }

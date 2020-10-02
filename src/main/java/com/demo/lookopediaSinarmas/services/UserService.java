@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.Orders;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Address;
+import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;

@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.domain;
+package com.demo.lookopediaSinarmas.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -54,6 +54,11 @@ public class User implements UserDetails {
 	
 	private String trackOrder;
 	private Integer orderSequence = 1;
+	
+	
+	private String fileName;
+	private String filePath;
+	private String fileSize;	
 	
 	private Date created_At;
 	private Date updated_At;
@@ -159,6 +164,30 @@ public class User implements UserDetails {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
 	}
 
 	public String getPassword() {

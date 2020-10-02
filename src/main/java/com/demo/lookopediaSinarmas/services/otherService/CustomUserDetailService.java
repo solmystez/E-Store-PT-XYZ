@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service

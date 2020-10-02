@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.domain;
+package com.demo.lookopediaSinarmas.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +51,13 @@ public class Product {
 	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
 	private byte[] productImage;
 
+	
+	private String fileName;
+	private String filePath;
+	private String fileType;
+	private String fileSize;
+	
+	
 //	@Temporal(TemporalType.TIMESTAMP)
 //	@Column(name = "created_date", nullable = false)
 	@JsonFormat(pattern = "yyyy-mm-dd") 
@@ -112,6 +119,38 @@ public class Product {
 
 	public void setProductImage(byte[] productImage) {
 		this.productImage = productImage;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 
 	public String getMerchantName() {

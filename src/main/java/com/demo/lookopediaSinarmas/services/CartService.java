@@ -8,10 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Cart;
-import com.demo.lookopediaSinarmas.domain.Orders;
-import com.demo.lookopediaSinarmas.domain.Product;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Cart;
+import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;

@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.web;
+package com.demo.lookopediaSinarmas.controller;
 
 import static com.demo.lookopediaSinarmas.security.SecurityConstants.TOKEN_PREFIX;
 
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.Orders;
-import com.demo.lookopediaSinarmas.domain.Product;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Address;
+import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.payload.JWTLoginSuccessResponse;
 import com.demo.lookopediaSinarmas.payload.LoginRequest;
 import com.demo.lookopediaSinarmas.security.JwtTokenProvider;

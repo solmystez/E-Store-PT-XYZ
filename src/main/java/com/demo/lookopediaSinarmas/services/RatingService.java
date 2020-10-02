@@ -3,10 +3,10 @@ package com.demo.lookopediaSinarmas.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Comment;
-import com.demo.lookopediaSinarmas.domain.Product;
-import com.demo.lookopediaSinarmas.domain.Rating;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Comment;
+import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.entity.Rating;
+import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;

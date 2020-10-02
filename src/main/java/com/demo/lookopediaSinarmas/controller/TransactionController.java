@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.web;
+package com.demo.lookopediaSinarmas.controller;
 
 import javax.validation.Valid;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.domain.Status;
-import com.demo.lookopediaSinarmas.domain.Transaction;
+import com.demo.lookopediaSinarmas.entity.Status;
+import com.demo.lookopediaSinarmas.entity.Transaction;
 import com.demo.lookopediaSinarmas.services.StatusService;
 import com.demo.lookopediaSinarmas.services.TransactionService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;

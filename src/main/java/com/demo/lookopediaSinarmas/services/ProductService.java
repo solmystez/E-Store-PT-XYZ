@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.demo.lookopediaSinarmas.domain.Merchant;
-import com.demo.lookopediaSinarmas.domain.Product;
+import com.demo.lookopediaSinarmas.entity.Merchant;
+import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;

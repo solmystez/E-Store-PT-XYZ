@@ -1,11 +1,11 @@
-package com.demo.lookopediaSinarmas.web;
+package com.demo.lookopediaSinarmas.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.services.ImageService;
+import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
@@ -14,7 +14,7 @@ import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorServi
 public class ImageController {
 	
 	@Autowired
-	private ImageService imageService;
+	private ImageStorageService imageService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;

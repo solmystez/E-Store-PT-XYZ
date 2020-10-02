@@ -9,8 +9,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.demo.lookopediaSinarmas.domain.Address;
-import com.demo.lookopediaSinarmas.domain.User;
+import com.demo.lookopediaSinarmas.entity.Address;
+import com.demo.lookopediaSinarmas.entity.User;
 
 @Repository
 public interface UserAddressRepository extends CrudRepository<Address, Long> {

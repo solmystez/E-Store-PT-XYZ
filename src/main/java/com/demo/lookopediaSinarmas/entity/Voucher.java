@@ -1,4 +1,4 @@
-package com.demo.lookopediaSinarmas.domain;
+package com.demo.lookopediaSinarmas.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

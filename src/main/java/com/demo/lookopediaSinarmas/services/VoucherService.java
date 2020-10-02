@@ -3,7 +3,7 @@ package com.demo.lookopediaSinarmas.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.domain.Voucher;
+import com.demo.lookopediaSinarmas.entity.Voucher;
 import com.demo.lookopediaSinarmas.repositories.VoucherRepository;
 
 @Service
