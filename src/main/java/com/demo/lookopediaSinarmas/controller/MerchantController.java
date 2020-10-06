@@ -74,7 +74,7 @@ public class MerchantController {
 	 }
 	
 	
-	@PutMapping("/createProduct/{merchant_id}")
+	@PostMapping("/createProduct/{merchant_id}")
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
 		BindingResult result, Principal principal, @PathVariable Long merchant_id,
 		@RequestParam("file") MultipartFile file,
