@@ -24,12 +24,13 @@ public class ImageStorageService {
 	//handle image for profile, product, merchant
 	
 	
-	private final Path fileStorageLocation;
+	private Path fileStorageLocation = Paths.get("uploads");
 	
 	@Autowired
 	public ImageStorageService(ImageStorageProperties imageStorageProperties) {
-		this.fileStorageLocation = Paths.get(imageStorageProperties.getUploadDir()).toAbsolutePath();
-	
+//		this.fileStorageLocation = Paths.get(imageStorageProperties.getUploadDir()).toAbsolutePath();
+		this.fileStorageLocation = fileStorageLocation.toAbsolutePath();
+		
 		try {
 			Files.createDirectories(this.fileStorageLocation);
 		} catch (Exception e) {

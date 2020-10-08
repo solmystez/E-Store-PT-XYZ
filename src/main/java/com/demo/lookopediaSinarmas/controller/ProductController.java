@@ -1,6 +1,10 @@
 package com.demo.lookopediaSinarmas.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -61,8 +65,24 @@ public class ProductController {
 		
 		return ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType(contentType))
+//			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
 				.body(resource);
 	}
+	
+//	public Stream<Path> loadAll(){
+//		try {
+//	      return Files.walk(this.root, 1).filter(path -> !path.equals(this.root)).map(this.root::relativize);
+//	    } catch (IOException e) {
+//	      throw new RuntimeException("Could not load the files!");
+//	    }
+//	}
+//	
+//	@GetMapping("/loadAllProductMv")
+//	public ResponseEntity<List<Product>> loadAllProductsMultipartVer(){
+//		List<Product> allProduct = 
+//		
+//		return productService.findAllProducts();
+//	}
 	
 	@GetMapping("/loadAllProductOnCatalog")
 	public Iterable<Product> loadAllProduct(){
