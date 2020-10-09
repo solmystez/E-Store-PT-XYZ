@@ -111,7 +111,7 @@ public class MerchantController {
 		product.setProductCategory(product.getProductCategory());
 		
 		product.setFileName(productFileName);
-		product.setFilePath(productFilePath);
+		product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
 		product.setFileType(productFileType);
 		product.setFileSize(productFileSize);
 		
