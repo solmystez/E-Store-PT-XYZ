@@ -77,8 +77,8 @@ public class MerchantController {
 	@PostMapping("/createProduct/{merchant_id}")
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
 		BindingResult result, Principal principal, @PathVariable Long merchant_id,
-		@RequestParam("file") MultipartFile file,
-		@RequestParam("name") final String name){
+//		@RequestParam("name") final String name, //tambahin nnti principal validation
+		@RequestParam("file") MultipartFile file){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
@@ -101,8 +101,14 @@ public class MerchantController {
 		long size = file.getSize();
 		String productFileSize = String.valueOf(size);
 		
+		product.setProductName(product.getProductName());
+		product.setProductDescription(product.getProductDescription());
+		product.setProductCategoryName(product.getProductCategoryName());
+		product.setProductPrice(product.getProductPrice());
+		product.setProductStock(product.getProductStock());
+		
 		product.setMerchant(merchant);
-		product.setProductName(name);
+		product.setProductCategory(product.getProductCategory());
 		
 		product.setFileName(productFileName);
 		product.setFilePath(productFilePath);
