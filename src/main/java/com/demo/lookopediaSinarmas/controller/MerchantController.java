@@ -91,7 +91,7 @@ public class MerchantController {
 		
 		String fileName = imageStorageService.storeFile(file);
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/files")
+//				.path("/api/merchant")
 				.path(fileName)
 				.toUriString();
 		

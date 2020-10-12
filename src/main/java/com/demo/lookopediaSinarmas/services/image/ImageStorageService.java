@@ -28,8 +28,8 @@ public class ImageStorageService {
 	
 	@Autowired
 	public ImageStorageService(ImageStorageProperties imageStorageProperties) {
-//		this.fileStorageLocation = Paths.get(imageStorageProperties.getUploadDir()).toAbsolutePath();
-		this.fileStorageLocation = fileStorageLocation.toAbsolutePath();
+		this.fileStorageLocation = Paths.get(imageStorageProperties.getUploadDir()).toAbsolutePath();
+//		this.fileStorageLocation = fileStorageLocation.toAbsolutePath();
 		
 		try {
 			Files.createDirectories(this.fileStorageLocation);
@@ -42,6 +42,14 @@ public class ImageStorageService {
 	public String storeFile(MultipartFile file) {
 		
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+		
+//		if(Files.exists(fileStorageLocation)) {
+//			try {
+//				Files.createDirectories(fileStorageLocation);
+//			}catch(Exception e){
+//				e.printStackTrace();
+//			}
+//		}
 		
 		try {
 			Path targetLocation = this.fileStorageLocation.resolve(fileName);
@@ -70,5 +78,11 @@ public class ImageStorageService {
 		}
 		
 	}
+	 
 	
+//	public  byte[] getImageWithMediaType(String imageName) throws IOException {
+//        Path destination =   Paths.get(storageDirectoryPath+"\\"+imageName);// retrieve the image by its name
+//        
+//        return IOUtils.toByteArray(destination.toUri());
+//    }
 }
