@@ -25,7 +25,7 @@ import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 
-@CrossOrigin
+@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -41,7 +41,10 @@ public class ProductController {
 		return productService.findProductByCategory(category_name);
 	}
 	
-	@GetMapping("/findProduct/{product_id:.+}")
+	@GetMapping(value = "/findProduct/{product_id:.+}",
+			produces = {MediaType.IMAGE_JPEG_VALUE,
+					MediaType.IMAGE_GIF_VALUE,
+					MediaType.IMAGE_PNG_VALUE})
 	public ResponseEntity<Resource> findSpecificProduct(@PathVariable Long product_id
 			, HttpServletRequest request) {
 		
