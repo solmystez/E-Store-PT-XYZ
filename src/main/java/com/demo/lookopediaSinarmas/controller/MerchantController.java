@@ -36,7 +36,7 @@ import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/merchant")
 public class MerchantController {

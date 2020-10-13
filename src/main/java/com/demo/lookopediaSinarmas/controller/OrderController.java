@@ -18,7 +18,7 @@ import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.services.OrderService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {

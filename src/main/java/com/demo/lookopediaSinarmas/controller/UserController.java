@@ -31,7 +31,7 @@ import com.demo.lookopediaSinarmas.services.UserService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 import com.demo.lookopediaSinarmas.validator.UserValidator;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/user")
 public class UserController {

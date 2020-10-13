@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/image")
 public class ImageController {

@@ -19,7 +19,7 @@ import com.demo.lookopediaSinarmas.services.StatusService;
 import com.demo.lookopediaSinarmas.services.TransactionService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/transaction")
 public class TransactionController {

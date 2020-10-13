@@ -19,7 +19,7 @@ import com.demo.lookopediaSinarmas.entity.Courier;
 import com.demo.lookopediaSinarmas.services.CourierService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/courier")
 public class CourierController {

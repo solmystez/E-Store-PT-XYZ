@@ -19,7 +19,7 @@ import com.demo.lookopediaSinarmas.entity.Category;
 import com.demo.lookopediaSinarmas.services.CategoryService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {

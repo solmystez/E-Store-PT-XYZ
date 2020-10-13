@@ -21,7 +21,7 @@ import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
