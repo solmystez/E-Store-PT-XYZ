@@ -41,12 +41,44 @@ public class ProductController {
 		return productService.findProductByCategory(category_name);
 	}
 	
-	@GetMapping(value = "/findProduct/{product_id:.+}",
+	@GetMapping(value = "/loadImageProduct/{filename:.+}",
 			produces = {MediaType.IMAGE_JPEG_VALUE,
 					MediaType.IMAGE_GIF_VALUE,
 					MediaType.IMAGE_PNG_VALUE})
-	public ResponseEntity<Resource> findSpecificProduct(@PathVariable Long product_id
-			, HttpServletRequest request) {
+	public ResponseEntity<Resource> loadImageProduct(
+			@PathVariable String filename,
+			HttpServletRequest request) {
+		
+		Resource resource = imageStorageService.loadFileAsResource(filename);
+		
+		String contentType = null;
+		
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		}catch (IOException e) {
+			System.out.println("cannot determine fileType");
+		}
+		
+		if(contentType == null) {
+			//ensure that is binary file
+			contentType = "application/octet-stream";
+		}
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+//			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+				.body(resource);
+	}
+	
+	
+	@GetMapping(value = "/findProduct/{product_id}",
+			produces = {MediaType.IMAGE_JPEG_VALUE,
+					MediaType.IMAGE_GIF_VALUE,
+					MediaType.IMAGE_PNG_VALUE})
+	public ResponseEntity<Resource> findSpecificProduct(
+			@PathVariable Long product_id,
+//			@PathVariable String filename,
+			HttpServletRequest request) {
 		
 		Product product = productService.findProductById(product_id);
 		
@@ -63,6 +95,7 @@ public class ProductController {
 		}
 		
 		if(contentType == null) {
+			//ensure that is binary file
 			contentType = "application/octet-stream";
 		}
 		
