@@ -73,65 +73,6 @@ public class MerchantController {
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
 	
-	
-	@PostMapping("/createProduct/{merchant_id}")
-	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
-		BindingResult result, Principal principal, @PathVariable Long merchant_id,
-//		@RequestParam("name") final String name, //tambahin nnti principal validation
-		@RequestParam("file") MultipartFile file){
-
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		
-		Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-	    if(merchant == null) {
-	    	throw new MerchantNotFoundException("Merchant not found");		    	
-	    }
-		
-		String fileName = imageStorageService.storeFile(file);
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/product/loadImageProduct/")
-				.path(fileName)
-				.toUriString();
-		
-		String productFileName = file.getOriginalFilename();
-		String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
-		String productFileType = file.getContentType();
-		long size = file.getSize();
-		String productFileSize = String.valueOf(size);
-		
-		product.setProductName(product.getProductName());
-		product.setProductDescription(product.getProductDescription());
-		product.setProductCategoryName(product.getProductCategoryName());
-		product.setProductPrice(product.getProductPrice());
-		product.setProductStock(product.getProductStock());
-		
-		product.setMerchant(merchant);
-		product.setProductCategory(product.getProductCategory());
-		
-		product.setFileName(productFileName);
-		product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
-		product.setFileType(productFileType);
-		product.setFileSize(productFileSize);
-		
-		log.info("product created");
-		productRepository.save(product);
-//		Product product1 = productService.createProduct(merchant_id, product, principal.getName());
-		return new ResponseEntity<Product>(HttpStatus.CREATED);
-	}
-	
-	@PostMapping("/updateProduct/{merchant_id}")
-	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
-		BindingResult result, @PathVariable Long merchant_id, Principal principal){
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Product product1 = productService.updateProduct(merchant_id, product, principal.getName());
-		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-	 }
-	
 	@GetMapping("/findMerchant/{user_id}")
 	public ResponseEntity<?> findMerchantByUserId(@PathVariable Long user_id) {
 		

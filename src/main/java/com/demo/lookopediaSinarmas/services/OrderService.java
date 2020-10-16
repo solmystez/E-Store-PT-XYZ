@@ -90,7 +90,16 @@ public class OrderService {
 
 	public List<Orders> loadAllOrderByUserId(Long user_id) {
 		//task : validate last orderData
-		return orderRepository.findAllByUserId(user_id);
+		List<Orders> list = orderRepository.findAllByUserId(user_id);
+		
+		
+		if(list.size() > 1) {
+			list.remove(list.size()-1);
+			return list;
+		}
+		
+		
+		return list;
 	}
 	
 }
