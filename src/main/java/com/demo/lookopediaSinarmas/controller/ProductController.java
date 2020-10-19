@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
@@ -35,14 +37,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin(origins = { "http://localhost:3000", "http://localhost:4200" })
+@CrossOrigin(origins = { "http://localhost:3000"})
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
@@ -69,18 +73,29 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
 		BindingResult result, Principal principal, @PathVariable Long merchant_id,
 //		@RequestParam("name") final String name, //tambahin nnti principal validation
-		@RequestParam("file") MultipartFile file){
+		@RequestParam(value = "file", required = false) MultipartFile file) throws FileNotFoundException{
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
-		
-		
+
 		Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-	    if(merchant == null) {
-	    	throw new MerchantNotFoundException("Merchant not found");		    	
-	    }
+		if(merchant == null) {
+			throw new MerchantNotFoundException("Merchant not found");		    	
+		}
 		
+//		String fileName;
+//		try {
+//			fileName = imageStorageService.storeFile(file);
+//		} catch (Exception e) {
+//			throw new FileNotFoundException("please insert image");
+//		}
+		
+		if(file == null) {
+			return new ResponseEntity<String>("please insert image", HttpStatus.BAD_REQUEST);
+		}
 		String fileName = imageStorageService.storeFile(file);
+		
+		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path("/api/product/loadImageProduct/")
 				.path(fileName)
@@ -110,6 +125,7 @@ public class ProductController {
 		productRepository.save(product);
 //		Product product1 = productService.createProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(HttpStatus.CREATED);
+	
 	}
 	
 	@GetMapping("/findProductByCategory/{category_name}")

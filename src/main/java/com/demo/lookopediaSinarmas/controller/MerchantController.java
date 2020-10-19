@@ -36,7 +36,7 @@ import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
-@CrossOrigin
+@CrossOrigin(origins = { "http://localhost:3000"})
 @RestController
 @RequestMapping("/api/merchant")
 public class MerchantController {
@@ -72,6 +72,24 @@ public class MerchantController {
 		Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName());
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
+	
+	@PostMapping("/updateMerchant/{merchant_id}")
+	public ResponseEntity<?> updateMerchantInfo(@Valid @RequestBody Merchant merchant, 
+			BindingResult result, Principal principal, @PathVariable Long merchant_id,
+			@RequestParam("file") MultipartFile file){
+			
+			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+			if(mapError != null) return mapError;
+			
+			merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
+			if(merchant == null) {
+				throw new MerchantNotFoundException("Merchant not found");		    	
+			}
+			//image
+			
+			
+			return new ResponseEntity<Merchant>(HttpStatus.ACCEPTED);
+		 }
 	
 	@GetMapping("/findMerchant/{user_id}")
 	public ResponseEntity<?> findMerchantByUserId(@PathVariable Long user_id) {
