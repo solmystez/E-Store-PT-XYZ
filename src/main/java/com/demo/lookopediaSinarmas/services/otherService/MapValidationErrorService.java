@@ -14,7 +14,7 @@ public class MapValidationErrorService {
 	
 	public ResponseEntity<?> MapValidationService(BindingResult result) {
 		
-		if(result.hasErrors()) {//moved from ProductService
+		if(result.hasErrors()) {
 			
 			Map<String, String> errorMap = new HashMap<>();
 			

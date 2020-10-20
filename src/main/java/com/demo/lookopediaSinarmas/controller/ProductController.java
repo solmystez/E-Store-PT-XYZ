@@ -22,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,8 +75,13 @@ public class ProductController {
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
 		BindingResult result, Principal principal, @PathVariable Long merchant_id,
 //		@RequestParam("name") final String name, //tambahin nnti principal validation
-		@RequestParam(value = "file", required = false) MultipartFile file) throws FileNotFoundException{
+		@RequestPart(value = "file", required = true) MultipartFile file) throws FileNotFoundException{
 
+//		if(file == null || file.isEmpty()) {	
+//			result.addError(new ObjectError("fileName", "please insert image"));
+//			throw new FileNotFoundException("please to store empty0 image");
+//			return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+//		}
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 
@@ -89,11 +96,14 @@ public class ProductController {
 //		} catch (Exception e) {
 //			throw new FileNotFoundException("please insert image");
 //		}
+		String fileName = null;
 		
-		if(file == null) {
-			return new ResponseEntity<String>("please insert image", HttpStatus.BAD_REQUEST);
+		if(!file.isEmpty()) {
+			
+			fileName = imageStorageService.storeFile(file);
+		}else {
+			fileName = "a.png";
 		}
-		String fileName = imageStorageService.storeFile(file);
 		
 		
 		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
