@@ -173,10 +173,7 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping(value = "/findProduct/{product_id}",
-			produces = {MediaType.IMAGE_JPEG_VALUE,
-					MediaType.IMAGE_GIF_VALUE,
-					MediaType.IMAGE_PNG_VALUE})
+	@GetMapping("/findProduct/{product_id}")
 	public ResponseEntity<Resource> findSpecificProduct(
 			@PathVariable Long product_id,
 //			@PathVariable String filename,
@@ -238,6 +235,13 @@ public class ProductController {
 		return productService.findAllProducts();
 	}
 	
+	@GetMapping("/loadSpecificProduct/{product_id}")
+	public ResponseEntity<?> loadProduct(@PathVariable Long product_id){
+		
+		Product product = productService.findProductById(product_id);
+
+		return new ResponseEntity<Product>(product, HttpStatus.OK);
+	}
 	
 	@DeleteMapping("/deleteProduct/{product_id}")
 	public ResponseEntity<?> deleteProduct(@PathVariable Long product_id){
