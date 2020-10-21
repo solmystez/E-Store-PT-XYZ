@@ -102,7 +102,7 @@ public class ProductController {
 			
 			fileName = imageStorageService.storeFile(file);
 		}else {
-			fileName = "a.png";
+			fileName = "nophoto.jpg";
 		}
 		
 		
