@@ -173,36 +173,36 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping("/findProduct/{product_id}")
-	public ResponseEntity<Resource> findSpecificProduct(
-			@PathVariable Long product_id,
-//			@PathVariable String filename,
-			HttpServletRequest request) {
-		
-		Product product = productService.findProductById(product_id);
-		
-		String fileName = product.getFileName();
-		
-		Resource resource = imageStorageService.loadFileAsResource(fileName);
-		
-		String contentType = null;
-		
-		try {
-			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-		}catch (IOException e) {
-			System.out.println("cannot determine fileType");
-		}
-		
-		if(contentType == null) {
-			//ensure that is binary file
-			contentType = "application/octet-stream";
-		}
-		
-		return ResponseEntity.ok()
-				.contentType(MediaType.parseMediaType(contentType))
-//			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-				.body(resource);
-	}
+//	@GetMapping("/findProduct/{product_id}")
+//	public ResponseEntity<Resource> findSpecificProduct(
+//			@PathVariable Long product_id,
+////			@PathVariable String filename,
+//			HttpServletRequest request) {
+//		
+//		Product product = productService.findProductById(product_id);
+//		
+//		String fileName = product.getFileName();
+//		
+//		Resource resource = imageStorageService.loadFileAsResource(fileName);
+//		
+//		String contentType = null;
+//		
+//		try {
+//			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//		}catch (IOException e) {
+//			System.out.println("cannot determine fileType");
+//		}
+//		
+//		if(contentType == null) {
+//			//ensure that is binary file
+//			contentType = "application/octet-stream";
+//		}
+//		
+//		return ResponseEntity.ok()
+//				.contentType(MediaType.parseMediaType(contentType))
+////			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+//				.body(resource);
+//	}
 	
 //	public Stream<Path> loadAll(){
 //		try {
