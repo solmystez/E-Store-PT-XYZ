@@ -47,10 +47,9 @@ public class Product {
 	@Max(value = 999999, message ="Stock too much")
 	private int productStock;
 	
-	@Lob
-	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
-	private byte[] productImage;
-
+//	@Lob
+//	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
+//	private byte[] productImage;
 	
 	private String fileName;
 	private String filePath;
@@ -111,14 +110,6 @@ public class Product {
 
 	public void setProductCategoryName(String productCategoryName) {
 		this.productCategoryName = productCategoryName;
-	}
-
-	public byte[] getProductImage() {
-		return productImage;
-	}
-
-	public void setProductImage(byte[] productImage) {
-		this.productImage = productImage;
 	}
 
 	public String getFileName() {

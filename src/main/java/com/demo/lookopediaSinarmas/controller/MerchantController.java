@@ -1,15 +1,19 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Principal;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,9 +33,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.User;
+import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
+import com.demo.lookopediaSinarmas.repositories.UserRepository;
 import com.demo.lookopediaSinarmas.services.MerchantService;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
@@ -57,21 +65,52 @@ public class MerchantController {
 	private ImageStorageService imageStorageService;
 	
 	@Autowired
-	private ProductRepository productRepository;
+	private MerchantRepository merchantRepository;
 	
 	@Autowired
-	MerchantRepository merchantRepository;
+	private UserRepository userRepository;
 	
 	@PostMapping("/createMerchantToUserId/{user_id}")
-	public ResponseEntity<?> createMerchant(@Valid @RequestBody Merchant merchant, 
-		BindingResult result,@PathVariable Long user_id, Principal principal){
+	public ResponseEntity<?> createMerchant(@Valid Merchant merchant, 
+		@PathVariable Long user_id,
+		@RequestPart("file") MultipartFile file,
+		BindingResult result, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName());
+		Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName(), file);
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
+	
+	@GetMapping(value = "/loadImageMerchant/{filename:.+}",
+			produces = {MediaType.IMAGE_JPEG_VALUE,
+					MediaType.IMAGE_GIF_VALUE,
+					MediaType.IMAGE_PNG_VALUE})
+	public ResponseEntity<Resource> loadImageMerchant(
+			@PathVariable String filename,
+			HttpServletRequest request) {
+		
+		Resource resource = imageStorageService.loadFileAsResource(filename);
+		
+		String contentType = null;
+		
+		try {
+			contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+		}catch (IOException e) {
+			System.out.println("cannot determine fileType");
+		}
+		
+		if(contentType == null) {
+			//ensure that is binary file
+			contentType = "application/octet-stream";
+		}
+		
+		return ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType(contentType))
+//			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+				.body(resource);
+	}
 	
 	@PostMapping("/updateMerchant/{merchant_id}")
 	public ResponseEntity<?> updateMerchantInfo(@Valid @RequestBody Merchant merchant, 
