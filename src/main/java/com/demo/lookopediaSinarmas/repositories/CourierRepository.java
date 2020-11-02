@@ -8,5 +8,4 @@ import com.demo.lookopediaSinarmas.entity.Courier;
 @Repository
 public interface CourierRepository extends CrudRepository<Courier, Long>{
 
-	Courier findByCourierName(String courierName);
 }

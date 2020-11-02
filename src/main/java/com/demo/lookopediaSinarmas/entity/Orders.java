@@ -34,8 +34,6 @@ public class Orders {
 	
 	private Integer total_price;
 	
-	@NotBlank(message = "Courier must be input !")
-	private String courierName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -80,14 +78,6 @@ public class Orders {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updated_at = new Date();
-	}
-	
-	public String getCourierName() {
-		return courierName;
-	}
-
-	public void setCourierName(String courierName) {
-		this.courierName = courierName;
 	}
 
 	public Long getId() {
