@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.services.OrderService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
@@ -32,6 +33,14 @@ public class OrderController {
 	@GetMapping("/loadAllOrder/{user_id}")
 	public Iterable<Orders> loadAllIOrderUser(@PathVariable Long user_id){
 		return orderService.loadAllOrderByUserId(user_id);	
+	}
+	
+	@GetMapping("/loadOrderDetails/{order_identifier}")
+	public ResponseEntity<?> loadProduct(@PathVariable String order_identifier){
+		
+		Orders orders = orderService.findDetailOrder(order_identifier);
+
+		return new ResponseEntity<Orders>(orders, HttpStatus.OK);
 	}
 	
 	@PostMapping("/processItem/{order_identifier}/{user_id}")
