@@ -1,8 +1,15 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.nio.file.Paths;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.demo.lookopediaSinarmas.controller.MerchantController;
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
@@ -10,10 +17,13 @@ import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
+import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 
 
 @Service
 public class MerchantService {
+	
+	private static Logger log = LoggerFactory.getLogger(MerchantController.class);
 	
 	@Autowired
 	MerchantRepository merchantRepository;
@@ -21,7 +31,10 @@ public class MerchantService {
 	@Autowired
 	UserRepository userRepository;
 	
-	public Merchant createMerchant(Long user_id, Merchant merchant, String username) {
+	@Autowired
+	private ImageStorageService imageStorageService;
+	
+	public Merchant createMerchant(Long user_id, Merchant merchant, String username, MultipartFile file) {
 		
 		User user;
 		try {
@@ -30,14 +43,42 @@ public class MerchantService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
+		String fileName = null;
+		if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
+		else fileName = "nophoto.jpg";
+		
+		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path("/api/merchant/loadImageMerchant/")
+				.path(fileName)
+				.toUriString();
+		
+		String merchantFileName = file.getOriginalFilename();
+		String merchantFileType = file.getContentType();
+		long size = file.getSize();
+		String merchantFileSize = String.valueOf(size);
 		
 		try {
 			user.setHasMerchant(true);
-			
 			user.setMerchant(merchant);
+			
 			merchant.setUserMerchant(user);
 			merchant.setUserName(user.getUsername());
 			
+			merchant.setFileName(merchantFileName);
+			merchant.setFilePath(fileDownloadUri);
+			merchant.setFileType(merchantFileType);
+			merchant.setFileSize(merchantFileSize);
+					
+			if(merchant.getId() != null) {
+				merchant.setUserMerchant(userRepository.findById(user_id).get());
+			}
+			log.info("merchant created");
+			merchantRepository.save(merchant);
+		} catch (Exception e) {
+			throw new MerchantNameAlreadyExistsException("Merchant name already used !");
+		}
+		
+		try {	
 			if(merchant.getId() != null) {
 				merchant.setUserMerchant(userRepository.findById(user_id).get());
 			}

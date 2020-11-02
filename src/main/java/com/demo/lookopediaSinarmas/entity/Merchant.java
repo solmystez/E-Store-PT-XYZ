@@ -24,7 +24,7 @@ public class Merchant {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank
+	@NotBlank(message = "Merchant name is required")
 	@Column(unique = true)
 	private String merchantName;
 	
@@ -33,8 +33,15 @@ public class Merchant {
 	private Integer merchantBalance = 0;
 
 	private Integer totalProduct = 0;
-	private String merchantAddress;
 	
+	@NotBlank(message = "Merchant address is required")
+	private String merchantAddress;
+		
+	private String fileName;
+	private String filePath;
+	private String fileType;
+	private String fileSize;
+		
 	@OneToOne
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
@@ -109,5 +116,36 @@ public class Merchant {
 		this.userName = userName;
 	}
 
-	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
+	public String getFileSize() {
+		return fileSize;
+	}
+
+	public void setFileSize(String fileSize) {
+		this.fileSize = fileSize;
+	}
+		
 }

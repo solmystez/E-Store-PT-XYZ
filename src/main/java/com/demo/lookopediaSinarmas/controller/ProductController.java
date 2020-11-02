@@ -1,28 +1,17 @@
 package com.demo.lookopediaSinarmas.controller;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.List;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,20 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Product;
-import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
-import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
-import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
-import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
@@ -52,10 +34,7 @@ import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorServi
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
-		
-	private static Logger log = LoggerFactory.getLogger(MerchantController.class);
-	public static String uploadDirectory = System.getProperty("user.dir") +  "/uploads";
-		
+			
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
@@ -66,75 +45,19 @@ public class ProductController {
 	private ImageStorageService imageStorageService;
 	
 	@Autowired
-	private ProductRepository productRepository;
-	
-	@Autowired
 	MerchantRepository merchantRepository;
 	
 	@PostMapping("/createProduct/{merchant_id}")
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
-		BindingResult result, Principal principal, @PathVariable Long merchant_id,
-//		@RequestParam("name") final String name, //tambahin nnti principal validation
-		@RequestPart(value = "file", required = true) MultipartFile file) throws FileNotFoundException{
+		@PathVariable Long merchant_id,
+		@RequestPart("file") MultipartFile file,
+		BindingResult result, Principal principal){
 
-//		if(file == null || file.isEmpty()) {	
-//			result.addError(new ObjectError("fileName", "please insert image"));
-//			throw new FileNotFoundException("please to store empty0 image");
-//			return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
-//		}
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
-
-		Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-		if(merchant == null) {
-			throw new MerchantNotFoundException("Merchant not found");		    	
-		}
 		
-//		String fileName;
-//		try {
-//			fileName = imageStorageService.storeFile(file);
-//		} catch (Exception e) {
-//			throw new FileNotFoundException("please insert image");
-//		}
-		String fileName = null;
-		
-		if(!file.isEmpty()) {
-			
-			fileName = imageStorageService.storeFile(file);
-		}else {
-			fileName = "nophoto.jpg";
-		}
-		
-		
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/product/loadImageProduct/")
-				.path(fileName)
-				.toUriString();
-		
-		String productFileName = file.getOriginalFilename();
-		String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
-		String productFileType = file.getContentType();
-		long size = file.getSize();
-		String productFileSize = String.valueOf(size);
-		
-		product.setProductName(product.getProductName());
-		product.setProductDescription(product.getProductDescription());
-		product.setProductCategoryName(product.getProductCategoryName());
-		product.setProductPrice(product.getProductPrice());
-		product.setProductStock(product.getProductStock());
-		
-		product.setMerchant(merchant);
-		product.setProductCategory(product.getProductCategory());
-		
-		product.setFileName(productFileName);
-		product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
-		product.setFileType(productFileType);
-		product.setFileSize(productFileSize);
-		
-		log.info("product created");
-		productRepository.save(product);
-//		Product product1 = productService.createProduct(merchant_id, product, principal.getName());
-		return new ResponseEntity<Product>(HttpStatus.CREATED);
+		Product product1 = productService.createProduct(merchant_id, product, file, principal.getName());
+		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	
 	}
 	
