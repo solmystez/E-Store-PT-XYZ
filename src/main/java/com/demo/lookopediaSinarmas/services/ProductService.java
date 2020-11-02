@@ -10,11 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.demo.lookopediaSinarmas.controller.MerchantController;
+import com.demo.lookopediaSinarmas.entity.Category;
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
+import com.demo.lookopediaSinarmas.repositories.CategoryRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
@@ -30,6 +32,9 @@ public class ProductService {
 
 	@Autowired
 	MerchantRepository merchantRepository;
+	
+	@Autowired
+	CategoryRepository categoryRepository;
 
 	@Autowired
 	private ImageStorageService imageStorageService;
@@ -82,8 +87,10 @@ public class ProductService {
 			product.setFileType(productFileType);
 			product.setFileSize(productFileSize);
 		    
+			Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
+			
 		    product.setMerchant(merchant);
-		    product.setProductCategory(product.getProductCategory());
+		    product.setProductCategory(category);
 		    product.setMerchantName(merchant.getMerchantName());
 		    
 		    Integer totalProduct = merchant.getTotalProduct();

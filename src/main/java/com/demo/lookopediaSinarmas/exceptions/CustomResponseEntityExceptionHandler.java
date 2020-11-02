@@ -12,6 +12,8 @@ import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsExce
 import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsResponse;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFountExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
+import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorExceptionResponse;
 import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsResponse;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
@@ -90,6 +92,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler
 	public final ResponseEntity<Object> commentNotFound(CommentNotFoundException ex, WebRequest request) {
 		CommentNotFountExceptionResponse exceptionResponse = new CommentNotFountExceptionResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> courierException(CourierErrorException ex, WebRequest request) {
+		CourierErrorExceptionResponse exceptionResponse = new CourierErrorExceptionResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

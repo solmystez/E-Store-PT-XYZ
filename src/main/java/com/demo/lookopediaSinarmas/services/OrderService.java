@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.entity.Cart;
+import com.demo.lookopediaSinarmas.entity.Courier;
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
+import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
 import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
+import com.demo.lookopediaSinarmas.repositories.CourierRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -30,6 +33,9 @@ public class OrderService {
 	@Autowired
 	MerchantRepository merchantRepository;
 	
+	@Autowired
+	CourierRepository courierRepository;
+	
 	@Autowired 
 	UserService userService;
 	
@@ -44,11 +50,7 @@ public class OrderService {
 		//-. generate order_number
 		
 		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
-		
-		if(order == null) {
-			throw new OrderNotFoundException("order not found");
-		}
-		
+		if(order == null) throw new OrderNotFoundException("order not found");
 		
 		//1. temuin cart yg mana yg mau di proses + product apa aja 
 		//brati findByOrderIdentifier > tampung ke list
@@ -59,22 +61,26 @@ public class OrderService {
 		
 		int tempPrice = 0;
 		
+		Courier courier = courierRepository.findByCourierName(order.getCourierName());
+		order.setCourier(courier);
+		
+//		int courierPrice = courier.getCourierPrice();
+//		tempPrice += courierPrice;
+		
 		for(int i=0; i<carts.size(); i++) {
 			int stock = 0;
 			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
 			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
 			carts.get(i).getProduct().setProductStock(stock);
 			
-			//stiap product yg dibeli klo sold tambahin ke merchant balance
+			//every product sold, then add funds to merchant balance
 			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
 			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
 			merchant.setMerchantBalance(tempPrice);
 		}
 		
-		
 		order.setTotal_price(tempPrice);
 			
-		
 		User user = userRepository.findById(order.getUser().getId()).get();
 	
 		Integer invSeq = 0;
@@ -91,15 +97,24 @@ public class OrderService {
 	public List<Orders> loadAllOrderByUserId(Long user_id) {
 		//task : validate last orderData
 		List<Orders> list = orderRepository.findAllByUserId(user_id);
-		
-		
+
 		if(list.size() > 1) {
 			list.remove(list.size()-1);
 			return list;
 		}
-		
-		
 		return list;
+	}
+	
+	public Orders findDetailOrder(String order_identifier) {
+		
+		Orders order;
+		try {
+			order = orderRepository.findByOrderIdentifier(order_identifier);
+		} catch (Exception e) {
+			throw new OrderNotFoundException("Something wrong went load order detail");
+		}
+		
+		return order;
 	}
 	
 }
