@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.entity.Category;
 import com.demo.lookopediaSinarmas.entity.Courier;
+import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
 import com.demo.lookopediaSinarmas.repositories.CourierRepository;
 
@@ -16,11 +17,15 @@ public class CourierService {
 	
 	public Courier createOrUpdateCourier(Courier courier) {
 		
-		courier.setCourierName(courier.getCourierName());
-		courier.setCourierPrice(courier.getCourierPrice());
-		courier.setCourierDescription(courier.getCourierDescription());
+		try {
+			courier.setCourierName(courier.getCourierName());
+			courier.setCourierPrice(courier.getCourierPrice());
+			courier.setCourierDescription(courier.getCourierDescription());
+			return courierRepository.save(courier);
+		} catch (Exception e) {
+			throw new CourierErrorException("Exception : Courier name already exists !");
+		}
 		
-		return courierRepository.save(courier);
 	}
 
 	public Iterable<Courier> getCourierList(){

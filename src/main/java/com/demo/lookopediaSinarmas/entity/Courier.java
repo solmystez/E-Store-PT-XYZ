@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.entity;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,9 @@ public class Courier {
 	private Long courier_id;
 	
 	@NotBlank(message = "Courier Name is Required")
+	@Column(unique = true)
 	private String courierName;
+	
 	private String courierDescription;
 	
 	@Min(value = 0, message = "Courier price cannot less then 0 !")

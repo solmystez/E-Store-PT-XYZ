@@ -2,6 +2,8 @@ package com.demo.lookopediaSinarmas.services;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class OrderService {
 	UserService userService;
 	
 	
-	public Orders processItem(String order_identifier, Long user_id) {	
+	public Iterable<Cart> processItem(Cart cart, String order_identifier, Long user_id) {	
 		//====quest====
 		//-. kalkulasi harga disini ('total_price' Orders attribute)
 		//-. totalHarga+= voucher apa
@@ -62,18 +64,14 @@ public class OrderService {
 		
 		int tempPrice = 0;
 		
-		Courier courier = courierRepository.findByCourierName(order.getCourierName());
-//		order.setCourier(courier);
-		
-//		int courierPrice = courier.getCourierPrice();
-//		tempPrice += courierPrice;
+		Courier courier = courierRepository.findByCourierName(cart.getCourierName());
 		
 		for(int i=0; i<carts.size(); i++) {
-			System.out.println(carts);
+//			System.out.println(carts);
 			int stock = 0;
-			
+			carts.get(i).setCourier(courier);
 			if(carts.get(i).getMerchantName() != carts.get(i).getMerchantName()+1) {
-				
+				tempPrice+=carts.get(i).getCourier().getCourierPrice();
 			}
 			
 			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
@@ -100,7 +98,7 @@ public class OrderService {
 					
 		userService.applyInvoiceNow(user_id, user);
 
-		return orderRepository.save(order);
+		return cartDetailRepository.saveAll(carts);
 	}
 
 	public List<Orders> loadAllOrderByUserId(Long user_id) {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.services.OrderService;
@@ -44,16 +45,16 @@ public class OrderController {
 	}
 	
 	@PostMapping("/processItem/{order_identifier}/{user_id}")
-	public ResponseEntity<?> processItem(@Valid @RequestBody Orders order,
+	public ResponseEntity<?> processItem(@Valid @RequestBody Cart cart,
 			BindingResult result, @PathVariable String order_identifier, @PathVariable Long user_id) {
 		
 		
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;
 		
-		Orders order1 = orderService.processItem(order_identifier, user_id);
+		Iterable<Cart> order1 = orderService.processItem(cart, order_identifier, user_id);
 				
-		return new ResponseEntity<Orders>(order1, HttpStatus.CREATED);
+		return new ResponseEntity<Iterable<Cart>>(order1, HttpStatus.CREATED);
 	}
 	
 
