@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -27,9 +28,16 @@ public class Cart {
 	@JsonIgnore
     private Orders order;
     
+	@OneToOne
+	@JoinColumn(name = "courier_id", updatable = false)
+	@JsonIgnore
+	private Courier courier;
+    
 	private Integer quantity = 0;
 	
 	private String orderIdentifier;
+	private String merchantName;
+	private String courierName;
 	
 	private Long p_id;
 	private int p_qty;
@@ -45,6 +53,21 @@ public class Cart {
 		this.product = product;
 	}
 
+	public String getCourierName() {
+		return courierName;
+	}
+
+	public void setCourierName(String courierName) {
+		this.courierName = courierName;
+	}
+
+	public Courier getCourier() {
+		return courier;
+	}
+
+	public void setCourier(Courier courier) {
+		this.courier = courier;
+	}
 
 	public int getP_price() {
 		return p_price;
@@ -61,8 +84,15 @@ public class Cart {
 	public void setOrderIdentifier(String orderIdentifier) {
 		this.orderIdentifier = orderIdentifier;
 	}
-
 	
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
+
 	public Orders getOrder() {
 		return order;
 	}

@@ -34,7 +34,6 @@ public class Orders {
 	
 	private Integer total_price;
 	
-	@NotBlank(message = "Courier must be input !")
 	private String courierName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
@@ -42,11 +41,6 @@ public class Orders {
 	private Date created_at;
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date updated_at;
-	
-	@OneToOne
-	@JoinColumn(name = "courier_id", updatable = false)
-	@JsonIgnore
-	private Courier courier;
 	
 	@OneToOne
 	@JoinColumn(name = "voucher_id", updatable = false)
@@ -155,13 +149,6 @@ public class Orders {
 		this.cart_detail = cart_detail;
 	}
 
-	public Courier getCourier() {
-		return courier;
-	}
-
-	public void setCourier(Courier courier) {
-		this.courier = courier;
-	}
 
 	public Voucher getVoucher() {
 		return voucher;

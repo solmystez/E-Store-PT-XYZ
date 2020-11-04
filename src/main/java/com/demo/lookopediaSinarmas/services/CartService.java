@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class CartService {
 	OrderRepository orderRepository;
 
 	@Autowired
-	CartRepository cartDetailRepository;
+	CartRepository cartRepository;
 
 	@Autowired
 	ProductRepository productRepository;
@@ -48,7 +49,7 @@ public class CartService {
 	public List<Cart> getCartDetailByOrderIdentifier(String order_now) {
 		
 		List<Cart> cartDetail = null;
-		cartDetail = cartDetailRepository.findAllByOrderIdentifier(order_now);
+		cartDetail = cartRepository.findAllByOrderIdentifier(order_now);
 
 		return cartDetail;
 	}
@@ -58,13 +59,38 @@ public class CartService {
 	public List<Cart> removeProductFromCart(Long product_id, String orderIdentifier) {
 
 		try { 		
-			cartDetailRepository.deleteCartDetailByOrderIdentifierAndProductId(orderIdentifier, product_id);
+			cartRepository.deleteCartDetailByOrderIdentifierAndProductId(orderIdentifier, product_id);
 		} catch (Exception e) {
 //			System.err.println(e);
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
-		return cartDetailRepository.findAllByOrderIdentifier(orderIdentifier);
+		return cartRepository.findAllByOrderIdentifier(orderIdentifier);
 	
+	}
+	
+	public Iterable<Cart> selectCourier(String merchant_name, String order_identifier) {
+		
+//		order = orderRepository.findByOrderIdentifier(order_identifier);
+		//1. find product apa yg mau di pilih kurir
+		//2. set courier ke smua product yg di 'cart' dari merchant yang sama
+		//3. 
+		
+//		Product product;
+//		try {
+//			product = productRepository.findById(product_id).get();
+//		} catch (Exception e) {
+//			throw new ProductIdException("product id : " + product_id + " doesn't exist");
+//		}
+		
+		List<Cart> cart = cartRepository
+				.selectCourierByOrderIdentifierAndMerchantName(order_identifier, merchant_name);
+		
+		for(int i=0; i<cart.size(); i++) {
+			cart.get(i).setCourierName(cart.get(i).getCourierName());
+			
+		}
+		
+		return cartRepository.saveAll(cart);
 	}
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, Orders order) {
@@ -112,13 +138,14 @@ public class CartService {
 				if(c.getQuantity() >= product.getProductStock()) {
 					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
 				}
-				c.setQuantity(c.getQuantity()+1);	
+				c.setQuantity(c.getQuantity()+1);
+				c.setMerchantName(product.getMerchantName());
 				c.setP_id(product.getProduct_id());
 				c.setP_name(product.getProductName());
 				c.setP_price(product.getProductPrice());
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
-				cartDetailRepository.save(c);
+				cartRepository.save(c);
 				flag = 0;
 				tempOrder = c.getOrder();
 				break;
@@ -133,12 +160,13 @@ public class CartService {
 			currDetail.setQuantity(1);
 			currDetail.setOrder(order);
 			currDetail.setProduct(product);
+			currDetail.setMerchantName(product.getMerchantName());
 			currDetail.setP_id(product_id);
 			currDetail.setP_name(product.getProductName());
 			currDetail.setP_price(product.getProductPrice());
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
-			cartDetailRepository.save(currDetail);
+			cartRepository.save(currDetail);
 
 			// add cart detail ke cart
 			order.getCart_detail().add(currDetail);
@@ -202,7 +230,7 @@ public class CartService {
 				c.setP_price(product.getProductPrice());
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
-				cartDetailRepository.save(c);
+				cartRepository.save(c);
 				flag = 0;
 				tempOrder = c.getOrder();
 				break;
@@ -222,7 +250,7 @@ public class CartService {
 			currDetail.setP_price(product.getProductPrice());
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
-			cartDetailRepository.save(currDetail);
+			cartRepository.save(currDetail);
 
 			// add cart detail ke cart
 			order.getCart_detail().add(currDetail);

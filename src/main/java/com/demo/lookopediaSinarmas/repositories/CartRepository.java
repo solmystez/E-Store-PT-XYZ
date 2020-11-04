@@ -21,8 +21,16 @@ public interface CartRepository extends CrudRepository<Cart, Long>{
 			+ " and "
 			+ " product_id=:product_id", nativeQuery = true)
 	void deleteCartDetailByOrderIdentifierAndProductId(
-			@Param("order_identifier") String invoiceIdentifier, 
+			@Param("order_identifier") String order_identifier, 
 			@Param("product_id") Long productId);
+	
+	@Query(value = "select * from cart "
+			+ "where order_identifier=:order_identifier "
+			+ "and "
+			+ "merchant_name=:merchant_name", nativeQuery = true)
+	List<Cart> selectCourierByOrderIdentifierAndMerchantName(
+			@Param("order_identifier") String order_identifier, 
+			@Param("merchant_name") String merchant_name);
 	
 	Cart findByOrderIdentifier(String orderIdentifier);
 

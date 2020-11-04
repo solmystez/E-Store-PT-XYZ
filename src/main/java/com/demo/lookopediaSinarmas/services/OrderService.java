@@ -62,16 +62,23 @@ public class OrderService {
 		int tempPrice = 0;
 		
 		Courier courier = courierRepository.findByCourierName(order.getCourierName());
-		order.setCourier(courier);
+//		order.setCourier(courier);
 		
 //		int courierPrice = courier.getCourierPrice();
 //		tempPrice += courierPrice;
 		
 		for(int i=0; i<carts.size(); i++) {
 			int stock = 0;
+			
+			if(carts.get(i).getMerchantName() != carts.get(i).getMerchantName()+1) {
+				
+			}
+			
 			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
 			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
 			carts.get(i).getProduct().setProductStock(stock);
+			
+			carts.get(i).getProduct().getMerchant().getMerchantName();
 			
 			//every product sold, then add funds to merchant balance
 			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();

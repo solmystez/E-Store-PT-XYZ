@@ -73,7 +73,11 @@ public class UserService {
 		try {
 			
 			//1. find user id
-			user = userRepository.findById(user_id).get();
+			try {
+				user = userRepository.findById(user_id).get();
+			} catch (Exception e) {
+				throw new UserIdNotFoundException("User not found while trackOrder");
+			}
 			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
 
 			Set<Orders> ord = user.getOrder();
@@ -94,7 +98,7 @@ public class UserService {
 			
 			return userRepository.save(user);
 		} catch (Exception e) {
-			throw new UserIdNotFoundException("User Id '" + user_id + "' doesn't exist");
+			throw new UserIdNotFoundException("User Id '" + user_id + "' doesn't exist(track order)");
 		}
 	}
 	

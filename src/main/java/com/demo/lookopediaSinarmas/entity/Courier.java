@@ -30,7 +30,7 @@ public class Courier {
 			cascade = CascadeType.ALL,
 			mappedBy = "courier")
 	@JsonIgnore
-	private Orders order;
+	private Cart cart;
 	
 	public Long getCourier_id() {
 		return courier_id;
@@ -40,12 +40,14 @@ public class Courier {
 		this.courier_id = courier_id;
 	}
 	
-	public Orders getOrder() {
-		return order;
+	public Cart getCart() {
+		return cart;
 	}
-	public void setOrder(Orders order) {
-		this.order = order;
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
+
 	public String getCourierName() {
 		return courierName;
 	}
