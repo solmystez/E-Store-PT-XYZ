@@ -68,7 +68,7 @@ public class CartService {
 	
 	}
 	
-	public Iterable<Cart> selectCourier(String merchant_name, String order_identifier) {
+	public Iterable<Cart> selectCourier(Cart cart, String order_identifier) {
 		
 //		order = orderRepository.findByOrderIdentifier(order_identifier);
 		//1. find product apa yg mau di pilih kurir
@@ -82,15 +82,17 @@ public class CartService {
 //			throw new ProductIdException("product id : " + product_id + " doesn't exist");
 //		}
 		
-		List<Cart> cart = cartRepository
+		String merchant_name = cart.getMerchantName();
+		
+		List<Cart> cart1 = cartRepository
 				.selectCourierByOrderIdentifierAndMerchantName(order_identifier, merchant_name);
 		
-		for(int i=0; i<cart.size(); i++) {
-			cart.get(i).setCourierName(cart.get(i).getCourierName());
+		for(int i=0; i<cart1.size(); i++) {
+			cart1.get(i).setCourierName(cart.getCourierName());
 			
 		}
 		
-		return cartRepository.saveAll(cart);
+		return cartRepository.saveAll(cart1);
 	}
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, Orders order) {

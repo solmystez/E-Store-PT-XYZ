@@ -3,6 +3,7 @@ package com.demo.lookopediaSinarmas.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.entity.Cart;
@@ -57,7 +58,7 @@ public class OrderService {
 		//=======gmn gw mainin object masing" nya ?
 		//product A di --Stockny 
 		
-		List<Cart> carts = cartDetailRepository.findAllByOrderIdentifier(order_identifier);
+		List<Cart> carts = cartDetailRepository.findAllByOrderIdentifier(order_identifier, Sort.by(Sort.Direction.ASC,"merchantName"));
 		
 		int tempPrice = 0;
 		
@@ -68,6 +69,7 @@ public class OrderService {
 //		tempPrice += courierPrice;
 		
 		for(int i=0; i<carts.size(); i++) {
+			System.out.println(carts);
 			int stock = 0;
 			
 			if(carts.get(i).getMerchantName() != carts.get(i).getMerchantName()+1) {

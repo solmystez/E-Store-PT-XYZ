@@ -46,15 +46,15 @@ public class CartController {
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/selectCourier/{merchant_name}/{track_order}")
+	@PostMapping("/selectCourier/{track_order}")
 	public ResponseEntity<?> addCourierPrice(@Valid @RequestBody Cart cart, BindingResult result,
-			 							@PathVariable String merchant_name, @PathVariable String track_order){
+			 							@PathVariable String track_order){
 				
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Iterable<Cart> cart1 = cartService.selectCourier(merchant_name, track_order);
+		Iterable<Cart> cart1 = cartService.selectCourier(cart, track_order);
 		return new ResponseEntity<Iterable<Cart>>(cart1, HttpStatus.CREATED);
 	}
 	
