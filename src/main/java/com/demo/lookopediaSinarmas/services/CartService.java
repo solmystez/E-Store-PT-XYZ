@@ -89,7 +89,7 @@ public class CartService {
 		
 		for(int i=0; i<cart1.size(); i++) {
 			cart1.get(i).setCourierName(cart.getCourierName());
-			
+			cart1.get(i).setCourier(cart.getCourier());
 		}
 		
 		return cartRepository.saveAll(cart1);

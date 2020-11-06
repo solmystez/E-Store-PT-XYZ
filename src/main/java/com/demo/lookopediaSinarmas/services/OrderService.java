@@ -67,7 +67,7 @@ public class OrderService {
 		Courier courier = courierRepository.findByCourierName(cart.getCourierName());
 		
 		for(int i=0; i<carts.size(); i++) {
-//			System.out.println(carts);
+
 			int stock = 0;
 			carts.get(i).setCourier(courier);
 			if(carts.get(i).getMerchantName() != carts.get(i).getMerchantName()+1) {
@@ -85,7 +85,7 @@ public class OrderService {
 			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
 			merchant.setMerchantBalance(tempPrice);
 		}
-		
+		System.out.println(carts);
 		order.setTotal_price(tempPrice);
 			
 		User user = userRepository.findById(order.getUser().getId()).get();

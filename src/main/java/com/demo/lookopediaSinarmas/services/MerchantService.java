@@ -43,6 +43,11 @@ public class MerchantService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
+		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
+		if(!user.getUsername().equals(username)) {
+			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
+		}
+		
 		String fileName = null;
 		if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
 		else fileName = "nophoto.jpg";

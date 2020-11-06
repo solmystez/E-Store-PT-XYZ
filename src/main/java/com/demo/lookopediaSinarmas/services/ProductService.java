@@ -39,7 +39,7 @@ public class ProductService {
 	@Autowired
 	private ImageStorageService imageStorageService;
 	
-	public Product createProduct(Long merchant_id, Product product, MultipartFile file, String merchantName) {
+	public Product createProduct(Long merchant_id, Product product, MultipartFile file, String userName) {
 
 //		if(file == null || file.isEmpty()) {	
 //		result.addError(new ObjectError("fileName", "please insert image"));
@@ -57,51 +57,55 @@ public class ProductService {
 	    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
 	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
 	    
+	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
+	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
+	    }
+	    
 	    String fileName = null;
-		
-		if(!file.isEmpty()) {
-			
-			fileName = imageStorageService.storeFile(file);
-		}else {
-			fileName = "nophoto.jpg";
-		}
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/product/loadImageProduct/")
-				.path(fileName)
-				.toUriString();
-		
-		String productFileName = file.getOriginalFilename();
+    	
+    	if(!file.isEmpty()) {
+    		
+    		fileName = imageStorageService.storeFile(file);
+    	}else {
+    		fileName = "nophoto.jpg";
+    	}
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+    			.path("/api/product/loadImageProduct/")
+    			.path(fileName)
+    			.toUriString();
+    	
+    	String productFileName = file.getOriginalFilename();
 //			String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
-		String productFileType = file.getContentType();
-		long size = file.getSize();
-		String productFileSize = String.valueOf(size);
-		try {		
-			product.setProductName(product.getProductName());
-			product.setProductDescription(product.getProductDescription());
-			product.setProductCategoryName(product.getProductCategoryName());
-			product.setProductPrice(product.getProductPrice());
-			product.setProductStock(product.getProductStock());
-				
-			product.setFileName(productFileName);
-			product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
-			product.setFileType(productFileType);
-			product.setFileSize(productFileSize);
-		    
-			Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
-			
-		    product.setMerchant(merchant);
-		    product.setProductCategory(category);
-		    product.setMerchantName(merchant.getMerchantName());
-		    
-		    Integer totalProduct = merchant.getTotalProduct();
-		    totalProduct++;		    
-		    merchant.setTotalProduct(totalProduct);
-		    
-			log.info("product created");	
-			return productRepository.save(product);
-		} catch (Exception e) {
-			throw new MerchantNotFoundException("Merchant not found");
-		}
+    	String productFileType = file.getContentType();
+    	long size = file.getSize();
+    	String productFileSize = String.valueOf(size);
+    	try {		
+    		product.setProductName(product.getProductName());
+    		product.setProductDescription(product.getProductDescription());
+    		product.setProductCategoryName(product.getProductCategoryName());
+    		product.setProductPrice(product.getProductPrice());
+    		product.setProductStock(product.getProductStock());
+    		
+    		product.setFileName(productFileName);
+    		product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
+    		product.setFileType(productFileType);
+    		product.setFileSize(productFileSize);
+    		
+    		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
+    		
+    		product.setMerchant(merchant);
+    		product.setProductCategory(category);
+    		product.setMerchantName(merchant.getMerchantName());
+    		
+    		Integer totalProduct = merchant.getTotalProduct();
+    		totalProduct++;		    
+    		merchant.setTotalProduct(totalProduct);
+    		
+    		log.info("product created");	
+    		return productRepository.save(product);
+    	} catch (Exception e) {
+    		throw new MerchantNotFoundException("Merchant not found");
+    	}
 	}
 	
 	
