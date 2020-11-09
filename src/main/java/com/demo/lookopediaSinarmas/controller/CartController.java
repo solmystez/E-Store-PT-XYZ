@@ -34,16 +34,28 @@ public class CartController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	//addProduct to invoice With ProductId
-	@PostMapping("/addProduct/{product_id}/{user_id}")
+	@PostMapping("/addProduct/{product_id}/{user_id}/{order_identifier}")
 	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Orders order, BindingResult result,
-			 							@PathVariable Long product_id, @PathVariable Long user_id){
-				
+			 							@PathVariable Long product_id, @PathVariable Long user_id,
+			 							@PathVariable String order_identifier){
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order);
+		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier, order);
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/countCart/{order_identifier}")
+	public ResponseEntity<?> countCart(@Valid @RequestBody Cart cart, BindingResult result,
+				@PathVariable String order_identifier){
+
+
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		List<Cart> cart1 = cartService.countCartPriceAndStock(order_identifier);
+		return new ResponseEntity<List<Cart>>(cart1, HttpStatus.OK);
 	}
 	
 	@PostMapping("/selectCourier/{track_order}")

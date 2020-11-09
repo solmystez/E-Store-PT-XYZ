@@ -63,7 +63,7 @@ public class ProductController {
 	
 	@GetMapping("/findProductByCategory/{category_name}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable String category_name){
-		return productService.findProductByCategory(category_name);
+		return productService.findAllProductByCategory(category_name);
 	}
 	
 	@GetMapping(value = "/loadImageProduct/{filename:.+}",

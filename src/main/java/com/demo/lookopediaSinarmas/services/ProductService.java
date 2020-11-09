@@ -148,8 +148,14 @@ public class ProductService {
 		return productRepository.findAllProductsByMerchantId(id); 
 	}
 	
-	public List<Product> findProductByCategory(String categoryName) {
-		return productRepository.findProductsByProductCategory(categoryName.toLowerCase()); 
+	public List<Product> findAllProductByCategory(String categoryName) {
+					
+		try {
+			return productRepository.findAllProductByProductCategoryName(categoryName.toLowerCase());
+		} catch (Exception e) {
+			throw new ProductNotFoundException("no product in  this category");
+		} 
+		
 	}
 	
 	public Product findProductById(Long product_id) {

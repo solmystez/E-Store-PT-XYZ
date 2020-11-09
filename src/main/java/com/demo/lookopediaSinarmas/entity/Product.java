@@ -90,8 +90,7 @@ public class Product {
 		orphanRemoval = true)
 	private List<Rating> rating = new ArrayList<>();
 	
-	@OneToOne
-	@JoinColumn(name = "category_id", updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private Category productCategory;
 	

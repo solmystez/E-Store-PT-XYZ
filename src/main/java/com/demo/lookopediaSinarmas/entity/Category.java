@@ -1,5 +1,7 @@
 package com.demo.lookopediaSinarmas.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotBlank;
 
@@ -23,11 +26,12 @@ public class Category {
 	@Column(unique = true)
 	private String categoryName;
 	
-	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,
-			mappedBy = "productCategory")
+	@OneToMany(fetch = FetchType.LAZY, 
+			cascade = CascadeType.REFRESH,
+			mappedBy = "productCategory",
+			orphanRemoval = true)
 	@JsonIgnore
-	private Product product;
+	private List<Product> product;
 
 	public Long getCategory_id() {
 		return category_id;
@@ -45,12 +49,12 @@ public class Category {
 		this.categoryName = categoryName;
 	}
 
-	public Product getProduct() {
+	public List<Product> getProduct() {
 		return product;
 	}
 
-	public void setProduct(Product product) {
+	public void setProduct(List<Product> product) {
 		this.product = product;
 	}
-	
+
 }

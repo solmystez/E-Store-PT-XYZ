@@ -33,6 +33,7 @@ public class Orders {
 	private String orderIdentifier;
 	
 	private Integer total_price;
+	private Integer total_item;
 	
 	private String courierName;
 	
@@ -76,6 +77,14 @@ public class Orders {
 		this.updated_at = new Date();
 	}
 	
+	public Integer getTotal_item() {
+		return total_item;
+	}
+
+	public void setTotal_item(Integer total_item) {
+		this.total_item = total_item;
+	}
+
 	public String getCourierName() {
 		return courierName;
 	}

@@ -95,7 +95,33 @@ public class CartService {
 		return cartRepository.saveAll(cart1);
 	}
 	
-	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, Orders order) {
+	public List<Cart> countCartPriceAndStock(String order_identifier){
+		
+		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
+		
+		List<Cart> cart;
+		try {
+			cart = cartRepository.findAllByOrderIdentifier(order_identifier);
+		} catch (Exception e) {
+			throw new OrderNotFoundException("order_identifier not found");
+		}
+		
+		int count = 0;
+		int tempPrice = 0;
+		for(int i=0; i<cart.size(); i++) {
+			count++;
+			cart.get(i).setTotal_item(count);
+			cart.get(i).setTotal_price(cart.get(i).getProduct().getProductPrice() * cart.get(i).getQuantity());
+			tempPrice += cart.get(i).getTotal_price();
+
+			cart.get(i).setTotalProductPrice(tempPrice);
+			order.setTotal_price(cart.get(i).setTotalProductPrice(tempPrice));
+			order.setTotal_item(cart.get(i).setTotal_item(count));
+		}
+		return cart;
+	}
+	
+	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, Orders order) {
 				
 		
 		Product product;
@@ -112,34 +138,35 @@ public class CartService {
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
-	
+		
 		order = orderRepository.findByOrderIdentifier(order.getOrderIdentifier());
 		if(order == null) {
 			throw new OrderNotFoundException("order not found");
 		}
 		
 		int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1		
-		
 		Orders tempOrder = null;
 		
 		Iterator<Cart> it = product.getCart_detail().iterator();
-		
 		if(!it.hasNext()) {
-			
 			it = order.getCart_detail().iterator();
 			order.setOrderIdentifier(user.getTrackOrder());
-
 		}
+		
+		
+		int count = 0;
 		
 		while(it.hasNext()){
 			Cart c = it.next();
-			
+			count++;
 			if(c.getOrder().getId().equals(order.getId()) 
 					&&  c.getProduct().getProduct_id().equals(product.getProduct_id())) {
 				
 				if(c.getQuantity() >= product.getProductStock()) {
 					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
 				}
+				
+				
 				c.setQuantity(c.getQuantity()+1);
 				c.setMerchantName(product.getMerchantName());
 				c.setP_id(product.getProduct_id());
@@ -147,12 +174,21 @@ public class CartService {
 				c.setP_price(product.getProductPrice());
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
+				
+//				c.setTotal_item(c.getTotal_item()+count);
+//				c.setTotal_price(c.getQuantity() * product.getProductPrice());
+//				c.setTotalProductPrice(c.getTotalProductPrice() + c.getTotal_price());
+				
 				cartRepository.save(c);
+				
+				countCartPriceAndStock(order_identifier);
 				flag = 0;
 				tempOrder = c.getOrder();
 				break;
 			}
 		}
+		
+		
 		
 		//create cart detail kalo belom pernah di add ke cart
 		if(flag == 1) {
@@ -168,6 +204,12 @@ public class CartService {
 			currDetail.setP_price(product.getProductPrice());
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
+			
+			currDetail.setTotal_item(currDetail.getTotal_item()+1);
+			currDetail.setTotal_price(currDetail.getQuantity() * product.getProductPrice());
+//			currDetail.setTotalProductPrice(currDetail.getTotalProductPrice() + currDetail.getTotal_price());
+			
+			
 			cartRepository.save(currDetail);
 
 			// add cart detail ke cart
@@ -175,8 +217,12 @@ public class CartService {
 			product.getCart_detail().add(currDetail);
 			productRepository.save(product);
 			tempOrder = orderRepository.save(order);
+			countCartPriceAndStock(order_identifier);
 			
 		}
+		
+		
+		
 		return tempOrder;
 		
 	}

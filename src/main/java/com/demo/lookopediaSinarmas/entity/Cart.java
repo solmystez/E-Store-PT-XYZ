@@ -44,6 +44,9 @@ public class Cart {
 	private int p_price;
 	private String p_name;
 	private String p_description;
+	private int total_item;
+	private int totalProductPrice;
+	private int total_price;
 	
 	private Cart() {}
 	
@@ -51,6 +54,30 @@ public class Cart {
 		super();
 		this.order = order;
 		this.product = product;
+	}
+
+	public int getTotalProductPrice() {
+		return totalProductPrice;
+	}
+
+	public Integer setTotalProductPrice(int totalProductPrice) {
+		return this.totalProductPrice = totalProductPrice;
+	}
+
+	public int getTotal_item() {
+		return total_item;
+	}
+
+	public Integer setTotal_item(int total_item) {
+		return this.total_item = total_item;
+	}
+
+	public int getTotal_price() {
+		return total_price;
+	}
+
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
 	}
 
 	public String getCourierName() {
