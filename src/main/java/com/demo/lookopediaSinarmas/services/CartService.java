@@ -110,14 +110,11 @@ public class CartService {
 		int tempPrice = 0;
 		for(int i=0; i<cart.size(); i++) {
 			count++;
-			cart.get(i).setTotal_item(count);
 			cart.get(i).setTotal_price(cart.get(i).getProduct().getProductPrice() * cart.get(i).getQuantity());
 			tempPrice += cart.get(i).getTotal_price();
-
-			cart.get(i).setTotalProductPrice(tempPrice);
-			order.setTotal_price(cart.get(i).setTotalProductPrice(tempPrice));
-			order.setTotal_item(cart.get(i).setTotal_item(count));
 		}
+		order.setTotal_price(tempPrice);
+		order.setTotal_item(count);
 		return cart;
 	}
 	
@@ -153,12 +150,8 @@ public class CartService {
 			order.setOrderIdentifier(user.getTrackOrder());
 		}
 		
-		
-		int count = 0;
-		
 		while(it.hasNext()){
 			Cart c = it.next();
-			count++;
 			if(c.getOrder().getId().equals(order.getId()) 
 					&&  c.getProduct().getProduct_id().equals(product.getProduct_id())) {
 				
@@ -174,14 +167,11 @@ public class CartService {
 				c.setP_price(product.getProductPrice());
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
-				
-//				c.setTotal_item(c.getTotal_item()+count);
-//				c.setTotal_price(c.getQuantity() * product.getProductPrice());
-//				c.setTotalProductPrice(c.getTotalProductPrice() + c.getTotal_price());
-				
+				c.setTotal_price(c.getQuantity() * product.getProductPrice());
 				cartRepository.save(c);
 				
 				countCartPriceAndStock(order_identifier);
+				
 				flag = 0;
 				tempOrder = c.getOrder();
 				break;
@@ -205,7 +195,6 @@ public class CartService {
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
 			
-			currDetail.setTotal_item(currDetail.getTotal_item()+1);
 			currDetail.setTotal_price(currDetail.getQuantity() * product.getProductPrice());
 //			currDetail.setTotalProductPrice(currDetail.getTotalProductPrice() + currDetail.getTotal_price());
 			
