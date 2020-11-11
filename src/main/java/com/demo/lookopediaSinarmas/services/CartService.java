@@ -118,7 +118,7 @@ public class CartService {
 		return cart;
 	}
 	
-	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, Orders order) {
+	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier) {
 				
 		
 		Product product;
@@ -136,7 +136,7 @@ public class CartService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		order = orderRepository.findByOrderIdentifier(order_identifier);
+		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
 		if(order == null) {
 			throw new OrderNotFoundException("order not found");
 		}

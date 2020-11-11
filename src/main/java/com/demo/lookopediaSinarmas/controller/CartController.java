@@ -35,14 +35,11 @@ public class CartController {
 	
 	//addProduct to invoice With ProductId
 	@PostMapping("/addProduct/{product_id}/{user_id}/{order_identifier}")
-	public ResponseEntity<?> addProductToCartOrAddQty(@Valid @RequestBody Orders order, BindingResult result,
+	public ResponseEntity<?> addProductToCartOrAddQty(
 			 							@PathVariable Long product_id, @PathVariable Long user_id,
 			 							@PathVariable String order_identifier){
 		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier, order);
+		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier);
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	

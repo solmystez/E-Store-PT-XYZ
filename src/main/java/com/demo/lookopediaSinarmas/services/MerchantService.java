@@ -42,53 +42,42 @@ public class MerchantService {
 		} catch (Exception e1) {
 			throw new UserIdNotFoundException("User not found");
 		}
-		
 		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
 		if(!user.getUsername().equals(username)) {
 			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
 		}
 		
-		String fileName = null;
-		if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
-		else fileName = "nophoto.jpg";
-		
-		String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-				.path("/api/merchant/loadImageMerchant/")
-				.path(fileName)
-				.toUriString();
-		
-		String merchantFileName = file.getOriginalFilename();
-		String merchantFileType = file.getContentType();
-		long size = file.getSize();
-		String merchantFileSize = String.valueOf(size);
-		
 		try {
+			String fileName = null;
+			if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
+			else fileName = "nophoto.jpg";
+			
+			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+					.path("/api/merchant/loadImageMerchant/")
+					.path(fileName)
+					.toUriString();
+			
+			String merchantFileName = file.getOriginalFilename();
+			String merchantFileType = file.getContentType();
+			long size = file.getSize();
+			String merchantFileSize = String.valueOf(size);
+			merchant.setFileName(merchantFileName);
+			merchant.setFilePath(fileDownloadUri);
+			merchant.setFileType(merchantFileType);
+			merchant.setFileSize(merchantFileSize);
+			
 			user.setHasMerchant(true);
 			user.setMerchant(merchant);
 			
 			merchant.setUserMerchant(user);
 			merchant.setUserName(user.getUsername());
-			
-			merchant.setFileName(merchantFileName);
-			merchant.setFilePath(fileDownloadUri);
-			merchant.setFileType(merchantFileType);
-			merchant.setFileSize(merchantFileSize);
 					
 			if(merchant.getId() != null) {
-				merchant.setUserMerchant(userRepository.findById(user_id).get());
+				merchant.setUserMerchant(user);
 			}
 			log.info("merchant created");
-			merchantRepository.save(merchant);
-		} catch (Exception e) {
-			throw new MerchantNameAlreadyExistsException("Merchant name already used !");
-		}
-		
-		try {	
-			if(merchant.getId() != null) {
-				merchant.setUserMerchant(userRepository.findById(user_id).get());
-			}
-			
 			return merchantRepository.save(merchant);
+
 		} catch (Exception e) {
 			throw new MerchantNameAlreadyExistsException("Merchant name already used !");
 		}
@@ -97,7 +86,6 @@ public class MerchantService {
 	
 	public Merchant findMerchantByUserId(Long id) {
 		Merchant merchant;
-		
 		try {
 			merchant = merchantRepository.findMerchantByUserMerchantId(id);
 		} catch (Exception e) {
