@@ -136,7 +136,7 @@ public class CartService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		order = orderRepository.findByOrderIdentifier(order.getOrderIdentifier());
+		order = orderRepository.findByOrderIdentifier(order_identifier);
 		if(order == null) {
 			throw new OrderNotFoundException("order not found");
 		}

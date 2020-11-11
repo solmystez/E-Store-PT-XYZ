@@ -29,7 +29,6 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "orderIdentifier must be not null")
 	private String orderIdentifier;
 	
 	private Integer total_price;
