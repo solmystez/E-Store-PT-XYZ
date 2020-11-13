@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -23,29 +24,27 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Product {
+public class Product implements UserDetails{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long product_id;
-
-	@NotBlank(message = "Product Name is required")
+	
+	@Column(nullable = false)
 	private String productName;
-
-	@NotBlank(message = "Product description is required")
+	
 	private String productDescription;
-
-	@Min(value = 0, message = "Price cannot less then 0 !")
-	private int productPrice;
-
-	@Min(value = 0, message = "Stock cannot less then 0 !")
-	@Max(value = 999999, message ="Stock too much")
-	private int productStock;
+	private int productPrice; // belum validator
+	private int productStock;// belum validator
 	
 //	@Lob
 //	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
@@ -247,5 +246,47 @@ public class Product {
 	
 	@PreUpdate 
 	protected void onUpdate() { this.updated_at = new Date(); }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	 
 }

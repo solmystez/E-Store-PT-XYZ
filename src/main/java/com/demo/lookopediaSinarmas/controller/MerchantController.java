@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -43,6 +44,7 @@ import com.demo.lookopediaSinarmas.services.MerchantService;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
+import com.demo.lookopediaSinarmas.validator.MerchantValidator;
 
 @CrossOrigin(origins = { "http://localhost:3000"})
 @RestController
@@ -65,21 +67,36 @@ public class MerchantController {
 	private ImageStorageService imageStorageService;
 	
 	@Autowired
+	private MerchantValidator merchantValidator;
+	
+	@Autowired
 	private MerchantRepository merchantRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
 	
 	@PostMapping("/createMerchantToUserId/{user_id}")
-	public ResponseEntity<?> createMerchant(@Valid Merchant merchant, 
-		@PathVariable Long user_id,
+	public ResponseEntity<?> createMerchant(@Valid Merchant merchant, @PathVariable Long user_id,
+			BindingResult result, Principal principal){
+
+			merchantValidator.validate(merchant, result);
+		
+			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+			if(mapError != null) return mapError;
+			
+			Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName());
+			return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
+	}
+	
+	@PatchMapping("/updateMerchantToUserId/{user_id}")
+	public ResponseEntity<?> updateMerchant(@Valid Merchant merchant, @PathVariable Long user_id,
 		@RequestPart("file") MultipartFile file,
 		BindingResult result, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Merchant merchant1 = merchantService.createMerchant(user_id, merchant, principal.getName(), file);
+		Merchant merchant1 = merchantService.updateMerchant(user_id, merchant, principal.getName(), file);
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
 	
@@ -111,25 +128,7 @@ public class MerchantController {
 //			    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
 				.body(resource);
 	}
-	
-	@PostMapping("/updateMerchant/{merchant_id}")
-	public ResponseEntity<?> updateMerchantInfo(@Valid @RequestBody Merchant merchant, 
-			BindingResult result, Principal principal, @PathVariable Long merchant_id,
-			@RequestParam("file") MultipartFile file){
-			
-			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-			if(mapError != null) return mapError;
-			
-			merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-			if(merchant == null) {
-				throw new MerchantNotFoundException("Merchant not found");		    	
-			}
-			//image
-			
-			
-			return new ResponseEntity<Merchant>(HttpStatus.ACCEPTED);
-		 }
-	
+
 	@GetMapping("/findMerchant/{user_id}")
 	public ResponseEntity<?> findMerchantByUserId(@PathVariable Long user_id) {
 		

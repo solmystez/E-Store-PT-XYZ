@@ -58,6 +58,7 @@ public class User implements UserDetails {
 	
 	private String fileName;
 	private String filePath;
+	private String fileType;
 	private String fileSize;	
 	
 	private Date created_At;
@@ -172,6 +173,14 @@ public class User implements UserDetails {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 
 	public String getFilePath() {

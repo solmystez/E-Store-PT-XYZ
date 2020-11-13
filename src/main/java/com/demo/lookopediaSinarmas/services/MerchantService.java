@@ -2,6 +2,8 @@ package com.demo.lookopediaSinarmas.services;
 
 import java.nio.file.Paths;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +35,30 @@ public class MerchantService {
 	
 	@Autowired
 	private ImageStorageService imageStorageService;
+
+	public Merchant createMerchant(Long user_id, Merchant merchant, String name) {
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e1) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		try {
+			user.setHasMerchant(true);
+			user.setMerchant(merchant);
+			merchant.setUserMerchant(user);
+			merchant.setUserName(user.getUsername());
+			log.info("merchant created");
+			return merchantRepository.save(merchant);
+		} catch (Exception e) {
+			throw new MerchantNameAlreadyExistsException("Merchant name already used !");
+		}
+	}
 	
-	public Merchant createMerchant(Long user_id, Merchant merchant, String username, MultipartFile file) {
+	
+	
+	public Merchant updateMerchant(Long user_id, Merchant merchant, String username, MultipartFile file) {
 		
 		User user;
 		try {
@@ -42,7 +66,7 @@ public class MerchantService {
 		} catch (Exception e1) {
 			throw new UserIdNotFoundException("User not found");
 		}
-		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
+//		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
 		if(!user.getUsername().equals(username)) {
 			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
 		}
@@ -66,16 +90,12 @@ public class MerchantService {
 			merchant.setFileType(merchantFileType);
 			merchant.setFileSize(merchantFileSize);
 			
-			user.setHasMerchant(true);
-			user.setMerchant(merchant);
-			
-			merchant.setUserMerchant(user);
-			merchant.setUserName(user.getUsername());
-					
 			if(merchant.getId() != null) {
+				user.setMerchant(merchant);
+				merchant.setUserName(user.getUsername());
 				merchant.setUserMerchant(user);
+				log.info("merchant updated");
 			}
-			log.info("merchant created");
 			return merchantRepository.save(merchant);
 
 		} catch (Exception e) {
@@ -94,7 +114,7 @@ public class MerchantService {
 		
 		return merchant;
 	}
-	
+
 	
 	
 

@@ -29,6 +29,7 @@ import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.services.ProductService;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
+import com.demo.lookopediaSinarmas.validator.ProductValidator;
 
 @CrossOrigin(origins = { "http://localhost:3000"})
 @RestController
@@ -45,14 +46,19 @@ public class ProductController {
 	private ImageStorageService imageStorageService;
 	
 	@Autowired
+	private ProductValidator productValidator;
+	
+	@Autowired
 	MerchantRepository merchantRepository;
 	
 	@PostMapping("/createProduct/{merchant_id}")
 	public @ResponseBody ResponseEntity<?> createNewProduct(@Valid Product product, 
+		BindingResult result, Principal principal,
 		@PathVariable Long merchant_id,
-		@RequestPart("file") MultipartFile file,
-		BindingResult result, Principal principal){
-
+		@RequestPart("file") MultipartFile file){
+		
+		productValidator.validate(product, result);
+		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		

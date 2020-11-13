@@ -43,17 +43,17 @@ public class CartController {
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/countCart/{order_identifier}")
-	public ResponseEntity<?> countCart(@Valid @RequestBody Cart cart, BindingResult result,
-				@PathVariable String order_identifier){
-
-
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		List<Cart> cart1 = cartService.countCartPriceAndStock(order_identifier);
-		return new ResponseEntity<List<Cart>>(cart1, HttpStatus.OK);
-	}
+//	@PostMapping("/countCart/{order_identifier}")
+//	public ResponseEntity<?> countCart(@Valid @RequestBody Cart cart, BindingResult result,
+//				@PathVariable String order_identifier){
+//
+//
+//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+//		if(mapError != null) return mapError;
+//		
+//		List<Cart> cart1 = cartService.countCartPriceAndStock(order_identifier);
+//		return new ResponseEntity<List<Cart>>(cart1, HttpStatus.OK);
+//	}
 	
 	@PostMapping("/selectCourier/{track_order}")
 	public ResponseEntity<?> addCourierPrice(@Valid @RequestBody Cart cart, BindingResult result,

@@ -168,6 +168,7 @@ public class CartService {
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
 				c.setTotal_price(c.getQuantity() * product.getProductPrice());
+				c.setP_filePath(product.getFilePath());
 				cartRepository.save(c);
 				
 				countCartPriceAndStock(order_identifier);
@@ -194,6 +195,7 @@ public class CartService {
 			currDetail.setP_price(product.getProductPrice());
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
+			currDetail.setP_filePath(product.getFilePath());
 			
 			currDetail.setTotal_price(currDetail.getQuantity() * product.getProductPrice());
 //			currDetail.setTotalProductPrice(currDetail.getTotalProductPrice() + currDetail.getTotal_price());

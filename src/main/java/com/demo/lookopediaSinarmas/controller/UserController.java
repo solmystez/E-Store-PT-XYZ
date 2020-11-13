@@ -61,7 +61,7 @@ public class UserController {
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		User user1 = userService.saveOrUpdateUser(user);
+		User user1 = userService.saveUser(user);
 		return new ResponseEntity<User>(user1, HttpStatus.CREATED);
 	}
 	

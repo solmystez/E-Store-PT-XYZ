@@ -44,6 +44,7 @@ public class Cart {
 	private int p_price;
 	private String p_name;
 	private String p_description;
+	private String p_filePath;
 	private int total_price;
 	
 	private Cart() {}
@@ -76,6 +77,14 @@ public class Cart {
 
 	public void setCourier(Courier courier) {
 		this.courier = courier;
+	}
+
+	public String getP_filePath() {
+		return p_filePath;
+	}
+
+	public void setP_filePath(String p_filePath) {
+		this.p_filePath = p_filePath;
 	}
 
 	public int getP_price() {

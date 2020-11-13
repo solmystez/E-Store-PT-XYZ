@@ -2,10 +2,15 @@ package com.demo.lookopediaSinarmas.services;
 
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.demo.lookopediaSinarmas.controller.MerchantController;
 import com.demo.lookopediaSinarmas.entity.Address;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
@@ -15,9 +20,12 @@ import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserAddressRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
+import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 
 @Service
 public class UserService {
+	
+	private static Logger log = LoggerFactory.getLogger(MerchantController.class);
 	
 	@Autowired
 	UserRepository userRepository;
@@ -31,10 +39,13 @@ public class UserService {
 	@Autowired
 	UserAddressRepository userAddressRepository;
 	
+	@Autowired
+	private ImageStorageService imageStorageService;
+	
 	@Autowired//comes up with spring security
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	public User saveOrUpdateUser(User user) {
+	public User saveUser(User user) {
 		try {
 			//1. Username has to be unique(custom exception)
 			
@@ -50,6 +61,44 @@ public class UserService {
 		
 	}
 	
+	public User updateUser(User user, Long user_id, MultipartFile file, String username) {
+		try {
+			if(user.getId() != null ) {
+				try {
+					user = userRepository.findById(user_id).get();
+				} catch (Exception e) {
+					throw new UserIdNotFoundException("User not found");
+				}
+			}
+			String fileName = null;
+			if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
+			
+			String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+					.path("/api/user/loadImageUser/")
+					.path(fileName)
+					.toUriString();
+			
+			
+			String userFileName = file.getOriginalFilename();
+			String userFileType = file.getContentType();
+			long size = file.getSize();
+			String userFileSize = String.valueOf(size);
+			
+			user.setFileName(userFileName);
+			user.setFilePath(fileDownloadUri);
+			user.setFileType(userFileType);
+			user.setFileSize(userFileSize);
+			
+			
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			user.setConfirmPassword("");
+			log.info("user updated");
+			return userRepository.save(user);
+		} catch (Exception e) {
+			throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
+		}
+		
+	}
 	
 	public User findUserById(Long id) {
 		User user;
