@@ -28,8 +28,8 @@ public class Cart {
 	@JsonIgnore
     private Orders order;
     
-	@OneToOne
-	@JoinColumn(name = "courier_id", updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "courier_id", nullable = true)
 	@JsonIgnore
 	private Courier courier;
     

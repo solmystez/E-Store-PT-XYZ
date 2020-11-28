@@ -33,8 +33,8 @@ public class Orders {
 	
 	private Integer total_price;
 	private Integer total_item;
-	
-	private String courierName;
+	private String status;//(process, rejected, finish)
+	private String merchantName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -84,14 +84,6 @@ public class Orders {
 		this.total_item = total_item;
 	}
 
-	public String getCourierName() {
-		return courierName;
-	}
-
-	public void setCourierName(String courierName) {
-		this.courierName = courierName;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -122,6 +114,22 @@ public class Orders {
 
 	public void setTotal_price(Integer total_price) {
 		this.total_price = total_price;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
 	}
 
 	public User getUser() {

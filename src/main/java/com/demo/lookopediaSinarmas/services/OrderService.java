@@ -51,7 +51,7 @@ public class OrderService {
 		//-. --Stock product di merchant
 		//-. set transaction status 'Not Paid'
 		//-. generate order_number
-		
+		// ubah status nya jadi process
 		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
 		if(order == null) throw new OrderNotFoundException("order not found");
 		
@@ -87,7 +87,7 @@ public class OrderService {
 		}
 		System.out.println(carts);
 		order.setTotal_price(tempPrice);
-			
+		order.setStatus("process");
 		User user = userRepository.findById(order.getUser().getId()).get();
 	
 		Integer invSeq = 0;

@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Merchant;
+import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
@@ -99,6 +101,13 @@ public class MerchantController {
 		Merchant merchant1 = merchantService.updateMerchant(user_id, merchant, principal.getName(), file);
 		return new ResponseEntity<Merchant>(merchant1, HttpStatus.CREATED);
 	 }
+	
+	//check order acc/reject order
+	@GetMapping("/getCartDetail/{merchant_id}")
+	public Iterable<Orders> findAllAndManageOrder(@PathVariable String merchant_name){
+		return 	merchantService.findAndmanageAllOrder(merchant_name);
+	}
+	
 	
 	@GetMapping(value = "/loadImageMerchant/{filename:.+}",
 			produces = {MediaType.IMAGE_JPEG_VALUE,

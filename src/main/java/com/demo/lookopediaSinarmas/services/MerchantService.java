@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.services;
 
 import java.nio.file.Paths;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -13,11 +14,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.demo.lookopediaSinarmas.controller.MerchantController;
 import com.demo.lookopediaSinarmas.entity.Merchant;
+import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
+import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 import com.demo.lookopediaSinarmas.services.image.ImageStorageService;
 
@@ -32,23 +35,30 @@ public class MerchantService {
 	
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	OrderRepository orderRepository;
 	
 	@Autowired
 	private ImageStorageService imageStorageService;
 
-	public Merchant createMerchant(Long user_id, Merchant merchant, String name) {
+	public Merchant createMerchant(Long user_id, Merchant merchant, String username) {
 		User user;
 		try {
 			user = userRepository.findById(user_id).get();
 		} catch (Exception e1) {
 			throw new UserIdNotFoundException("User not found");
 		}
-		
-		try {
+		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");		
+		try {if(!user.getUsername().equals(username)) {
+			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
+		}
 			user.setHasMerchant(true);
-			user.setMerchant(merchant);
+//			user.setMerchant(merchant);
 			merchant.setUserMerchant(user);
 			merchant.setUserName(user.getUsername());
+//			merchant.setMerchantName(merchant.getMerchantName());
+//			merchant.setMerchantAddress(merchant.getMerchantAddress());
 			log.info("merchant created");
 			return merchantRepository.save(merchant);
 		} catch (Exception e) {
@@ -66,7 +76,7 @@ public class MerchantService {
 		} catch (Exception e1) {
 			throw new UserIdNotFoundException("User not found");
 		}
-//		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
+		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");
 		if(!user.getUsername().equals(username)) {
 			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
 		}
@@ -113,6 +123,15 @@ public class MerchantService {
 		}
 		
 		return merchant;
+	}
+
+
+
+	public Iterable<Orders> findAndmanageAllOrder(String merchant_name) {
+		//find all order by merchant something from
+		List<Orders> orders = orderRepository.findAllByMerchantName(merchant_name);
+		
+		return null;
 	}
 
 	

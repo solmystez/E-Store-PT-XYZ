@@ -36,11 +36,20 @@ public class CartController {
 	//addProduct to invoice With ProductId
 	@PostMapping("/addProduct/{product_id}/{user_id}/{order_identifier}")
 	public ResponseEntity<?> addProductToCartOrAddQty(
-			 							@PathVariable Long product_id, @PathVariable Long user_id,
-			 							@PathVariable String order_identifier){
+			@PathVariable Long product_id, @PathVariable Long user_id,
+			@PathVariable String order_identifier){
 		
 		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier);
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/subProduct/{product_id}/{user_id}")
+	public ResponseEntity<?> subProductFromCart(
+			@PathVariable Long product_id, @PathVariable Long user_id, 
+			@PathVariable String order_identifier){
+				
+		Orders orders1 = cartService.subProductInCart(product_id, user_id, order_identifier);
+		return new ResponseEntity<Orders>(orders1, HttpStatus.ACCEPTED);
 	}
 	
 //	@PostMapping("/countCart/{order_identifier}")
@@ -59,24 +68,11 @@ public class CartController {
 	public ResponseEntity<?> addCourierPrice(@Valid @RequestBody Cart cart, BindingResult result,
 			 							@PathVariable String track_order){
 				
-		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
 		Iterable<Cart> cart1 = cartService.selectCourier(cart, track_order);
 		return new ResponseEntity<Iterable<Cart>>(cart1, HttpStatus.OK);
-	}
-	
-	@PostMapping("/subProduct/{product_id}/{user_id}")
-	public ResponseEntity<?> subProductFromCart(@Valid @RequestBody Orders order, BindingResult result,
-			 							@PathVariable Long product_id, @PathVariable Long user_id){
-				
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Orders orders1 = cartService.subProductInCart(product_id, user_id, order);
-		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
 	//user cek keranjang belanjaan dia sendiri

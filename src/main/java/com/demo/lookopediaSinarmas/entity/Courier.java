@@ -1,5 +1,7 @@
 package com.demo.lookopediaSinarmas.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -29,11 +31,11 @@ public class Courier {
 	@Min(value = 0, message = "Courier price cannot less then 0 !")
 	private int courierPrice;
 	
-	@OneToOne(fetch = FetchType.LAZY,
+	@OneToMany(orphanRemoval = true,
 			cascade = CascadeType.ALL,
 			mappedBy = "courier")
 	@JsonIgnore
-	private Cart cart;
+	private List<Cart> cart;
 	
 	public Long getCourier_id() {
 		return courier_id;
@@ -42,12 +44,12 @@ public class Courier {
 	public void setCourier_id(Long courier_id) {
 		this.courier_id = courier_id;
 	}
-	
-	public Cart getCart() {
+
+	public List<Cart> getCart() {
 		return cart;
 	}
 
-	public void setCart(Cart cart) {
+	public void setCart(List<Cart> cart) {
 		this.cart = cart;
 	}
 

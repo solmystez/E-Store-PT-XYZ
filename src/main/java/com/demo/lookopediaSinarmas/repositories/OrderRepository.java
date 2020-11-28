@@ -18,5 +18,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Orders, Long
 	Orders findByUserId(Long id);
 	
 	List<Orders> findAllByUserId(Long user_id);
+	List<Orders> findAllByMerchantName(String merchant_name);
 	
 }

@@ -37,7 +37,7 @@ public class JwtTokenProvider {
 			//refactor : set claim one by one in here, not inside Jwts.builder()
 			//setClaim take Map<K , V>, actually we 
 			Map<String, Object> claims = new HashMap<>();
-			claims.put("id", (Long.toString(user.getId())));
+			claims.put("id", userId);
 			claims.put("email", user.getEmail());
 			claims.put("username", user.getUsername());
 			claims.put("password", user.getPassword());

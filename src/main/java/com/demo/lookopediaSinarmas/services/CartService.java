@@ -10,15 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.entity.Cart;
+import com.demo.lookopediaSinarmas.entity.Courier;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.User;
+import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
 import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
+import com.demo.lookopediaSinarmas.repositories.CourierRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
@@ -41,6 +44,9 @@ public class CartService {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	CourierRepository courierRepository;
 	
 	@Autowired
 	UserService userService;
@@ -86,11 +92,13 @@ public class CartService {
 		
 		List<Cart> cart1 = cartRepository
 				.selectCourierByOrderIdentifierAndMerchantName(order_identifier, merchant_name);
-		
+		Courier courier = courierRepository.findByCourierName(cart.getCourierName());
+		if(courier==null) throw new CourierErrorException("no courier found while select courier");
 		for(int i=0; i<cart1.size(); i++) {
+			cart1.get(i).setCourier(courier);
 			cart1.get(i).setCourierName(cart.getCourierName());
-			cart1.get(i).setCourier(cart.getCourier());
 		}
+		
 		
 		return cartRepository.saveAll(cart1);
 	}
@@ -120,7 +128,6 @@ public class CartService {
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier) {
 				
-		
 		Product product;
 		try {
 			product = productRepository.findById(product_id).get();
@@ -148,6 +155,7 @@ public class CartService {
 		if(!it.hasNext()) {
 			it = order.getCart_detail().iterator();
 			order.setOrderIdentifier(user.getTrackOrder());
+			order.setMerchantName(product.getMerchantName());
 		}
 		
 		while(it.hasNext()){
@@ -158,7 +166,6 @@ public class CartService {
 				if(c.getQuantity() >= product.getProductStock()) {
 					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
 				}
-				
 				
 				c.setQuantity(c.getQuantity()+1);
 				c.setMerchantName(product.getMerchantName());
@@ -178,7 +185,6 @@ public class CartService {
 				break;
 			}
 		}
-		
 		
 		
 		//create cart detail kalo belom pernah di add ke cart
@@ -211,16 +217,12 @@ public class CartService {
 			countCartPriceAndStock(order_identifier);
 			
 		}
-		
-		
-		
 		return tempOrder;
 		
 	}
 	
-	public Orders subProductInCart(Long product_id, Long user_id, Orders order) {
+	public Orders subProductInCart(Long product_id, Long user_id, String order_identifier) {
 		
-
 		Product product;
 		try {
 			product = productRepository.findById(product_id).get();
@@ -235,46 +237,48 @@ public class CartService {
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
-	
-		order = orderRepository.findByOrderIdentifier(order.getOrderIdentifier());
+		
+		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
 		if(order == null) {
 			throw new OrderNotFoundException("order not found");
 		}
 		
 		int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1		
-		
 		Orders tempOrder = null;
 		
 		Iterator<Cart> it = product.getCart_detail().iterator();
-		
 		if(!it.hasNext()) {
-			
 			it = order.getCart_detail().iterator();
 			order.setOrderIdentifier(user.getTrackOrder());
-
 		}
 		
 		while(it.hasNext()){
 			Cart c = it.next();
-			
 			if(c.getOrder().getId().equals(order.getId()) 
 					&&  c.getProduct().getProduct_id().equals(product.getProduct_id())) {
 				
 				if(c.getQuantity() <= 0) {
 					throw new ProductStockLimitException("Product must at least 1 pcs");
 				}
-				c.setQuantity(c.getQuantity()-1);	
+				c.setQuantity(c.getQuantity()-1);
+				c.setMerchantName(product.getMerchantName());
 				c.setP_id(product.getProduct_id());
 				c.setP_name(product.getProductName());
 				c.setP_price(product.getProductPrice());
 				c.setP_qty(product.getProductStock());
 				c.setP_description(product.getProductDescription());
+				c.setTotal_price(c.getQuantity() * product.getProductPrice());
+				c.setP_filePath(product.getFilePath());
 				cartRepository.save(c);
+				
+				countCartPriceAndStock(order_identifier);
+				
 				flag = 0;
 				tempOrder = c.getOrder();
 				break;
 			}
 		}
+		
 		
 		//create cart detail kalo belom pernah di add ke cart
 		if(flag == 1) {
@@ -284,11 +288,18 @@ public class CartService {
 			currDetail.setQuantity(1);
 			currDetail.setOrder(order);
 			currDetail.setProduct(product);
+			currDetail.setMerchantName(product.getMerchantName());
 			currDetail.setP_id(product_id);
 			currDetail.setP_name(product.getProductName());
 			currDetail.setP_price(product.getProductPrice());
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
+			currDetail.setP_filePath(product.getFilePath());
+			
+			currDetail.setTotal_price(currDetail.getQuantity() * product.getProductPrice());
+//			currDetail.setTotalProductPrice(currDetail.getTotalProductPrice() + currDetail.getTotal_price());
+			
+			
 			cartRepository.save(currDetail);
 
 			// add cart detail ke cart
@@ -296,9 +307,11 @@ public class CartService {
 			product.getCart_detail().add(currDetail);
 			productRepository.save(product);
 			tempOrder = orderRepository.save(order);
+			countCartPriceAndStock(order_identifier);
 			
 		}
 		return tempOrder;
+		
 	}
 	
 }
