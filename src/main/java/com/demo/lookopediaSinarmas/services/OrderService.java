@@ -79,7 +79,7 @@ public class OrderService {
 			carts.get(i).getProduct().setProductStock(stock);
 			
 			carts.get(i).getProduct().getMerchant().getMerchantName();
-			
+			carts.get(i).setStatus("Paid");
 			//every product sold, then add funds to merchant balance
 			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
 			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
@@ -87,7 +87,7 @@ public class OrderService {
 		}
 		System.out.println(carts);
 		order.setTotal_price(tempPrice);
-		order.setStatus("process");
+		order.setStatus("Paid");
 		User user = userRepository.findById(order.getUser().getId()).get();
 	
 		Integer invSeq = 0;

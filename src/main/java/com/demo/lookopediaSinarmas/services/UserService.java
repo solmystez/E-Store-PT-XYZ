@@ -53,7 +53,11 @@ public class UserService {
 			//we don't persist or show the confirmPassword
 			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 			user.setConfirmPassword("");//for postman result, we don't need another encode
-			
+//			boolean checkUsername = userRepository.existsByUsername(user.getUsername());
+//			boolean checkEmail = userRepository.existsByEmail(user.getEmail());
+//			
+//			if(checkUsername) throw new UsernameNotFoundException(user.getUsername() + " already exists");
+//			if(checkEmail) throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
 			return userRepository.save(user);
 		} catch (Exception e) {
 			throw new EmailAlreadyExistsException(user.getEmail() + " already exists");
@@ -139,7 +143,7 @@ public class UserService {
 				order = new Orders();
 				order.setUser(user);
 				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
-								
+				order.setUsername(user.getUsername());
 				ord.add(order);
 				user.setOrder(ord);
 				

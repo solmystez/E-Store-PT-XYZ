@@ -29,12 +29,12 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String orderIdentifier;
-	
 	private Integer total_price;
 	private Integer total_item;
 	private String status;//(process, rejected, finish)
 	private String merchantName;
+	private String username;
+	private String orderIdentifier;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -107,7 +107,7 @@ public class Orders {
 	public void setOrderIdentifier(String orderIdentifier) {
 		this.orderIdentifier = orderIdentifier;
 	}
-	
+
 	public Integer getTotal_price() {
 		return total_price;
 	}
@@ -122,6 +122,14 @@ public class Orders {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getMerchantName() {

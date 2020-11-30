@@ -13,12 +13,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.demo.lookopediaSinarmas.controller.MerchantController;
+import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -38,6 +40,9 @@ public class MerchantService {
 
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	CartRepository cartRepository;
 	
 	@Autowired
 	private ImageStorageService imageStorageService;
@@ -65,8 +70,6 @@ public class MerchantService {
 			throw new MerchantNameAlreadyExistsException("Merchant name already used !");
 		}
 	}
-	
-	
 	
 	public Merchant updateMerchant(Long user_id, Merchant merchant, String username, MultipartFile file) {
 		
@@ -127,14 +130,27 @@ public class MerchantService {
 
 
 
-	public Iterable<Orders> findAndmanageAllOrder(String merchant_name) {
+	public Iterable<Cart> findAndmanageAllOrder(String merchant_name) {
 		//find all order by merchant something from
-		List<Orders> orders = orderRepository.findAllByMerchantName(merchant_name);
+		String status = "Paid";
+		List<Cart> cart = cartRepository.findAllByMerchantNameAndStatus(merchant_name, status);
 		
-		return null;
+		
+		//find all order by merchant name and status product in cart, not paid
+		//if acc, update stok <= if reject do nothing
+		
+		return cart;
 	}
 
-	
+	public Cart accOrRejectProductOrder(Cart cart, Long product_id, String order_identifier) {
+		
+		Cart cart1 = cartRepository.setStatusProductWithOrderIdentifierAndProductId(order_identifier, product_id);
+		if(cart.getStatus().equals("Accept")) cart1.setStatus("Process");
+		else if(cart.getStatus().equals("Reject")) cart1.setStatus("Rejected");
+		
+		
+		return cartRepository.save(cart1);
+	}
 	
 
 }

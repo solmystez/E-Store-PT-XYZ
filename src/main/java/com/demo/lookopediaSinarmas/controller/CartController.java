@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -37,18 +38,18 @@ public class CartController {
 	@PostMapping("/addProduct/{product_id}/{user_id}/{order_identifier}")
 	public ResponseEntity<?> addProductToCartOrAddQty(
 			@PathVariable Long product_id, @PathVariable Long user_id,
-			@PathVariable String order_identifier){
+			@PathVariable String order_identifier, Principal principal){
 		
-		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier);
+		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier, principal.getName());
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
-	@PostMapping("/subProduct/{product_id}/{user_id}")
+	@PostMapping("/subProduct/{product_id}/{user_id}/{order_identifier}")
 	public ResponseEntity<?> subProductFromCart(
 			@PathVariable Long product_id, @PathVariable Long user_id, 
-			@PathVariable String order_identifier){
+			@PathVariable String order_identifier, Principal principal){
 				
-		Orders orders1 = cartService.subProductInCart(product_id, user_id, order_identifier);
+		Orders orders1 = cartService.subProductInCart(product_id, user_id, order_identifier, principal.getName());
 		return new ResponseEntity<Orders>(orders1, HttpStatus.ACCEPTED);
 	}
 	

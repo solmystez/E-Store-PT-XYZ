@@ -126,7 +126,7 @@ public class CartService {
 		return cart;
 	}
 	
-	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier) {
+	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, String username) {
 				
 		Product product;
 		try {
@@ -134,7 +134,6 @@ public class CartService {
 		} catch (Exception e) {
 			throw new ProductNotFoundException("Product not found");
 		}
-	
 		
 		User user;
 		try {
@@ -166,7 +165,7 @@ public class CartService {
 				if(c.getQuantity() >= product.getProductStock()) {
 					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
 				}
-				
+				c.setStatus("Not Paid");
 				c.setQuantity(c.getQuantity()+1);
 				c.setMerchantName(product.getMerchantName());
 				c.setP_id(product.getProduct_id());
@@ -193,6 +192,7 @@ public class CartService {
 			currDetail.setOrderIdentifier(user.getTrackOrder());
 			order.setOrderIdentifier(user.getTrackOrder());
 			currDetail.setQuantity(1);
+			currDetail.setStatus("Not Paid");
 			currDetail.setOrder(order);
 			currDetail.setProduct(product);
 			currDetail.setMerchantName(product.getMerchantName());
@@ -221,7 +221,7 @@ public class CartService {
 		
 	}
 	
-	public Orders subProductInCart(Long product_id, Long user_id, String order_identifier) {
+	public Orders subProductInCart(Long product_id, Long user_id, String order_identifier, String username) {
 		
 		Product product;
 		try {

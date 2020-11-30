@@ -36,6 +36,7 @@ public class Cart {
 	private Integer quantity = 0;
 	
 	private String orderIdentifier;
+	private String username;
 	private String merchantName;
 	private String courierName;
 	
@@ -45,6 +46,7 @@ public class Cart {
 	private String p_name;
 	private String p_description;
 	private String p_filePath;
+	private String status; //not paid, paid, processed(merchant), fail, finish(user)
 	private int total_price;
 	
 	private Cart() {}
@@ -94,15 +96,23 @@ public class Cart {
 	public void setP_price(int p_price) {
 		this.p_price = p_price;
 	}
-
-	public String getOrderIdentifier() {
-		return orderIdentifier;
-	}
-
-	public void setOrderIdentifier(String orderIdentifier) {
-		this.orderIdentifier = orderIdentifier;
-	}
 	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public String getMerchantName() {
 		return merchantName;
 	}
@@ -117,6 +127,14 @@ public class Cart {
 
 	public void setOrder(Orders order) {
 		this.order = order;
+	}
+
+	public String getOrderIdentifier() {
+		return orderIdentifier;
+	}
+
+	public void setOrderIdentifier(String orderIdentifier) {
+		this.orderIdentifier = orderIdentifier;
 	}
 
 	public Product getProduct() {
