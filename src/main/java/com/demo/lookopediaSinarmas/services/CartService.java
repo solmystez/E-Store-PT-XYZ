@@ -126,6 +126,32 @@ public class CartService {
 		return cart;
 	}
 	
+	public Orders addProductToCartAndConnectToOrder(Long product_id, Long user_id, String order_identifier, String username) {
+		
+		Product product;
+		try {
+			product = productRepository.findById(product_id).get();
+		} catch (Exception e) {
+			throw new ProductNotFoundException("Product not found");
+		}
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		
+//		List<Cart> carts = cartRepository.findall
+				
+		if(product.getMerchant().getMerchantName().equals("")) {
+			
+		}
+		
+		return null;
+	}
+	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, String username) {
 				
 		Product product;

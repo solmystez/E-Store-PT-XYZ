@@ -37,6 +37,7 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 	//findAllAndSortbyMerchanName
 	List<Cart> findAllByOrderIdentifier(String orderIdentifier, Sort sort);
 	
+//	List<Cart> findAllProductByUserIdAndStatus(Long user_id, )
 	
 	//for load all product that should be acc/rejected
 	@Query(value = "select * from cart "

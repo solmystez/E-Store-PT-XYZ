@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -61,31 +62,51 @@ public class OrderService {
 		//product A di --Stockny 
 		
 		List<Cart> carts = cartDetailRepository.findAllByOrderIdentifier(order_identifier, Sort.by(Sort.Direction.ASC,"merchantName"));
-		
+		for (int i = 0; i < carts.size(); i++) {
+			System.out.println(carts.get(i) + carts.get(i).getMerchantName());
+		}
 		int tempPrice = 0;
 		
-		Courier courier = courierRepository.findByCourierName(cart.getCourierName());
 		
-		for(int i=0; i<carts.size(); i++) {
-
+//		for(int i=0; i<carts.size(); i++) {
+//			int stock = 0;
+//			
+//			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
+//			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
+//			carts.get(i).getProduct().setProductStock(stock);
+////			if(carts.size()-1 == i) break;
+//			if(carts.get(i).getMerchantName() != carts.get(i+1).getMerchantName()) {
+//				tempPrice+=carts.get(i).getCourier().getCourierPrice();
+//			}
+//			
+//			carts.get(i).getProduct().getMerchant().getMerchantName();
+//			carts.get(i).setStatus("Paid");
+//			//every product sold, then add funds to merchant balance
+//			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
+//			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
+//			merchant.setMerchantBalance(tempPrice);
+//		}
+		Iterator<Cart> it = carts.iterator();
+		
+		while(it.hasNext()) {
+			Cart c = it.next();
+			
 			int stock = 0;
-			carts.get(i).setCourier(courier);
-			if(carts.get(i).getMerchantName() != carts.get(i).getMerchantName()+1) {
-				tempPrice+=carts.get(i).getCourier().getCourierPrice();
+			tempPrice += c.getP_price() * c.getQuantity(); //untuk total price di order
+			stock = c.getProduct().getProductStock() - c.getQuantity(); //ngurangin stock product merchant
+			c.getProduct().setProductStock(stock);
+//			if(carts.size()-1 == i) break;
+			if(c.getMerchantName() != c.getMerchantName()+1) {
+				tempPrice+=c.getCourier().getCourierPrice();
 			}
 			
-			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
-			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
-			carts.get(i).getProduct().setProductStock(stock);
-			
-			carts.get(i).getProduct().getMerchant().getMerchantName();
-			carts.get(i).setStatus("Paid");
+			c.getProduct().getMerchant().getMerchantName();
+			c.setStatus("Paid");
 			//every product sold, then add funds to merchant balance
-			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
+			String merchantName = c.getProduct().getMerchant().getMerchantName();
 			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
 			merchant.setMerchantBalance(tempPrice);
 		}
-		System.out.println(carts);
 		order.setTotal_price(tempPrice);
 		order.setStatus("Paid");
 		User user = userRepository.findById(order.getUser().getId()).get();
