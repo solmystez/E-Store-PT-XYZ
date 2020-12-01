@@ -35,12 +35,12 @@ public class CartController {
 	private MapValidationErrorService mapValidationErrorService;
 	
 	//addProduct to invoice With ProductId
-	@PostMapping("/addProduct/{product_id}/{user_id}/{order_identifier}")
+	@PostMapping("/addProduct/{product_id}/{user_id}")
 	public ResponseEntity<?> addProductToCartOrAddQty(
 			@PathVariable Long product_id, @PathVariable Long user_id,
-			@PathVariable String order_identifier, Principal principal){
+			Principal principal){
 		
-		Orders orders1 = cartService.addProductToCartOrAddQty(product_id, user_id, order_identifier, principal.getName());
+		Orders orders1 = cartService.addProductToCartAndConnectToOrder(product_id, user_id, principal.getName());
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
@@ -77,9 +77,9 @@ public class CartController {
 	}
 	
 	//user cek keranjang belanjaan dia sendiri
-	@GetMapping("/getCartDetail/{track_order}")
-	public Iterable<Cart> loadItemWantToBuy(@PathVariable String track_order){
-		return cartService.getCartDetailByOrderIdentifier(track_order);		
+	@GetMapping("/getCartDetail")
+	public Iterable<Cart> loadItemWantToBuy(Principal principal){
+		return cartService.getCartDetailByUserIdAndPrincipalName(principal.getName());		
 	}
 
 	//delete product di cart, bukan delete product
