@@ -131,23 +131,23 @@ public class UserService {
 			} catch (Exception e) {
 				throw new UserIdNotFoundException("User not found while trackOrder");
 			}
-//			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
+			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
 
-//			Set<Orders> ord = user.getOrder();
-//			
-////			System.out.println(inv);
-////			System.out.println(user.getInvoiceNow());
-//			
-//			Orders order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
-//			if(user.getTrackOrder() == null  || order == null) {
-//				order = new Orders();
-//				order.setUser(user);
-//				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
-//				order.setUsername(user.getUsername());
-//				ord.add(order);
-//				user.setOrder(ord);
-//				
-//			}
+			Set<Orders> ord = user.getOrder();
+			
+//			System.out.println(inv);
+//			System.out.println(user.getInvoiceNow());
+			
+			Orders order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
+			if(user.getTrackOrder() == null  || order == null) {
+				order = new Orders();
+				order.setUser(user);
+				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
+				order.setUsername(user.getUsername());
+				ord.add(order);
+				user.setOrder(ord);
+				
+			}
 			
 			return userRepository.save(user);
 		} catch (Exception e) {

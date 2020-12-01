@@ -87,7 +87,7 @@ public class OrderService {
 //			merchant.setMerchantBalance(tempPrice);
 //		}
 		Iterator<Cart> it = carts.iterator();
-		//validasi klo cmn 1 barang, kurirPrice++, belom
+		
 		while(it.hasNext()) {
 			Cart c = it.next();
 			

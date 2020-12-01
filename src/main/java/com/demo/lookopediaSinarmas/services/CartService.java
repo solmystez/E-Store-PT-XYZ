@@ -1,15 +1,12 @@
 package com.demo.lookopediaSinarmas.services;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.demo.lookopediaSinarmas.entity.Cart;
@@ -55,13 +52,11 @@ public class CartService {
 	UserService userService;
 	
 	//load all item before go to /buy
-	public List<Cart> getCartDetailByUserIdAndPrincipalName(String username) {
+	public List<Cart> getCartDetailByOrderIdentifier(String order_now) {
 		
-		//findAll product in cart By username and statusNotPaid
-		String status = "Not Paid";
 		List<Cart> cartDetail = null;
-		cartDetail = cartRepository.findAllByUsernameAndStatus(username, status);
-		
+		cartDetail = cartRepository.findAllByOrderIdentifier(order_now);
+
 		return cartDetail;
 	}
 	
@@ -131,125 +126,14 @@ public class CartService {
 		return cart;
 	}
 	
-	public Orders addProductToCartAndConnectToOrder(Long product_id, Long user_id, String username) {
-		String status = "Not Paid";
-		Orders tempOrder = null;
-		Product product;
-		Orders ord = null;
+	public Orders addProductToCartAndConnectToOrder(Long product_id, Long user_id, String order_identifier, String username) {
 		
+		Product product;
 		try {
 			product = productRepository.findById(product_id).get();
 		} catch (Exception e) {
 			throw new ProductNotFoundException("Product not found");
 		}
-		
-		int flag = 1; // cek udah ada di cart ga, kalo udah ada quantity + 1	
-		Iterator<Cart> it = product.getCart_detail().iterator();
-		List<Cart> carts = cartRepository.findAllByUsernameAndStatus(username, status);
-		//		Iterator<Cart> it = carts.iterator();
-		
-		if(!it.hasNext()) {
-			ord = new Orders();
-			ord.setUsername(username);
-			ord.setMerchantName(product.getMerchantName());
-			orderRepository.save(ord);
-			it = ord.getCart_detail().iterator();
-			
-		}
-		
-		while(it.hasNext()){
-//			it = ord.getCart_detail().iterator();
-			Cart c = it.next();
-			
-//			if(c.getProduct().getProduct_id().equals(product.getProduct_id())) {
-				if(c.getQuantity() >= product.getProductStock()) {
-					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
-				}
-				
-				c.setStatus("Not Paid");
-				c.setQuantity(c.getQuantity()+1);
-				c.setMerchantName(product.getMerchantName());
-				c.setP_id(product.getProduct_id());
-				c.setP_name(product.getProductName());
-				c.setP_price(product.getProductPrice());
-				c.setP_qty(product.getProductStock());
-				c.setP_description(product.getProductDescription());
-				c.setTotal_price(c.getQuantity() * product.getProductPrice());
-				c.setP_filePath(product.getFilePath());
-				cartRepository.save(c);
-				
-//				countCartPriceAndStock(order_identifier);
-				
-				flag = 0;
-				tempOrder = c.getOrder();
-				break;
-//			}
-		}
-		if(flag == 1) {
-			Cart newCart = new Cart(ord, product);
-			
-//			newCart.setOrderIdentifier(user.getTrackOrder());
-//			order.setOrderIdentifier(user.getTrackOrder());
-			
-			newCart.setOrder(ord);
-			
-			newCart.setQuantity(1);
-			newCart.setStatus("Not Paid");
-			newCart.setProduct(product);
-			newCart.setMerchantName(product.getMerchantName());
-			newCart.setP_id(product_id);
-			newCart.setP_name(product.getProductName());
-			newCart.setP_price(product.getProductPrice());
-			newCart.setP_qty(product.getProductStock());
-			newCart.setP_description(product.getProductDescription());
-			newCart.setP_filePath(product.getFilePath());
-			newCart.setUsername(username);
-			newCart.setTotal_price(newCart.getQuantity() * product.getProductPrice());
-			
-			product.getCart_detail().add(newCart);
-			
-			orderRepository.save(ord);
-			productRepository.save(product);
-			cartRepository.save(newCart);
-		}
-		
-		
-		String tempMerchantName;
-		for(int i=0; i<carts.size(); i++) {
-			if(carts.size() == i+1) break;
-			if(carts.size() > i) {
-				tempMerchantName = carts.get(i).getMerchantName();
-				carts.get(i).setMerchantName(tempMerchantName);
-				if(carts.get(i).getMerchantName() != carts.get(i+1).getMerchantName()) {
-					tempMerchantName = carts.get(i+1).getMerchantName();
-					Orders newOrds = new Orders();
-					carts.get(i).setOrder(newOrds);
-					carts.get(i).setMerchantName(tempMerchantName);
-					orderRepository.save(newOrds);
-				}
-			}
-		}
-		
-//		ArrayList<Cart> checkCarts = cartRepository.findAllByUsernameAndStatus(username, status);
-//		
-//		ListIterator<Cart> itCarts = checkCarts.listIterator();
-//		
-//		while(itCarts.hasNext()) {
-//			Cart cNext = itCarts.next();
-//			if(itCarts.hasPrevious()) {
-//				if(cNext.getMerchantName() != itCarts.previous().getMerchantName()) {
-//					Orders newOrd = new Orders();
-//					cNext.setOrder(newOrd);
-//					
-//					newOrd.setMerchantName(cNext.getMerchantName());
-//					orderRepository.save(newOrd);
-//					
-//					break;
-//				}
-//			}
-//			break;
-//		}
-//		
 		
 		User user;
 		try {
@@ -258,31 +142,14 @@ public class CartService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		//-. create aj produk mskin ke cart, attach merchantName, userName, set status NotPaid
-		//user view cart by userName and status 'not paid'
 		
-		//1. produk yg di create ke keranjang konek ke 1 order 
-			//jika : product di cart get order_id null
-		
-		//loop smua barang di cart, check punya order_id ngga
-		//check product di cart by merchantName, kalo sama konek ke 1 order
-		//kalo beda new Order(), set newOrd cart(i).getProduct
-		
-		//2. 
 //		List<Cart> carts = cartRepository.findall
-		//attach ke 1 order
+				
+		if(product.getMerchant().getMerchantName().equals("")) {
+			
+		}
 		
-	
-
-//		while(carts.size() < 0) {
-//			if(cart)
-//		}
-		
-//		if(product.getMerchant().getMerchantName().equals("")) {
-//			
-//		}
-		
-		return tempOrder;
+		return null;
 	}
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, String username) {
@@ -334,7 +201,6 @@ public class CartService {
 				c.setP_description(product.getProductDescription());
 				c.setTotal_price(c.getQuantity() * product.getProductPrice());
 				c.setP_filePath(product.getFilePath());
-				c.setUsername(username);
 				cartRepository.save(c);
 				
 				countCartPriceAndStock(order_identifier);
@@ -362,7 +228,7 @@ public class CartService {
 			currDetail.setP_qty(product.getProductStock());
 			currDetail.setP_description(product.getProductDescription());
 			currDetail.setP_filePath(product.getFilePath());
-			currDetail.setUsername(username);
+			
 			currDetail.setTotal_price(currDetail.getQuantity() * product.getProductPrice());
 //			currDetail.setTotalProductPrice(currDetail.getTotalProductPrice() + currDetail.getTotal_price());
 			
