@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.repositories;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -36,8 +37,11 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 	
 	//findAllAndSortbyMerchanName
 	List<Cart> findAllByOrderIdentifier(String orderIdentifier, Sort sort);
+
+	List<Cart> findAllByUsername(String username, Sort sort);
 	
-//	List<Cart> findAllProductByUserIdAndStatus(Long user_id, )
+	//view product
+	ArrayList<Cart> findAllByUsernameAndStatus(String username, String status);
 	
 	//for load all product that should be acc/rejected
 	@Query(value = "select * from cart "
@@ -56,5 +60,7 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 	
 	List<Cart> deleteAllByOrderId(Long id);
 	
+	List<Cart> findAllByUsername(String username);
+
 	
 }
