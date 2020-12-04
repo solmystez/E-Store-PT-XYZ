@@ -40,7 +40,7 @@ public class CartController {
 			@PathVariable Long product_id, @PathVariable Long user_id,
 			Principal principal){
 		
-		Orders orders1 = cartService.addProductToCartAndConnectToOrder(product_id, user_id, principal.getName());
+		Orders orders1 = cartService.addProductVer2(product_id, user_id, principal.getName());
 		return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	

@@ -131,6 +131,243 @@ public class CartService {
 		return cart;
 	}
 	
+	public Orders addProductVer3(Long product_id, Long user_id, String username) {
+		Orders tempOrder = null;
+		String status = "Not Paid";
+		int flag = 1;
+		
+		Product product;
+		try {
+			product = productRepository.findById(product_id).get();
+		} catch (Exception e) {
+			throw new ProductNotFoundException("Product not found");
+		}
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		List<Cart> carts = cartRepository.findAllByUsernameAndStatus(username, status);
+		Cart newCart = null;
+		if(carts.isEmpty()) {
+			System.out.println("msk ke null");
+			tempOrder = new Orders();
+			tempOrder.setMerchantName(product.getMerchantName());
+			tempOrder.setUser(user);
+			orderRepository.save(tempOrder);
+			
+			newCart = new Cart(tempOrder, product);
+			newCart.setOrder(tempOrder);
+			newCart.setProduct(product);
+			newCart.setUsername(username);
+			newCart.setStatus(status);
+			newCart.setP_id(product.getProduct_id());
+			newCart.setP_name(product.getProductName());
+			flag = 0;
+			cartRepository.save(newCart);
+			return tempOrder;
+		}
+
+		if(flag == 1) {
+			for(int i=0; i<carts.size(); i++) {
+				//1. check dlu ad produk nya uda ada blm, kalo udah +qty
+				if(carts.get(i).getProduct().getProduct_id().equals(product.getProduct_id())) {
+					carts.get(i).setQuantity(carts.get(i).getQuantity()+1);
+					carts.get(i).setTotal_price(carts.get(i).getQuantity() * carts.get(i).getProduct().getProductPrice());
+					cartRepository.save(carts.get(i));
+					return carts.get(i).getOrder();
+					
+				}
+				//2. check all product in keranjang, saat ini produk sama atau tidak bdsrkan ID
+				//krn tidak, do
+				if(!carts.get(i).getProduct().getProduct_id().equals(product.getProduct_id())) {
+					//check lg merchantName cart == product yg di select 
+					if(carts.get(i).getOrder().getMerchantName()
+							.equals(product.getMerchantName())) {
+						newCart = new Cart(carts.get(i).getOrder(), product);
+						newCart.setOrder(carts.get(i).getOrder());
+						newCart.setProduct(product);
+						newCart.setUsername(username);
+						newCart.setStatus(status);
+						newCart.setP_id(product.getProduct_id());
+						newCart.setP_name(product.getProductName());
+						cartRepository.save(newCart);
+						return carts.get(i).getOrder();
+					}else{//krn beda produknya, cek lg merchantName si produk yg lg di select skarang
+						tempOrder = new Orders();
+						tempOrder.setMerchantName(product.getMerchantName());
+						tempOrder.setUser(user);
+						orderRepository.save(tempOrder);
+						
+						newCart = new Cart(tempOrder, product);
+						newCart.setOrder(tempOrder);
+						newCart.setProduct(product);
+						newCart.setUsername(username);
+						newCart.setStatus(status);
+						newCart.setP_id(product.getProduct_id());
+						newCart.setP_name(product.getProductName());
+						cartRepository.save(newCart);
+						return carts.get(i).getOrder();
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return tempOrder;
+	}
+	
+	public Orders addProductVer4(Long product_id, Long user_id, String username) {
+		Orders tempOrder = null;
+		String status = "Not Paid";
+		int flag = 1;
+		
+		Product product;
+		try {
+			product = productRepository.findById(product_id).get();
+		} catch (Exception e) {
+			throw new ProductNotFoundException("Product not found");
+		}
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		List<Cart> carts = cartRepository.findAllByUsernameAndStatus(username, status);
+		Cart newCart = null;
+		if(carts.isEmpty()) {
+			System.out.println("msk ke null");
+			tempOrder = new Orders();
+			tempOrder.setMerchantName(product.getMerchantName());
+			tempOrder.setUser(user);
+			orderRepository.save(tempOrder);
+			
+			newCart = new Cart(tempOrder, product);
+			newCart.setOrder(tempOrder);
+			newCart.setProduct(product);
+			newCart.setUsername(username);
+			newCart.setStatus(status);
+			newCart.setP_id(product.getProduct_id());
+			newCart.setP_name(product.getProductName());
+			flag = 0;
+			cartRepository.save(newCart);
+			return tempOrder;
+		}
+
+		if(flag == 1) {
+			for(int i=0; i<carts.size(); i++) {
+				//1. check dlu ad produk nya uda ada blm, kalo udah +qty
+				if(carts.get(i).getOrder().getMerchantName()
+							.equals(product.getMerchantName())) {
+					if(carts.get(i).getProduct().getProduct_id().equals(product.getProduct_id())) {
+						carts.get(i).setQuantity(carts.get(i).getQuantity()+1);
+						carts.get(i).setTotal_price(carts.get(i).getQuantity() * carts.get(i).getProduct().getProductPrice());
+						cartRepository.save(carts.get(i));
+						return carts.get(i).getOrder();
+						
+					}else if(i == (carts.size()- 1)){
+						newCart = new Cart(carts.get(i).getOrder(), product);
+						newCart.setOrder(carts.get(i).getOrder());
+						newCart.setProduct(product);
+						newCart.setUsername(username);
+						newCart.setStatus(status);
+						newCart.setP_id(product.getProduct_id());
+						newCart.setP_name(product.getProductName());
+						cartRepository.save(newCart);
+						return carts.get(i).getOrder();
+					}
+					
+				}else if(i == (carts.size()- 1)){
+					
+					tempOrder = new Orders();
+					tempOrder.setMerchantName(product.getMerchantName());
+					tempOrder.setUser(user);
+					orderRepository.save(tempOrder);
+					
+					newCart = new Cart(tempOrder, product);
+					newCart.setOrder(tempOrder);
+					newCart.setProduct(product);
+					newCart.setUsername(username);
+					newCart.setStatus(status);
+					newCart.setP_id(product.getProduct_id());
+					newCart.setP_name(product.getProductName());
+					cartRepository.save(newCart);
+					return tempOrder;
+				}
+			}
+		}
+		
+		return tempOrder;
+	}
+	public Orders addProductVer2(Long product_id, Long user_id, String username) {
+		
+
+		
+		Product product;
+		try {
+			product = productRepository.findById(product_id).get();
+		} catch (Exception e) {
+			throw new ProductNotFoundException("Product not found");
+		}
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		String status = "Not Paid";
+		//cek udah ada ordernya blm untuk merchant product x, dan user x
+		List<Orders> tempListOrder = null;
+		Orders order = null;
+		//query ke table order ambil index 0
+		tempListOrder = orderRepository.findByMerchantNameAndUsernameAndStatusIsNull(product.getMerchantName(), username, status);
+		order =  tempListOrder.size() == 0 || tempListOrder  == null ? null : tempListOrder.get(0);
+		
+		//cek ada isi ga hasil dari atas
+		// klao ga ada create
+		if(order == null) {
+			order = new Orders();
+			order.setMerchantName(product.getMerchantName());
+			order.setUsername(username);
+			order.setUser(user);
+			order.setStatus(status);
+			orderRepository.save(order);
+		}
+		
+		//query ke table cart ambil index 0
+		List<Cart> tempListCart = cartRepository.selectCourierByOrderIdAndProductId(order.getId(), product_id);
+		Cart cart = tempListCart == null || tempListCart.isEmpty() ? null : tempListCart.get(0);
+		
+		//cek ada isi ga hasil dari atas
+		// klao ga ada create kalo ada qty ++
+		if(cart == null) {
+			cart = new Cart(order, product);
+			cart.setOrder(order);
+			cart.setProduct(product);
+			cart.setUsername(username);
+			cart.setStatus(status);
+			cart.setP_id(product.getProduct_id());
+			cart.setP_name(product.getProductName());
+			
+			cartRepository.save(cart);
+			return order;
+		}else {
+			cart.setQuantity(cart.getQuantity()+1);
+			cart.setTotal_price(cart.getQuantity() * cart.getProduct().getProductPrice());
+			cartRepository.save(cart);
+			return cart.getOrder();
+		}
+	}
 	public Orders addProductToCartAndConnectToOrder(Long product_id, Long user_id, String username) {
 		String status = "Not Paid";
 		Orders tempOrder = null;
@@ -284,6 +521,11 @@ public class CartService {
 		
 		return tempOrder;
 	}
+	
+	
+	////////////////////////////
+	//add + sub product (ord-identifier ver)
+	///////////////////////////
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String order_identifier, String username) {
 				

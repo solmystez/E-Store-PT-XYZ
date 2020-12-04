@@ -35,6 +35,13 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 			@Param("order_identifier") String order_identifier, 
 			@Param("merchant_name") String merchant_name);
 	
+	@Query(value = "select * from cart "
+			+ "where order_id=:order_id " + 
+			"	and " + 
+			" product_id=:product_id", nativeQuery = true)
+	List<Cart> selectCourierByOrderIdAndProductId(
+			@Param("order_id") Long order_id, 
+			@Param("product_id") Long product_id);
 	//findAllAndSortbyMerchanName
 	List<Cart> findAllByOrderIdentifier(String orderIdentifier, Sort sort);
 
@@ -42,6 +49,8 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 	
 	//view product
 	ArrayList<Cart> findAllByUsernameAndStatus(String username, String status);
+	
+	Cart findByUsernameAndStatus(String username, String status);
 	
 	//for load all product that should be acc/rejected
 	@Query(value = "select * from cart "
@@ -52,7 +61,7 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 			@Param("order_identifier") String order_identifier, 
 			@Param("product_id") Long productId);
 	
-	List<Cart> findAllByMerchantNameAndStatus(String merchantName, String status);
+//	List<Cart> findAllByMerchantNameAndStatus(String merchantName, String status);
 	
 	Cart findByOrderIdentifier(String orderIdentifier);
 

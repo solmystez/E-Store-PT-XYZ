@@ -33,7 +33,7 @@ public class Cart {
 	@JsonIgnore
 	private Courier courier;
     
-	private Integer quantity = 0;
+	private Integer quantity = 1;
 	
 	private String orderIdentifier;
 	private String username;

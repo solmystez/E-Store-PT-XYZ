@@ -133,13 +133,13 @@ public class MerchantService {
 	public Iterable<Cart> findAndmanageAllOrder(String merchant_name) {
 		//find all order by merchant something from
 		String status = "Paid";
-		List<Cart> cart = cartRepository.findAllByMerchantNameAndStatus(merchant_name, status);
+//		List<Cart> cart = cartRepository.findAllByMerchantNameAndStatus(merchant_name, status);
 		
 		
 		//find all order by merchant name and status product in cart, not paid
 		//if acc, update stok <= if reject do nothing
 		
-		return cart;
+		return null;
 	}
 
 	public Cart accOrRejectProductOrder(Cart cart, Long product_id, String order_identifier) {
