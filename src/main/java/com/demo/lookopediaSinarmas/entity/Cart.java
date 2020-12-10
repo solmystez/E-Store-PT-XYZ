@@ -7,7 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,11 +32,9 @@ public class Cart {
 	@JsonIgnore
 	private Courier courier;
     
-	private Integer quantity = 1;
+	private Integer quantity = 0;
 	
-	private String orderIdentifier;
 	private String username;
-	private String merchantName;
 	private String courierName;
 	
 	private Long p_id;
@@ -46,7 +43,7 @@ public class Cart {
 	private String p_name;
 	private String p_description;
 	private String p_filePath;
-	private String status; //not paid, paid, processed(merchant), fail, finish(user)
+	private String status; //not paid, paid
 	private int total_price;
 	
 	private Cart() {}
@@ -113,28 +110,12 @@ public class Cart {
 		this.status = status;
 	}
 
-	public String getMerchantName() {
-		return merchantName;
-	}
-
-	public void setMerchantName(String merchantName) {
-		this.merchantName = merchantName;
-	}
-
 	public Orders getOrder() {
 		return order;
 	}
 
 	public void setOrder(Orders order) {
 		this.order = order;
-	}
-
-	public String getOrderIdentifier() {
-		return orderIdentifier;
-	}
-
-	public void setOrderIdentifier(String orderIdentifier) {
-		this.orderIdentifier = orderIdentifier;
 	}
 
 	public Product getProduct() {

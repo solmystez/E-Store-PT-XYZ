@@ -44,105 +44,105 @@ public class OrderService {
 	UserService userService;
 	
 	
-	public Iterable<Cart> processItem(Cart cart, String order_identifier, Long user_id) {	
-		//====quest====
-		//-. kalkulasi harga disini ('total_price' Orders attribute)
-		//-. totalHarga+= voucher apa
-		//-. totalHarga+= courier apa
-		//-. --Stock product di merchant
-		//-. set transaction status 'Not Paid'
-		//-. generate order_number
-		// ubah status nya jadi process
-		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
-		if(order == null) throw new OrderNotFoundException("order not found");
-		
-		//1. temuin cart yg mana yg mau di proses + product apa aja 
-		//brati findByOrderIdentifier > tampung ke list
-		//=======gmn gw mainin object masing" nya ?
-		//product A di --Stockny 
-		
-		List<Cart> carts = cartDetailRepository.findAllByOrderIdentifier(order_identifier, Sort.by(Sort.Direction.ASC,"merchantName"));
-		for (int i = 0; i < carts.size(); i++) {
-			System.out.println(carts.get(i) + carts.get(i).getMerchantName());
-		}
-		int tempPrice = 0;
-		
-		
-//		for(int i=0; i<carts.size(); i++) {
-//			int stock = 0;
+//	public Iterable<Cart> processItem(Cart cart, String order_identifier, Long user_id) {	
+//		//====quest====
+//		//-. kalkulasi harga disini ('total_price' Orders attribute)
+//		//-. totalHarga+= voucher apa
+//		//-. totalHarga+= courier apa
+//		//-. --Stock product di merchant
+//		//-. set transaction status 'Not Paid'
+//		//-. generate order_number
+//		// ubah status nya jadi process
+//		Orders order = orderRepository.findByOrderIdentifier(order_identifier);
+//		if(order == null) throw new OrderNotFoundException("order not found");
+//		
+//		//1. temuin cart yg mana yg mau di proses + product apa aja 
+//		//brati findByOrderIdentifier > tampung ke list
+//		//=======gmn gw mainin object masing" nya ?
+//		//product A di --Stockny 
+//		
+//		List<Cart> carts = cartDetailRepository.findAllByOrderIdentifier(order_identifier, Sort.by(Sort.Direction.ASC,"merchantName"));
+//		for (int i = 0; i < carts.size(); i++) {
+//			System.out.println(carts.get(i) + carts.get(i).getMerchantName());
+//		}
+//		int tempPrice = 0;
+//		
+//		
+////		for(int i=0; i<carts.size(); i++) {
+////			int stock = 0;
+////			
+////			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
+////			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
+////			carts.get(i).getProduct().setProductStock(stock);
+//////			if(carts.size()-1 == i) break;
+////			if(carts.get(i).getMerchantName() != carts.get(i+1).getMerchantName()) {
+////				tempPrice+=carts.get(i).getCourier().getCourierPrice();
+////			}
+////			
+////			carts.get(i).getProduct().getMerchant().getMerchantName();
+////			carts.get(i).setStatus("Paid");
+////			//every product sold, then add funds to merchant balance
+////			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
+////			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
+////			merchant.setMerchantBalance(tempPrice);
+////		}
+//		Iterator<Cart> it = carts.iterator();
+//		//validasi klo cmn 1 barang, kurirPrice++, belom
+//		while(it.hasNext()) {
+//			Cart c = it.next();
 //			
-//			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
-//			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
-//			carts.get(i).getProduct().setProductStock(stock);
+//			int stock = 0;
+//			tempPrice += c.getP_price() * c.getQuantity(); //untuk total price di order
+//			stock = c.getProduct().getProductStock() - c.getQuantity(); //ngurangin stock product merchant
+//			c.getProduct().setProductStock(stock);
 ////			if(carts.size()-1 == i) break;
-//			if(carts.get(i).getMerchantName() != carts.get(i+1).getMerchantName()) {
-//				tempPrice+=carts.get(i).getCourier().getCourierPrice();
+//			if(c.getMerchantName() != c.getMerchantName()+1) {
+//				tempPrice+=c.getCourier().getCourierPrice();
 //			}
 //			
-//			carts.get(i).getProduct().getMerchant().getMerchantName();
-//			carts.get(i).setStatus("Paid");
+//			c.getProduct().getMerchant().getMerchantName();
+//			c.setStatus("Paid");
 //			//every product sold, then add funds to merchant balance
-//			String merchantName = carts.get(i).getProduct().getMerchant().getMerchantName();
+//			String merchantName = c.getProduct().getMerchant().getMerchantName();
 //			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
 //			merchant.setMerchantBalance(tempPrice);
 //		}
-		Iterator<Cart> it = carts.iterator();
-		//validasi klo cmn 1 barang, kurirPrice++, belom
-		while(it.hasNext()) {
-			Cart c = it.next();
-			
-			int stock = 0;
-			tempPrice += c.getP_price() * c.getQuantity(); //untuk total price di order
-			stock = c.getProduct().getProductStock() - c.getQuantity(); //ngurangin stock product merchant
-			c.getProduct().setProductStock(stock);
-//			if(carts.size()-1 == i) break;
-			if(c.getMerchantName() != c.getMerchantName()+1) {
-				tempPrice+=c.getCourier().getCourierPrice();
-			}
-			
-			c.getProduct().getMerchant().getMerchantName();
-			c.setStatus("Paid");
-			//every product sold, then add funds to merchant balance
-			String merchantName = c.getProduct().getMerchant().getMerchantName();
-			Merchant merchant = merchantRepository.findByMerchantName(merchantName);
-			merchant.setMerchantBalance(tempPrice);
-		}
-		order.setTotal_price(tempPrice);
-		order.setStatus("Paid");
-		User user = userRepository.findById(order.getUser().getId()).get();
-	
-		Integer invSeq = 0;
-		if(user.getOrder() != null) invSeq = user.getOrderSequence();
-		invSeq++;
-		user.setOrderSequence(invSeq);
-
-					
-		userService.applyInvoiceNow(user_id, user);
-
-		return cartDetailRepository.saveAll(carts);
-	}
+//		order.setTotal_price(tempPrice);
+//		order.setStatus("Paid");
+//		User user = userRepository.findById(order.getUser().getId()).get();
+//	
+//		Integer invSeq = 0;
+//		if(user.getOrder() != null) invSeq = user.getOrderSequence();
+//		invSeq++;
+//		user.setOrderSequence(invSeq);
+//
+//					
+//		userService.applyInvoiceNow(user_id, user);
+//
+//		return cartDetailRepository.saveAll(carts);
+//	}
 
 	public List<Orders> loadAllOrderByUserId(Long user_id) {
 		//task : validate last orderData
 		List<Orders> list = orderRepository.findAllByUserId(user_id);
 
-		if(list.size() > 1) {
-			list.remove(list.size()-1);
-			return list;
-		}
+//		if(list.size() > 1) {
+//			list.remove(list.size()-1);
+//			return list;
+//		}
 		return list;
 	}
 	
-	public Orders findDetailOrder(String order_identifier) {
-		
-		Orders order;
-		try {
-			order = orderRepository.findByOrderIdentifier(order_identifier);
-		} catch (Exception e) {
-			throw new OrderNotFoundException("Something wrong went load order detail");
-		}
-		
-		return order;
-	}
+//	public Orders findDetailOrder(String order_identifier) {
+//		
+//		Orders order;
+//		try {
+//			order = orderRepository.findByOrderIdentifier(order_identifier);
+//		} catch (Exception e) {
+//			throw new OrderNotFoundException("Something wrong went load order detail");
+//		}
+//		
+//		return order;
+//	}
 	
 }

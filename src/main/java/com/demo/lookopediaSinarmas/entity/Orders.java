@@ -34,7 +34,6 @@ public class Orders {
 	private String status;//(process, rejected, finish)
 	private String merchantName;
 	private String username;
-	private String orderIdentifier;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -98,14 +97,6 @@ public class Orders {
 
 	public void setTransaction(Transaction transaction) {
 		this.transaction = transaction;
-	}
-
-	public String getOrderIdentifier() {
-		return orderIdentifier;
-	}
-
-	public void setOrderIdentifier(String orderIdentifier) {
-		this.orderIdentifier = orderIdentifier;
 	}
 
 	public Integer getTotal_price() {

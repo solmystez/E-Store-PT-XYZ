@@ -15,8 +15,10 @@ import com.demo.lookopediaSinarmas.entity.Orders;
 public interface OrderRepository extends PagingAndSortingRepository<Orders, Long>{
 	
 //	@Query(value = "SELECT e FROM Invoice i WHERE e.invoice_identifier =: invoice_dentifier", nativeQuery = true)
-	Orders findByOrderIdentifier(String orderIdentifier);	
-	Orders findAllByOrderIdentifier(String orderIdentifier, Sort sort);	
+//	Orders findByOrderIdentifier(String orderIdentifier);	
+//	Orders findAllByOrderIdentifier(String orderIdentifier, Sort sort);	
+	
+	Orders findByUsernameAndMerchantNameAndStatus(String username, String merchantName, String status);
 	
 	Orders findByUserId(Long id);
 	

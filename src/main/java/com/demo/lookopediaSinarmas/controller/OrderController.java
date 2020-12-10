@@ -36,26 +36,26 @@ public class OrderController {
 		return orderService.loadAllOrderByUserId(user_id);	
 	}
 	
-	@GetMapping("/loadOrderDetails/{order_identifier}")
-	public ResponseEntity<?> loadProduct(@PathVariable String order_identifier){
-		
-		Orders orders = orderService.findDetailOrder(order_identifier);
-
-		return new ResponseEntity<Orders>(orders, HttpStatus.OK);
-	}
+//	@GetMapping("/loadOrderDetails/{order_identifier}")
+//	public ResponseEntity<?> loadProduct(@PathVariable String order_identifier){
+//		
+//		Orders orders = orderService.findDetailOrder(order_identifier);
+//
+//		return new ResponseEntity<Orders>(orders, HttpStatus.OK);
+//	}
 	
-	@PostMapping("/processItem/{order_identifier}/{user_id}")
-	public ResponseEntity<?> processItem(@Valid @RequestBody Cart cart,
-			BindingResult result, @PathVariable String order_identifier, @PathVariable Long user_id) {
-		
-		
-		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-		if(errorMap != null) return errorMap;
-		
-		Iterable<Cart> order1 = orderService.processItem(cart, order_identifier, user_id);
-				
-		return new ResponseEntity<Iterable<Cart>>(order1, HttpStatus.CREATED);
-	}
+//	@PostMapping("/processItem/{order_identifier}/{user_id}")
+//	public ResponseEntity<?> processItem(@Valid @RequestBody Cart cart,
+//			BindingResult result, @PathVariable String order_identifier, @PathVariable Long user_id) {
+//		
+//		
+//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+//		if(errorMap != null) return errorMap;
+//		
+//		Iterable<Cart> order1 = orderService.processItem(cart, order_identifier, user_id);
+//				
+//		return new ResponseEntity<Iterable<Cart>>(order1, HttpStatus.CREATED);
+//	}
 	
 
 }
