@@ -104,20 +104,19 @@ public class MerchantController {
 	
 	//check order acc/reject order
 	@GetMapping("/loadAllOrderInMerchant/{merchant_name}")
-	public Iterable<Cart> findAllAndManageOrder(@PathVariable String merchant_name){
-		return 	merchantService.findAndmanageAllOrder(merchant_name);
+	public Iterable<Orders> findAllOrderMerchant(@PathVariable String merchant_name){
+		return 	merchantService.findAllIncomingOrder(merchant_name);
 	}
 	
-	@PostMapping("/accOrRejectOrder/{order_identifier}/{product_id}")
-	public ResponseEntity<?> accOrRejectOrder(@Valid @RequestBody Cart cart,
-			BindingResult result, Principal principal
-			, @PathVariable Long product_id, @PathVariable String order_identifier){
+	@PostMapping("/accOrRejectOrder/{order_id}")
+	public ResponseEntity<?> accOrRejectOrder(@Valid @RequestBody Orders order,
+			BindingResult result, @PathVariable Long order_id){
 
 			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 			if(mapError != null) return mapError;
 			
-			Cart cart1 = merchantService.accOrRejectProductOrder(cart, product_id, order_identifier);
-			return new ResponseEntity<Cart>(cart1, HttpStatus.CREATED);
+			Orders orders1 = merchantService.accOrRejectProductOrder(order, order_id);
+			return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
 	@GetMapping(value = "/loadImageMerchant/{filename:.+}",

@@ -18,6 +18,7 @@ import com.demo.lookopediaSinarmas.entity.Merchant;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.merchant.MerchantNameAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
@@ -130,26 +131,26 @@ public class MerchantService {
 
 
 
-	public Iterable<Cart> findAndmanageAllOrder(String merchant_name) {
-		//find all order by merchant something from
+	public Iterable<Orders> findAllIncomingOrder(String merchant_name) {
 		String status = "Paid";
-//		List<Cart> cart = cartRepository.findAllByMerchantNameAndStatus(merchant_name, status);
+		List<Orders> order = null;
+		try {
+			order = orderRepository.findAllByMerchantNameAndStatus(merchant_name, status);
+		} catch (Exception e) {
+			throw new OrderNotFoundException("No order yet");
+		}
 		
-		
-		//find all order by merchant name and status product in cart, not paid
-		//if acc, update stok <= if reject do nothing
-		
-		return null;
+		return order;
 	}
 
-	public Cart accOrRejectProductOrder(Cart cart, Long product_id, String order_identifier) {
+	public Orders accOrRejectProductOrder(Orders order, Long order_id) {
 		
-		Cart cart1 = cartRepository.setStatusProductWithOrderIdentifierAndProductId(order_identifier, product_id);
-		if(cart.getStatus().equals("Accept")) cart1.setStatus("Process");
-		else if(cart.getStatus().equals("Reject")) cart1.setStatus("Rejected");
+		Orders order1 = orderRepository.findById(order_id).get();
+		if(order.getStatus().equals("Accept")) order1.setStatus("Process");
+		else if(order.getStatus().equals("Reject")) order1.setStatus("Rejected");
 		
 		
-		return cartRepository.save(cart1);
+		return orderRepository.save(order1);
 	}
 	
 

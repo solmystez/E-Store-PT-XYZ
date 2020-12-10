@@ -40,13 +40,13 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 			@Param("status") String status);
 	
 	//for load all product that should be acc/rejected
-	@Query(value = "select * from cart "
-			+ "where order_identifier=:order_identifier "
-			+ "and "
-			+ "product_id=:product_id", nativeQuery = true)
-	Cart setStatusProductWithOrderIdentifierAndProductId(
-			@Param("order_identifier") String order_identifier, 
-			@Param("product_id") Long productId);
+//	@Query(value = "select * from cart "
+//			+ "where order_identifier=:order_identifier "
+//			+ "and "
+//			+ "product_id=:product_id", nativeQuery = true)
+//	Cart setStatusProductWithOrderIdentifierAndProductId(
+//			@Param("order_identifier") String order_identifier, 
+//			@Param("product_id") Long productId);
 	
 	@Query(value = "select * from cart "
 			+ "where order_id=:order_id " + 
