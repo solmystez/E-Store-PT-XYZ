@@ -54,17 +54,6 @@ public class CartService {
 	@Autowired
 	UserService userService;
 	
-	//load all item before go to /buy
-	public List<Cart> getCartDetailByUserNameAndStatus(String username) {
-		
-		//findAll product in cart By username and statusNotPaid
-		String status = "Not Paid";
-		List<Cart> cartDetail = null;
-		cartDetail = cartRepository.findAllByUsernameAndStatus(username, status);
-		
-		return cartDetail;
-	}
-	
 	//delete product on cart, not delete product
 	@Transactional
 	public List<Cart> removeProductFromCart(Long product_id, String username) {
@@ -106,25 +95,24 @@ public class CartService {
 		return cartRepository.saveAll(cart1);
 	}
 	
-	public List<Cart> countOrderPriceAndStock(String username, String merchantName){
+	public List<Cart> countOrderPriceAndStock(String username){
 		String status = "Not Paid";
-		Orders order = orderRepository.findByUsernameAndMerchantNameAndStatus(username, merchantName, status);
 		List<Cart> cart;
 		try {
-			cart = cartRepository.findAllByOrderIdUsernameAndStatus(order.getId(), username, status);
+			cart = cartRepository.findAllByUsernameAndStatus(username, status);
 		} catch (Exception e) {
 			throw new OrderNotFoundException("order not found");
 		}
 		
-		int count = 0;
-		int tempPrice = 0;
+		int tempTotalPrice = 0;
 		for(int i=0; i<cart.size(); i++) {
-			count++;
-			cart.get(i).setTotal_price(cart.get(i).getProduct().getProductPrice() * cart.get(i).getQuantity());
-			tempPrice += cart.get(i).getTotal_price();
+			tempTotalPrice += cart.get(i).getP_price() * cart.get(i).getQuantity(); //untuk total price di order
 		}
-		order.setTotal_price(tempPrice);
-		order.setTotal_item(count);
+		for(int i=0; i<cart.size(); i++) {
+			cart.get(i).getOrder().setTotal_item(cart.size());
+			cart.get(i).getOrder().setTotal_price(tempTotalPrice);
+			cartRepository.save(cart.get(i));
+		}
 		return cart;
 	}
 	
@@ -162,6 +150,7 @@ public class CartService {
 			order.setUser(user);
 			order.setStatus(status);
 			orderRepository.save(order);
+			countOrderPriceAndStock(username);
 		}
 		
 		//query ke table cart ambil index 0
@@ -186,6 +175,7 @@ public class CartService {
 			cart.setUsername(username);
 			cart.setTotal_price(cart.getQuantity() * product.getProductPrice());
 			cartRepository.save(cart);
+			countOrderPriceAndStock(username);
 			return cart.getOrder();
 		}else {
 			if(cart.getQuantity() >= product.getProductStock()) {
@@ -202,6 +192,7 @@ public class CartService {
 			cart.setUsername(username);
 			cart.setTotal_price(cart.getQuantity() * product.getProductPrice());
 			cartRepository.save(cart);
+			countOrderPriceAndStock(username);
 			return cart.getOrder();
 		}
 		

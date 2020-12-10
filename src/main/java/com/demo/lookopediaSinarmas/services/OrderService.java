@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.lang.module.FindException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -42,6 +43,88 @@ public class OrderService {
 	
 	@Autowired 
 	UserService userService;
+	
+	@Autowired
+	CartService cartService;
+	
+	//nampilin order ke merchant mau jd 2 ( not paid, paid, process, rejected , finish?)
+	//1. loadAllIncoming order, brati dpt smua id order yg harus di process
+	// untuk order yg di klik, set statusnya (disini mau masukin alasan tidak?, klo ia, nambah attribute messageMerchant)
+	//
+	
+	//buat tampilin di merchant, pesanan yg udh checkout untuk di acc/ reject
+	public Iterable<Orders> loadIncomingOrderToProcess(String merchantName){
+		String status = "Paid";
+		
+		List<Orders> orders;
+		try {
+			orders = orderRepository.findAllByMerchantNameAndStatus(merchantName, status);
+		} catch (Exception e) {
+			throw new OrderNotFoundException("No order found");
+		}
+		
+		return orders;
+	}
+	
+	//api
+	//kalo udh di tampilin di merchant, bkin API yg req body, process, set process ny
+	public Orders acceptOrRejectOrder(Orders order, Long order_id) {
+		
+		//disini front end hardcode kirim status berdasarkan tombol yg di sdiain di FE sndiri(accept button/ reject button)
+		try {
+			order = orderRepository.findById(order_id).get();
+			
+			order.setStatus(order.getStatus());
+			return orderRepository.save(order);
+		} catch (Exception e) {
+			//prevent testing backend with empty body
+			throw new OrderNotFoundException("Order status cannot empty");
+		}
+		
+	}
+	//1. getAllOrderByUsername
+	//2. when click checkout button
+	//buat user klo klik checkout
+	public Iterable<Orders> processItem(Orders orders, Long user_id, String username) {	
+		//buat semua order yg usernamenya A dan status nya Not paid
+		//kondisi proses disini bgmn?, (scheduler)
+		//Special Case : 
+		//untuk nge checkout berarti,
+		String status = "Not Paid";
+		int tempPrice = 0;
+		
+		List<Orders> order1;
+		try {
+			order1 = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		} catch (Exception e) {
+			throw new OrderNotFoundException("No order found");
+		}
+		
+		List<Cart> carts = cartDetailRepository.findAllByUsernameAndStatus(username, status);
+		
+		//set status jd paid
+		for(int i=0; i<carts.size(); i++) {
+			int stock = 0;
+			
+			//anngep scheduler sudah read dan user sudah(dianggap) bayar
+			carts.get(i).setStatus("Paid");
+			
+//			tempPrice += carts.get(i).getP_price() * carts.get(i).getQuantity(); //untuk total price di order
+//			carts.get(i).getOrder().setTotal_price(tempPrice);
+			
+			stock = carts.get(i).getProduct().getProductStock() - carts.get(i).getQuantity(); //ngurangin stock product merchant
+			carts.get(i).getProduct().setProductStock(stock);
+			cartDetailRepository.save(carts.get(i));
+		}
+		
+		
+		for(int i=0; i<order1.size(); i++) {
+			order1.get(i).setStatus("Paid");
+			orderRepository.save(order1.get(i));
+		}
+		
+		return order1;
+	}
 	
 	
 //	public Iterable<Cart> processItem(Cart cart, String order_identifier, Long user_id) {	
@@ -122,14 +205,23 @@ public class OrderService {
 //		return cartDetailRepository.saveAll(carts);
 //	}
 
-	public List<Orders> loadAllOrderByUserId(Long user_id) {
-		//task : validate last orderData
-		List<Orders> list = orderRepository.findAllByUserId(user_id);
-
-//		if(list.size() > 1) {
-//			list.remove(list.size()-1);
-//			return list;
-//		}
+	//loadAll order ada 2 kategori, untuk:
+	//1. cart : load buat sblm checkout
+	//2. order : buat history pembelanjaan
+	
+	//1.
+	public List<Orders> loadAllOrderByUserIdForCart(Long user_id, String username) {
+		String status = "Not Paid";
+		cartService.countOrderPriceAndStock(username);
+		List<Orders> list = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		return list;
+	}
+	
+	//2.
+	public List<Orders> loadAllOrderByUserIdForHistory(Long user_id) {
+		String status = "Not Paid";
+		//find all order history if status != not paid
+		List<Orders> list = orderRepository.findAllByUserIdAndStatusForHistory(user_id, status);
 		return list;
 	}
 	

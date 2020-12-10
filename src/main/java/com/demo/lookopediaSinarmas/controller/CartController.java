@@ -65,12 +65,6 @@ public class CartController {
 		return new ResponseEntity<Iterable<Cart>>(cart1, HttpStatus.OK);
 	}
 	
-	//user cek keranjang belanjaan dia sendiri
-	@GetMapping("/getCartDetail")
-	public Iterable<Cart> loadItemWantToBuy(Principal principal){
-		return cartService.getCartDetailByUserNameAndStatus(principal.getName());		
-	}
-
 	//delete product di cart, bukan delete product
 	//delete by product_id di cart by username dan status not paid
 	@DeleteMapping("/deleteProductFromCart/{product_id}")

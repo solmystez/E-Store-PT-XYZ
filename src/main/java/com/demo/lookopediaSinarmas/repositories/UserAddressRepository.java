@@ -14,6 +14,8 @@ import com.demo.lookopediaSinarmas.entity.User;
 
 @Repository
 public interface UserAddressRepository extends CrudRepository<Address, Long> {
+
+	List<Address> findAllByUserAddressId(Long user_id);
 	
 //	List<Address> findByUser_Id(Long id);
 	

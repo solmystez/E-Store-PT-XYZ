@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -166,14 +167,28 @@ public class UserService {
 
 	public Address addUserAddress(Long user_id, Address user_address) {
 		
-		User user = userRepository.findById(user_id).get();
-		
-//		Address newAdr = new Address();
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
 		
 		user_address.setUserAddress(user);
-		
 		user_address.setAddress_label(user_address.getAddress_label());
 		
 		return userAddressRepository.save(user_address);
+	}
+
+	public Iterable<Address> findAllAddressByUserId(Long user_id) {
+		
+		List<Address> addr;
+		try {
+			addr = userAddressRepository.findAllByUserAddressId(user_id);
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		
+		return addr;
 	}
 }

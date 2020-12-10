@@ -34,6 +34,7 @@ public class Orders {
 	private String status;//(process, rejected, finish)
 	private String merchantName;
 	private String username;
+	private String address;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -51,7 +52,6 @@ public class Orders {
 			mappedBy = "order")
 	@JsonIgnore
 	private Transaction transaction;
-	
 	
 	@OneToMany(mappedBy = "order", 
 			cascade = CascadeType.ALL, 
@@ -75,6 +75,14 @@ public class Orders {
 		this.updated_at = new Date();
 	}
 	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
 	public Integer getTotal_item() {
 		return total_item;
 	}

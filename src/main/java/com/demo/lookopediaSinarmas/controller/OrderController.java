@@ -1,5 +1,7 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +33,14 @@ public class OrderController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@GetMapping("/loadAllOrder/{user_id}")
-	public Iterable<Orders> loadAllIOrderUser(@PathVariable Long user_id){
-		return orderService.loadAllOrderByUserId(user_id);	
+	@GetMapping("/loadAllCart/{user_id}")
+	public Iterable<Orders> loadAllCart(@PathVariable Long user_id, Principal principal){
+		return orderService.loadAllOrderByUserIdForCart(user_id, principal.getName());	
+	}
+	
+	@GetMapping("/loadAllHistory/{user_id}")
+	public Iterable<Orders> loadAllHistory(@PathVariable Long user_id){
+		return orderService.loadAllOrderByUserIdForHistory(user_id);	
 	}
 	
 //	@GetMapping("/loadOrderDetails/{order_identifier}")
@@ -44,18 +51,18 @@ public class OrderController {
 //		return new ResponseEntity<Orders>(orders, HttpStatus.OK);
 //	}
 	
-//	@PostMapping("/processItem/{order_identifier}/{user_id}")
-//	public ResponseEntity<?> processItem(@Valid @RequestBody Cart cart,
-//			BindingResult result, @PathVariable String order_identifier, @PathVariable Long user_id) {
-//		
-//		
-//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
-//		if(errorMap != null) return errorMap;
-//		
-//		Iterable<Cart> order1 = orderService.processItem(cart, order_identifier, user_id);
-//				
-//		return new ResponseEntity<Iterable<Cart>>(order1, HttpStatus.CREATED);
-//	}
+	@PostMapping("/checkout/{user_id}")
+	public ResponseEntity<?> processItem(@Valid @RequestBody Orders orders,
+			BindingResult result, @PathVariable Long user_id, Principal principal) {
+		//req body = status = "paid";
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		Iterable<Orders> order1 = orderService.processItem(orders, user_id, principal.getName());
+				
+		return new ResponseEntity<Iterable<Orders>>(order1, HttpStatus.CREATED);
+	}
+	
 	
 
 }
