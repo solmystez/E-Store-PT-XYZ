@@ -61,6 +61,17 @@ public class CartService {
 		List<Cart> cart = null;
 		try { 		
 			cartRepository.deleteProductByProductIdAndUsernameAndStatus(product_id, username, status);
+			User user = userRepository.findByUsername(username);
+			List<Orders> order = orderRepository.findAllByUserIdAndStatus(user.getId(), status);
+			for(int i=0; i<order.size(); i++) {
+				Orders toRemove = order.get(i);
+				if(toRemove.getCart_detail().isEmpty()) {
+					order.remove(toRemove);
+//					orderRepository.save(order.get(i));
+					orderRepository.delete(toRemove);
+				}
+			}
+		
 		} catch (Exception e) {
 //			System.err.println(e);
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
@@ -96,14 +107,14 @@ public class CartService {
 		String status = "Not Paid";
 		User user = userRepository.findByUsername(username);
 		List<Cart> cart;
-		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user.getId(), status);
-		for(int i=0; i<order.size(); i++) {
-			Orders toRemove = order.get(i);
-			if(toRemove.getCart_detail().isEmpty()) {
-//				orderRepository.save(order.get(i));
-				orderRepository.delete(toRemove);
-			}
-		}
+//		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user.getId(), status);
+//		for(int i=0; i<order.size(); i++) {
+//			Orders toRemove = order.get(i);
+//			if(toRemove.getCart_detail().isEmpty()) {
+////				orderRepository.save(order.get(i));
+//				orderRepository.delete(toRemove);
+//			}
+//		}
 		try {
 			cart = cartRepository.findAllByUsernameAndStatus(username, status);
 		} catch (Exception e) {
@@ -184,22 +195,26 @@ public class CartService {
 			countOrderPriceAndStock(username);
 			return cart.getOrder();
 		}else {
-			if(cart.getQuantity() >= product.getProductStock()) {
-				throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
+			try {
+				if(cart.getQuantity() >= product.getProductStock()) {
+					throw new ProductStockLimitException("Product stock only left : " + product.getProductStock());
+				}
+				cart.setQuantity(cart.getQuantity()+1);
+				cart.setStatus("Not Paid");
+				cart.setP_id(product.getProduct_id());
+				cart.setP_name(product.getProductName());
+				cart.setP_price(product.getProductPrice());
+				cart.setP_qty(product.getProductStock());
+				cart.setP_description(product.getProductDescription());
+				cart.setP_filePath(product.getFilePath());
+				cart.setUsername(username);
+				cart.setTotal_price(cart.getQuantity() * product.getProductPrice());
+				cartRepository.save(cart);
+				countOrderPriceAndStock(username);
+				return cart.getOrder();
+			} catch (Exception e) {
+				throw new OrderNotFoundException("something wrong when add 2 time");
 			}
-			cart.setQuantity(cart.getQuantity()+1);
-			cart.setStatus("Not Paid");
-			cart.setP_id(product.getProduct_id());
-			cart.setP_name(product.getProductName());
-			cart.setP_price(product.getProductPrice());
-			cart.setP_qty(product.getProductStock());
-			cart.setP_description(product.getProductDescription());
-			cart.setP_filePath(product.getFilePath());
-			cart.setUsername(username);
-			cart.setTotal_price(cart.getQuantity() * product.getProductPrice());
-			cartRepository.save(cart);
-			countOrderPriceAndStock(username);
-			return cart.getOrder();
 		}
 		
 	}

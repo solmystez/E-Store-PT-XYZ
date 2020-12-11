@@ -56,9 +56,10 @@ public class MerchantService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		if(user.isHasMerchant()) throw new UserIdNotFoundException("User already be a merchant !");		
-		try {if(!user.getUsername().equals(username)) {
-			throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
-		}
+		try {
+			if(!user.getUsername().equals(username)) {
+				throw new UserIdNotFoundException("cannot create merchant, wrong user_id parameter");
+			}
 			user.setHasMerchant(true);
 //			user.setMerchant(merchant);
 			merchant.setUserMerchant(user);

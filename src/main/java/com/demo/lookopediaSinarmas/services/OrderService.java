@@ -216,14 +216,14 @@ public class OrderService {
 		String status = "Not Paid";
 		cartService.countOrderPriceAndStock(username);
 		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
-		for(int i=0; i<order.size(); i++) {
-			Orders toRemove = order.get(i);
-			if(toRemove.getCart_detail().isEmpty()) {
-				order.remove(toRemove);
-//				orderRepository.save(order.get(i));
-				orderRepository.delete(toRemove);
-			}
-		}
+//		for(int i=0; i<order.size(); i++) {
+//			Orders toRemove = order.get(i);
+//			if(toRemove.getCart_detail().isEmpty()) {
+//				order.remove(toRemove);
+////				orderRepository.save(order.get(i));
+//				orderRepository.delete(toRemove);
+//			}
+//		}
 		
 		return order;
 	}
