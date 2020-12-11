@@ -4,6 +4,7 @@ import java.lang.module.FindException;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -210,11 +211,21 @@ public class OrderService {
 	//2. order : buat history pembelanjaan
 	
 	//1.
+	@Transactional
 	public List<Orders> loadAllOrderByUserIdForCart(Long user_id, String username) {
 		String status = "Not Paid";
 		cartService.countOrderPriceAndStock(username);
-		List<Orders> list = orderRepository.findAllByUserIdAndStatus(user_id, status);
-		return list;
+		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		for(int i=0; i<order.size(); i++) {
+			Orders toRemove = order.get(i);
+			if(toRemove.getCart_detail().isEmpty()) {
+				order.remove(toRemove);
+//				orderRepository.save(order.get(i));
+				orderRepository.delete(toRemove);
+			}
+		}
+		
+		return order;
 	}
 	
 	//2.

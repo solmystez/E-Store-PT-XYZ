@@ -64,5 +64,15 @@ public class OrderController {
 	}
 	
 	
-
+//	@PostMapping("/finishTransaction")
+//	public ResponseEntity<?> processItem(@Valid @RequestBody Orders orders,
+//			BindingResult result, @PathVariable Long user_id, Principal principal) {
+//		//req body = status = "paid";
+//		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+//		if(errorMap != null) return errorMap;
+//		
+//		Iterable<Orders> order1 = orderService.processItem(orders, user_id, principal.getName());
+//				
+//		return new ResponseEntity<Iterable<Orders>>(order1, HttpStatus.CREATED);
+//	}
 }

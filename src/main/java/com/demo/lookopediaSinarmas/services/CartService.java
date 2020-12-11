@@ -80,7 +80,8 @@ public class CartService {
 			Orders order1 = orderRepository.findByMerchantNameAndStatusAndUsername(order.getMerchantName(), status, username);
 			
 			Courier courier = courierRepository.findByCourierName(order.getCourierName());
-
+			int tempPrice = order1.getTotal_price() + courier.getCourierPrice();
+			order1.setTotal_price(tempPrice);
 			order1.setCourier(courier);
 			order1.setCourierName(order.getCourierName());
 			order1.setAddress(order.getAddress());
@@ -93,7 +94,16 @@ public class CartService {
 	
 	public List<Cart> countOrderPriceAndStock(String username){
 		String status = "Not Paid";
+		User user = userRepository.findByUsername(username);
 		List<Cart> cart;
+		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user.getId(), status);
+		for(int i=0; i<order.size(); i++) {
+			Orders toRemove = order.get(i);
+			if(toRemove.getCart_detail().isEmpty()) {
+//				orderRepository.save(order.get(i));
+				orderRepository.delete(toRemove);
+			}
+		}
 		try {
 			cart = cartRepository.findAllByUsernameAndStatus(username, status);
 		} catch (Exception e) {
