@@ -27,15 +27,9 @@ public class Cart {
 	@JsonIgnore
     private Orders order;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "courier_id", nullable = true)
-	@JsonIgnore
-	private Courier courier;
-    
 	private Integer quantity = 0;
 	
 	private String username;
-	private String courierName;
 	
 	private Long p_id;
 	private int p_qty;
@@ -60,22 +54,6 @@ public class Cart {
 
 	public void setTotal_price(int total_price) {
 		this.total_price = total_price;
-	}
-
-	public String getCourierName() {
-		return courierName;
-	}
-
-	public void setCourierName(String courierName) {
-		this.courierName = courierName;
-	}
-
-	public Courier getCourier() {
-		return courier;
-	}
-
-	public void setCourier(Courier courier) {
-		this.courier = courier;
 	}
 
 	public String getP_filePath() {

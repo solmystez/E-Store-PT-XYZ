@@ -68,31 +68,27 @@ public class CartService {
 		return cart;
 	}
 	
-	public Iterable<Cart> selectCourier(Cart cart, Long product_id, String username) {
+	public Orders selectCourier(Orders order, String username) {
 		
-//		order = orderRepository.findByOrderIdentifier(order_identifier);
 		//1. find product apa yg mau di pilih kurir
 		//2. set courier ke smua product yg di 'cart' dari merchant yang sama
-		//3. 
 		
-//		Product product;
-//		try {
-//			product = productRepository.findById(product_id).get();
-//		} catch (Exception e) {
-//			throw new ProductIdException("product id : " + product_id + " doesn't exist");
-//		}
-		
-		String status = "Not Paid";
-		List<Cart> cart1 = cartRepository
-				.selectAllByProductIdAndUsernameAndStatus(product_id, username, status);
-		Courier courier = courierRepository.findByCourierName(cart.getCourierName());
-		if(courier==null) throw new CourierErrorException("no courier found while select courier");
-		for(int i=0; i<cart1.size(); i++) {
-			cart1.get(i).setCourier(courier);
-			cart1.get(i).setCourierName(cart.getCourierName());
+		//get cartBody courierName : "Tiki"
+		//set courierName ke productYg di select
+		try {
+			String status = "Not Paid";
+			Orders order1 = orderRepository.findByMerchantNameAndStatusAndUsername(order.getMerchantName(), status, username);
+			
+			Courier courier = courierRepository.findByCourierName(order.getCourierName());
+
+			order1.setCourier(courier);
+			order1.setCourierName(order.getCourierName());
+			order1.setAddress(order.getAddress());
+			return orderRepository.save(order1);
+		} catch (Exception e) {
+			throw new CourierErrorException("no courier found while select courier");
 		}
 		
-		return cartRepository.saveAll(cart1);
 	}
 	
 	public List<Cart> countOrderPriceAndStock(String username){

@@ -35,6 +35,7 @@ public class Orders {
 	private String merchantName;
 	private String username;
 	private String address;
+	private String courierName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -63,6 +64,11 @@ public class Orders {
 	@JsonIgnore
 	private User user;
 	
+    @ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "courier_id", nullable = true)
+	@JsonIgnore
+	private Courier courier;
+	
 	public Orders() {}
 	
 	@PrePersist
@@ -75,12 +81,28 @@ public class Orders {
 		this.updated_at = new Date();
 	}
 	
+	public String getCourierName() {
+		return courierName;
+	}
+
+	public void setCourierName(String courierName) {
+		this.courierName = courierName;
+	}
+
 	public String getAddress() {
 		return address;
 	}
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public Courier getCourier() {
+		return courier;
+	}
+
+	public void setCourier(Courier courier) {
+		this.courier = courier;
 	}
 
 	public Integer getTotal_item() {

@@ -48,5 +48,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Orders, Long
 	List<Orders> findAllByMerchantName(String merchant_name);
 
 	List<Orders> findAllByMerchantNameAndStatus(String merchantName, String status);
+	Orders findByMerchantNameAndStatusAndUsername(String merchantName, String status, String username);
 	
 }

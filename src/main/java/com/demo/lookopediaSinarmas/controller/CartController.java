@@ -55,14 +55,14 @@ public class CartController {
 		return new ResponseEntity<Orders>(orders1, HttpStatus.ACCEPTED);
 	}
 	
-	@PostMapping("/selectCourier/{product_id}")
-	public ResponseEntity<?> addCourierPrice(@Valid @RequestBody Cart cart, BindingResult result,
-			 							@PathVariable Long product_id, Principal principal){
+	@PostMapping("/selectCourier")
+	public ResponseEntity<?> addCourierPrice(@Valid @RequestBody Orders order, BindingResult result,
+			 							 Principal principal){
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Iterable<Cart> cart1 = cartService.selectCourier(cart, product_id, principal.getName());
-		return new ResponseEntity<Iterable<Cart>>(cart1, HttpStatus.OK);
+		Orders order1 = cartService.selectCourier(order, principal.getName());
+		return new ResponseEntity<Orders>(order1, HttpStatus.OK);
 	}
 	
 	//delete product di cart, bukan delete product
