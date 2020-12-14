@@ -44,6 +44,19 @@ public interface OrderRepository extends PagingAndSortingRepository<Orders, Long
 			@Param("user_id") Long user_id, 
 			@Param("status") String status);
 	
+	@Query(value="SELECT * FROM orders "
+			+ " where username=:username"
+			+ " and "
+			+ " status=:status "
+			+ "order by username"
+			+ "DESC LIMIT 1"
+			, nativeQuery = true)
+	List<Orders> findByUsernameAndStatusIsOne(
+			@Param("username") String username,
+			@Param("status") String status);
+	
+	List<Orders> findTopByUsernameAndStatus(String username, String status);
+	
 	List<Orders> findAllByUserId(Long user_id);
 	List<Orders> findAllByUserIdAndStatus(Long user_id, String status);
 	List<Orders> findAllByMerchantName(String merchant_name);

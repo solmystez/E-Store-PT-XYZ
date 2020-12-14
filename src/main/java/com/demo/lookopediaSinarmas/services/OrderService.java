@@ -236,6 +236,21 @@ public class OrderService {
 		return list;
 	}
 	
+	public List<Orders> countAllTotalForCart(Long user_id) {
+		
+		User user = userRepository.findById(user_id).get();
+		
+		String status = "Not Paid";
+		List<Orders> order = orderRepository.findTopByUsernameAndStatus(user.getUsername(), status);	
+		return order;
+	}
+	
+//	public Integer countTotalItemForCart(Long user_id) {
+//		String status = "Not Paid";
+//		List<Orders> order = orderRepository.findAllByUserIdAndStatusForHistory(user_id, status);
+//		return order.get(0).getTotal_item();
+//	}
+	
 //	public Orders findDetailOrder(String order_identifier) {
 //		
 //		Orders order;

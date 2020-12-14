@@ -1,6 +1,7 @@
 package com.demo.lookopediaSinarmas.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -63,6 +64,10 @@ public class OrderController {
 		return new ResponseEntity<Iterable<Orders>>(order1, HttpStatus.CREATED);
 	}
 	
+	@GetMapping("/getTotal/{user_id}")
+	public List<Orders> getTotalPriceAndItem(@PathVariable Long user_id){
+		return orderService.countAllTotalForCart(user_id);
+	}
 	
 //	@PostMapping("/finishTransaction")
 //	public ResponseEntity<?> processItem(@Valid @RequestBody Orders orders,
