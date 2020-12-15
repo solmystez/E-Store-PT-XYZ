@@ -2,6 +2,9 @@ package com.demo.lookopediaSinarmas.controller;
 
 import static com.demo.lookopediaSinarmas.security.SecurityConstants.TOKEN_PREFIX;
 
+import java.security.Principal;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,18 +104,19 @@ public class UserController {
 	
 	@PostMapping("/addAddress/{user_id}")	
 	public ResponseEntity<?> addUserAddress(@Valid @RequestBody Address address,
-			BindingResult result, @PathVariable Long user_id) {
+			BindingResult result, @PathVariable Long user_id, Principal principal) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if(errorMap != null) return errorMap;
 		//belom di block validate jwt filter
-		Address address1 = userService.addUserAddress(user_id, address);
+		Address address1 = userService.addUserAddress(user_id, address, principal.getName());
 				
 		return new ResponseEntity<Address>(address1, HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/loadAllAddress/{user_id}")
-	public Iterable<Address> loadAllAddress(Long user_id){
-		return userService.findAllAddressByUserId(user_id);
+	@GetMapping("/loadAllAddress")
+	public ResponseEntity<?> loadAllAddress(Principal principal){
+		List<Address> address = userService.findAllAddressByUserId(principal.getName());
+		return new ResponseEntity<List<Address>>(address, HttpStatus.OK);
 	}
 	
 }

@@ -15,12 +15,12 @@ import com.demo.lookopediaSinarmas.entity.User;
 @Repository
 public interface UserAddressRepository extends CrudRepository<Address, Long> {
 
-	List<Address> findAllByUserAddressId(Long user_id);
+//	List<Address> findAllAddressByUserAddressId(Long user_id);
 	
 //	List<Address> findByUser_Id(Long id);
 	
-//	@Query(value = "select * from Address "
-//			+ "where user_id=:user_id", nativeQuery = true)
-//	Address findAllAddressByUserId(@Param("user_id") Long user_id);
+	@Query(value = "select * from address "
+			+ " where username=:username", nativeQuery = true)
+	List<Address> findAllAddressByUsername(@Param("username") String username);
 
 }

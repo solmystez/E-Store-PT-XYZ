@@ -107,7 +107,6 @@ public class UserService {
 	
 	public User findUserById(Long id) {
 		User user;
-		
 		try {
 			user = userRepository.findById(id).get();
 		} catch (Exception e) {
@@ -117,55 +116,11 @@ public class UserService {
 		return user;
 	}
 
-
 	public Iterable<User> findAllUsers() {
 		return userRepository.findAll();
 	}
 	
-	public User applyInvoiceNow(Long user_id, User user) {
-		
-		try {
-			
-			//1. find user id
-			try {
-				user = userRepository.findById(user_id).get();
-			} catch (Exception e) {
-				throw new UserIdNotFoundException("User not found while trackOrder");
-			}
-//			user.setTrackOrder("ord" + user.getId() + "-" + user.getOrderSequence());
-
-//			Set<Orders> ord = user.getOrder();
-//			
-////			System.out.println(inv);
-////			System.out.println(user.getInvoiceNow());
-//			
-//			Orders order = orderRepository.findByOrderIdentifier(user.getTrackOrder());
-//			if(user.getTrackOrder() == null  || order == null) {
-//				order = new Orders();
-//				order.setUser(user);
-//				order.setOrderIdentifier("ord" + user.getId() + "-" + user.getOrderSequence());
-//				order.setUsername(user.getUsername());
-//				ord.add(order);
-//				user.setOrder(ord);
-//				
-//			}
-			
-			return userRepository.save(user);
-		} catch (Exception e) {
-			throw new UserIdNotFoundException("User Id '" + user_id + "' doesn't exist(track order)");
-		}
-	}
-	
-	public Orders applyOrderIdentifier(String invoiceNow, Orders order) {
-		
-//		invoice = invoiceRepository.findByInvoiceNow(invoiceNow);
-//		
-//		invoice.setInvoiceIdentifier(invoiceNow);
-		return orderRepository.save(order);
-	}
-
-
-	public Address addUserAddress(Long user_id, Address user_address) {
+	public Address addUserAddress(Long user_id, Address user_address, String username) {
 		
 		User user;
 		try {
@@ -173,18 +128,18 @@ public class UserService {
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
-		
+		user_address.setUsername(username);
 		user_address.setUserAddress(user);
 		user_address.setAddress_label(user_address.getAddress_label());
 		
 		return userAddressRepository.save(user_address);
 	}
 
-	public Iterable<Address> findAllAddressByUserId(Long user_id) {
+	public List<Address> findAllAddressByUserId(String username) {
 		
-		List<Address> addr;
+		List<Address> addr = null;
 		try {
-			addr = userAddressRepository.findAllByUserAddressId(user_id);
+			addr = userAddressRepository.findAllAddressByUsername(username);
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
