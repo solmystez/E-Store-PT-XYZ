@@ -52,9 +52,8 @@ public class User implements UserDetails {
 	
 	private boolean hasMerchant;
 	
-	private String trackOrder;
-	private Integer orderSequence = 1;
-	
+	private Integer customerBalance;
+	private String customerPhoneNumber;
 	
 	private String fileName;
 	private String filePath;
@@ -133,22 +132,6 @@ public class User implements UserDetails {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public Integer getOrderSequence() {
-		return orderSequence;
-	}
-
-	public void setOrderSequence(Integer orderSequence) {
-		this.orderSequence = orderSequence;
-	}
-
-	public String getTrackOrder() {
-		return trackOrder;
-	}
-
-	public void setTrackOrder(String trackOrder) {
-		this.trackOrder = trackOrder;
 	}
 
 	public String getEmail() {

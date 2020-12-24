@@ -33,8 +33,9 @@ public class Orders {
 	private Integer total_item;
 	private String status;//(process, rejected, finish)
 	private String merchantName;
+	private String merchantAddress;
 	private String username;
-	private String address;
+	private String userAddress;
 	private String courierName;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
@@ -42,17 +43,6 @@ public class Orders {
 	private Date created_at;
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	private Date updated_at;
-	
-	@OneToOne
-	@JoinColumn(name = "voucher_id", updatable = false)
-	@JsonIgnore
-	private Voucher voucher;
-	
-	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,
-			mappedBy = "order")
-	@JsonIgnore
-	private Transaction transaction;
 	
 	@OneToMany(mappedBy = "order", 
 			cascade = CascadeType.ALL, 
@@ -63,6 +53,11 @@ public class Orders {
 	@JoinColumn(name = "user_id", updatable = false)
 	@JsonIgnore
 	private User user;
+	
+	@OneToOne
+	@JoinColumn(name = "voucher_id", updatable = false)
+	@JsonIgnore
+	private Voucher voucher;
 	
     @ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "courier_id", nullable = true)
@@ -89,14 +84,6 @@ public class Orders {
 		this.courierName = courierName;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
 	public Courier getCourier() {
 		return courier;
 	}
@@ -119,14 +106,6 @@ public class Orders {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Transaction getTransaction() {
-		return transaction;
-	}
-
-	public void setTransaction(Transaction transaction) {
-		this.transaction = transaction;
 	}
 
 	public Integer getTotal_price() {

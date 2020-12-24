@@ -35,11 +35,10 @@ public class Merchant implements UserDetails{
 	private String userName;
 	
 	private Integer merchantBalance = 0;
-
+	private String merchantAddress;
+	
 	private Integer totalProduct = 0;
 	
-//	@NotBlank(message = "Merchant address is required")
-	private String merchantAddress;
 		
 	private String fileName;
 	private String filePath;
@@ -64,14 +63,6 @@ public class Merchant implements UserDetails{
 		this.id = id;
 	}
 
-	public String getMerchantName() {
-		return merchantName;
-	}
-
-	public void setMerchantName(String merchantName) {
-		this.merchantName = merchantName;
-	}
-
 	public Integer getMerchantBalance() {
 		return merchantBalance;
 	}
@@ -80,20 +71,28 @@ public class Merchant implements UserDetails{
 		this.merchantBalance = merchantBalance;
 	}
 
-	public Integer getTotalProduct() {
-		return totalProduct;
-	}
-
-	public void setTotalProduct(Integer totalProduct) {
-		this.totalProduct = totalProduct;
-	}
-
 	public String getMerchantAddress() {
 		return merchantAddress;
 	}
 
 	public void setMerchantAddress(String merchantAddress) {
 		this.merchantAddress = merchantAddress;
+	}
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
+
+	public Integer getTotalProduct() {
+		return totalProduct;
+	}
+
+	public void setTotalProduct(Integer totalProduct) {
+		this.totalProduct = totalProduct;
 	}
 
 	public User getUserMerchant() {

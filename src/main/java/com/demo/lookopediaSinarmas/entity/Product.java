@@ -45,7 +45,7 @@ public class Product implements UserDetails{
 	private String productDescription;
 	private int productPrice; // belum validator
 	private int productStock;// belum validator
-	
+	private int productWeight;
 //	@Lob
 //	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
 //	private byte[] productImage;
@@ -54,6 +54,11 @@ public class Product implements UserDetails{
 	private String filePath;
 	private String fileType;
 	private String fileSize;
+	
+	private String merchantName;
+	
+	@NotBlank(message = "product category must be input")
+	private String productCategoryName;
 	
 	
 //	@Temporal(TemporalType.TIMESTAMP)
@@ -90,17 +95,13 @@ public class Product implements UserDetails{
 	private List<Rating> rating = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name ="productCategory_id")
 	@JsonIgnore
 	private Category productCategory;
 	
 	@ManyToOne(fetch = FetchType.LAZY)//we dont need load the merchant information, we know the project
 	@JsonIgnore//resolve infinite recursion problem
 	private Merchant merchant;
-	
-	private String merchantName;
-	
-	@NotBlank(message = "product category must be input")
-	private String productCategoryName;
 	
 	public String getProductCategoryName() {
 		return productCategoryName;

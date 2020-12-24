@@ -5,6 +5,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -23,10 +24,12 @@ public class Rating {
 	private Integer ratingValue;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "product_id")
 	@JsonIgnore
 	private Product productRating;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User userRating;
 	
