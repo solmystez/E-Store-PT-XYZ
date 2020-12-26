@@ -96,7 +96,7 @@ public class CartService {
 			order1.setCourier(courier);
 			order1.setCourierName(order.getCourierName());
 			order1.setUserAddress(order.getUserAddress());
-			order1.setMerchantAddress(order.getMerchantAddress());
+//			order1.setMerchantAddress(order.getMerchantAddress());
 			return orderRepository.save(order1);
 		} catch (Exception e) {
 			throw new CourierErrorException("please select courier and address correctly");
@@ -168,6 +168,7 @@ public class CartService {
 			order.setUsername(username);
 			order.setUser(user);
 			order.setStatus(status);
+			order.setMerchantAddress(product.getMerchant().getMerchantAddress());
 			orderRepository.save(order);
 			countOrderPriceAndStock(username);
 		}
