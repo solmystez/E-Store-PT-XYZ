@@ -76,6 +76,22 @@ public class Orders {
 		this.updated_at = new Date();
 	}
 	
+	public String getMerchantAddress() {
+		return merchantAddress;
+	}
+
+	public void setMerchantAddress(String merchantAddress) {
+		this.merchantAddress = merchantAddress;
+	}
+
+	public String getUserAddress() {
+		return userAddress;
+	}
+
+	public void setUserAddress(String userAddress) {
+		this.userAddress = userAddress;
+	}
+
 	public String getCourierName() {
 		return courierName;
 	}

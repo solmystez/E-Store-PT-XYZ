@@ -17,6 +17,7 @@ import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
 import com.demo.lookopediaSinarmas.exceptions.order.OrderNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.CourierRepository;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
@@ -92,6 +93,13 @@ public class OrderService {
 		//untuk nge checkout berarti,
 		String status = "Not Paid";
 		int tempPrice = 0;
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e1) {
+			throw new UserIdNotFoundException("User not found");
+		}
 		
 		List<Orders> order1;
 		try {

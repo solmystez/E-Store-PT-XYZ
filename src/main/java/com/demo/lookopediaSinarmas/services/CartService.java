@@ -95,13 +95,15 @@ public class CartService {
 			order1.setTotal_price(tempPrice);
 			order1.setCourier(courier);
 			order1.setCourierName(order.getCourierName());
-			order1.setAddress(order.getAddress());
+			order1.setUserAddress(order.getUserAddress());
+			order1.setMerchantAddress(order.getMerchantAddress());
 			return orderRepository.save(order1);
 		} catch (Exception e) {
-			throw new CourierErrorException("no courier found while select courier");
+			throw new CourierErrorException("please select courier and address correctly");
 		}
 		
 	}
+	
 	
 	public List<Cart> countOrderPriceAndStock(String username){
 		String status = "Not Paid";
