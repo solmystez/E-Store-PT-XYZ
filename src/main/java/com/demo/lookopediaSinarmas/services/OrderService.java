@@ -128,6 +128,7 @@ public class OrderService {
 		
 		for(int i=0; i<order1.size(); i++) {
 			order1.get(i).setStatus("Paid");
+			order1.get(i).setUserAddress(orders.getUserAddress());
 			orderRepository.save(order1.get(i));
 		}
 		

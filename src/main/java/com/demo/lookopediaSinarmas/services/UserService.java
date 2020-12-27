@@ -128,9 +128,14 @@ public class UserService {
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
+		user_address.setAddress_label(user_address.getAddress_label());
+		user_address.setAddressCity(user_address.getAddressCity());
+		user_address.setAddressCountry(user_address.getAddressCountry());
+		user_address.setAddressDescription(user_address.getAddressDescription());
+		user_address.setAddressPostalCode(user_address.getAddressPostalCode());
+		user_address.setAddressProvince(user_address.getAddressProvince());
 		user_address.setUsername(username);
 		user_address.setUserAddress(user);
-		user_address.setAddress_label(user_address.getAddress_label());
 		
 		return userAddressRepository.save(user_address);
 	}

@@ -46,8 +46,8 @@ public class CommentController {
 	@DeleteMapping("/deleteComment/{product_id}/{user_id}")
 	public ResponseEntity<?> deleteCommentFromProductWithUserId(@PathVariable Long user_id,
 			@PathVariable Long product_id) {
-	List<Comment> comment1 = commentService.removeCommentFromProduct(product_id, user_id);
+	Comment comment1 = commentService.removeCommentFromProduct(product_id, user_id);
 	
-	return new ResponseEntity<List<Comment>>(comment1, HttpStatus.OK);
+	return new ResponseEntity<Comment>(comment1, HttpStatus.OK);
 }
 }

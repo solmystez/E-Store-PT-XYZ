@@ -50,16 +50,17 @@ public class CommentService {
 		return commentRepository.save(comment);
 	}
 	
-	public List<Comment> removeCommentFromProduct(Long product_id, Long user_id) {
+	public Comment removeCommentFromProduct(Long product_id, Long user_id) {
 	
 		try {
-			Comment comment = commentRepository.findB(product_id, user_id);
+			Comment comment = commentRepository.findByProductCommentProduct_idAndUserCommentId(product_id, user_id);
+			return comment;
 		} catch (Exception e) {
 			throw new CommentNotFoundException("No Comment found");
 		}
 	
-		return commentRepository.findAllCommentByProductIdAndUserId(product_id, user_id);
-		return null;
+//		return commentRepository.findAllCommentByProductIdAndUserId(product_id, user_id);
+		
 	}
 	
 }
