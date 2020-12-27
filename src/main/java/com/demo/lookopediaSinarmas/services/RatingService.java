@@ -25,7 +25,7 @@ public class RatingService {
 	@Autowired
 	ProductRepository productRepository;
 	
-	public Rating postComment(Rating rating, Long product_id, Long user_id) {
+	public Rating giveRating(Rating rating, Long product_id, Long user_id) {
 		
 		Product product;
 		try {

@@ -53,12 +53,12 @@ public class CommentService {
 	public List<Comment> removeCommentFromProduct(Long product_id, Long user_id) {
 	
 		try {
-			commentRepository.deleteCommentByUserIdAndProductId(product_id, user_id);
+			Comment comment = commentRepository.findB(product_id, user_id);
 		} catch (Exception e) {
 			throw new CommentNotFoundException("No Comment found");
 		}
 	
-//		return commentRepository.findAllByProductId(product_id);
+		return commentRepository.findAllCommentByProductIdAndUserId(product_id, user_id);
 		return null;
 	}
 	
