@@ -64,8 +64,8 @@ public class MerchantService {
 //			user.setMerchant(merchant);
 			merchant.setUserMerchant(user);
 			merchant.setUserName(user.getUsername());
-//			merchant.setMerchantName(merchant.getMerchantName());
-//			merchant.setMerchantAddress(merchant.getMerchantAddress());
+			merchant.setMerchantName(merchant.getMerchantName());
+			merchant.setMerchantAddress(merchant.getMerchantAddress());
 			log.info("merchant created");
 			return merchantRepository.save(merchant);
 		} catch (Exception e) {

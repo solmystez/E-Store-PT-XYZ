@@ -28,14 +28,15 @@ public class Merchant implements UserDetails{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-//	@NotBlank(message = "Merchant name is required")
+	@NotBlank(message = "Merchant name is required")
 	@Column(unique = true)
 	private String merchantName;
+	private String merchantDesc;
 	
-	private String userName;
 	
 	private Integer merchantBalance = 0;
 	private String merchantAddress;
+	private String userName;
 	
 	private Integer totalProduct = 0;
 	
@@ -61,6 +62,14 @@ public class Merchant implements UserDetails{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getMerchantDesc() {
+		return merchantDesc;
+	}
+
+	public void setMerchantDesc(String merchantDesc) {
+		this.merchantDesc = merchantDesc;
 	}
 
 	public Integer getMerchantBalance() {

@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -66,6 +67,21 @@ public class ProductController {
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	
 	}
+	
+	@PatchMapping("/updateProduct/{merchant_id}")
+	public ResponseEntity<?> updateExistProduct(@Valid Product product, 
+			BindingResult result, Principal principal,
+			@PathVariable Long merchant_id,
+			@RequestPart("file") MultipartFile file){
+		
+		productValidator.validate(product, result);
+		
+		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+		if(mapError != null) return mapError;
+		
+		Product product1 = productService.updateProduct(merchant_id, product, file, principal.getName());
+		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
+	 }
 	
 	@GetMapping("/findProductByCategory/{category_name}")
 	public Iterable<Product> loadMerchantProduct(@PathVariable String category_name){
@@ -147,17 +163,6 @@ public class ProductController {
 //		
 //		return productService.findAllProducts();
 //	}
-	
-	@PostMapping("/updateProduct/{merchant_id}")
-	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
-		BindingResult result, @PathVariable Long merchant_id, Principal principal){
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Product product1 = productService.updateProduct(merchant_id, product, principal.getName());
-		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-	 }
 	
 	@GetMapping("/loadAllProductOnCatalog")
 	public Iterable<Product> loadAllProduct(){

@@ -65,6 +65,16 @@ public class CartController {
 		return new ResponseEntity<Orders>(order1, HttpStatus.OK);
 	}
 	
+	@GetMapping("/getTotalItem/{user_id}")
+	public int getTotalItem(@PathVariable Long user_id){
+		return cartService.returnTotalItem(user_id);
+	}
+	
+	@GetMapping("/getTotalPrice/{user_id}")
+	public int getTotalPrice(@PathVariable Long user_id){
+		return cartService.returnTotalPrice(user_id);
+	}
+	
 	//delete product di cart, bukan delete product
 	//delete by product_id di cart by username dan status not paid
 	@DeleteMapping("/deleteProductFromCart/{product_id}")

@@ -19,7 +19,7 @@ public class Address {
 	private Long address_id;
 	
 	@NotBlank(message = "Address is required")
-	private String address_label;
+	private String addressLabel;
 
 	private String addressDescription;
 	private String addressPostalCode;
@@ -27,20 +27,10 @@ public class Address {
 	private String addressProvince;
 	private String addressCountry;
 	
-	private String username;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User userAddress;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
 
 	public Long getAddress_id() {
 		return address_id;
@@ -50,12 +40,12 @@ public class Address {
 		this.address_id = address_id;
 	}
 
-	public String getAddress_label() {
-		return address_label;
+	public String getAddressLabel() {
+		return addressLabel;
 	}
 
-	public void setAddress_label(String address_label) {
-		this.address_label = address_label;
+	public void setAddressLabel(String addressLabel) {
+		this.addressLabel = addressLabel;
 	}
 
 	public String getAddressDescription() {

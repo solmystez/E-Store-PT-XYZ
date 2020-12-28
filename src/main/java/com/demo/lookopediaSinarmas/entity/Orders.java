@@ -37,6 +37,7 @@ public class Orders {
 	private String username;
 	private String userAddress;
 	private String courierName;
+	private String invoiceNumber;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -76,6 +77,14 @@ public class Orders {
 		this.updated_at = new Date();
 	}
 	
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+
 	public String getMerchantAddress() {
 		return merchantAddress;
 	}

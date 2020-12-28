@@ -135,6 +135,34 @@ public class CartService {
 		return cart;
 	}
 	
+	public int returnTotalItem(Long user_id) {
+		String status = "Not Paid";
+		//find semua order yang belum 
+		List<Orders> orders = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		
+		int temp=0;
+		for(int i=0; i<orders.size(); i++) {
+			temp = orders.get(i).getTotal_item();
+			if(temp == orders.size()) break;
+		}
+		
+		return temp;
+	}
+	
+
+	public int returnTotalPrice(Long user_id) {
+		String status = "Not Paid";
+		//find semua order yang belum 
+		List<Orders> orders = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		
+		int temp=0;
+		for(int i=0; i<orders.size(); i++) {
+			temp = orders.get(i).getTotal_price();
+			break;
+		}
+		
+		return temp;
+	}
 	
 	public Orders addProductToCartOrAddQty(Long product_id, Long user_id, String username) {
 		
@@ -302,6 +330,5 @@ public class CartService {
 		}
 		
 	}
-
 	
 }
