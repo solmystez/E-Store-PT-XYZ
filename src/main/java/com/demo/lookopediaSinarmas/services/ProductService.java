@@ -97,6 +97,10 @@ public class ProductService {
     		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
     		
+    		String fileUrl = product.getFilePath();
+    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+    		product.setBase64(encodedUrl);
+    		
     		product.setMerchant(merchant);
     		product.setProductCategory(category);
     		product.setMerchantName(merchant.getMerchantName());
