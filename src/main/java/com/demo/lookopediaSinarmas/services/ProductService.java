@@ -125,8 +125,50 @@ public class ProductService {
     	}
 	}
 	
-	
-	public Product updateProduct(Long merchant_id, Product product, MultipartFile file, String userName) {
+	public Product updateProduct(Long merchant_id, Product product, String userName) {
+		if(product.getProduct_id() != null) {
+			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
+			
+			if(existingProduct != null && (!existingProduct.getMerchant().getUserName().equals(userName))) {
+				throw new ProductNotFoundException("Product not found in your merchant");
+			}else if (existingProduct == null) {
+				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");
+			}
+		}
+		Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
+	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
+	    
+	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
+	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
+	    }
+	    try {		
+    		product.setProductName(product.getProductName());
+    		product.setProductDescription(product.getProductDescription());
+    		product.setProductCategoryName(product.getProductCategoryName());
+    		product.setProductPrice(product.getProductPrice());
+    		product.setProductStock(product.getProductStock());
+    		
+    		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
+    		product.setFileName(product.getFileName());
+    		product.setFilePath(product.getFilePath());//fileDownloadUri, productFilePath
+    		product.setFileType(product.getFileType());
+    		product.setFileSize(product.getFileSize());
+    		
+    		product.setMerchant(merchant);
+    		product.setProductCategory(category);
+    		product.setMerchantName(merchant.getMerchantName());
+    		
+    		Integer totalProduct = merchant.getTotalProduct();
+    		totalProduct++;		    
+    		merchant.setTotalProduct(totalProduct);
+    		
+    		log.info("product updated without multipart");	
+    		return productRepository.save(product);
+    	} catch (Exception e) {
+    		throw new MerchantNotFoundException("Merchant not found");
+    	}
+	}
+	public Product updateProductVerMultipart(Long merchant_id, Product product, MultipartFile file, String userName) {
 	
 		//prevent update product that doesn't belong to this merchant
 		if(product.getProduct_id() != null) {
@@ -213,7 +255,7 @@ public class ProductService {
     		totalProduct++;		    
     		merchant.setTotalProduct(totalProduct);
     		
-    		log.info("product updated");	
+    		log.info("product updated with multipart");	
     		return productRepository.save(product);
     	} catch (Exception e) {
     		throw new MerchantNotFoundException("Merchant not found");

@@ -72,17 +72,16 @@ public class ProductController {
 	}
 	
 	@PatchMapping("/updateProduct/{merchant_id}")
-	public ResponseEntity<?> updateExistProduct(@Valid Product product, 
+	public ResponseEntity<?> updateExistProduct(@Valid @RequestBody Product product, 
 			BindingResult result, Principal principal,
-			@PathVariable Long merchant_id,
-			@RequestPart("file") MultipartFile file){
+			@PathVariable Long merchant_id){
 		
 		productValidator.validate(product, result);
 		
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Product product1 = productService.updateProduct(merchant_id, product, file, principal.getName());
+		Product product1 = productService.updateProduct(merchant_id, product, principal.getName());
 		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 	 }
 	
