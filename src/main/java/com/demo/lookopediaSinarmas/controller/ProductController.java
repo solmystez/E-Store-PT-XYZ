@@ -1,7 +1,10 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Base64;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;

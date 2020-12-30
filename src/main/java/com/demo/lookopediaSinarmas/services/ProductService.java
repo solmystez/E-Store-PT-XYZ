@@ -1,7 +1,11 @@
 package com.demo.lookopediaSinarmas.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,7 +125,6 @@ public class ProductService {
 				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");
 			}
 		}
-
 		
 		Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
 	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
@@ -132,22 +135,20 @@ public class ProductService {
 	    
 	    String fileName = null;
     	
-    	if(!file.isEmpty()) {
-    		
-    		fileName = imageStorageService.storeFile(file);
-    	}else {
-    		fileName = "nophoto.jpg";
-    	}
+    	if(!file.isEmpty()) fileName = imageStorageService.storeFile(file);
+    	else fileName = "nophoto.jpg";
+    	
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
     			.path("/api/product/loadImageProduct/")
     			.path(fileName)
     			.toUriString();
     	
     	String productFileName = file.getOriginalFilename();
-//			String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
+//		String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
     	String productFileType = file.getContentType();
     	long size = file.getSize();
     	String productFileSize = String.valueOf(size);
+    	
     	try {		
     		product.setProductName(product.getProductName());
     		product.setProductDescription(product.getProductDescription());
@@ -160,7 +161,30 @@ public class ProductService {
     		product.setFileType(productFileType);
     		product.setFileSize(productFileSize);
     		
+    		Product productImage = productRepository.findById(product.getProduct_id()).get();
+        	
+    		//1
+//    		byte[] fileUrl = FileUtils.readFileToByteArray(new File(product.getFilePath()));
+    		String fileUrl = product.getFilePath();
+    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+    		
+    		//2
+//    		String originalUrl ="http://localhost:1233/api/product/loadImageProduct/Screenshot%20(1).png";
+//    		String encodedUrl = Base64.getUrlEncoder().encodeToString(originalURL.getBytes());
+//        	String originalInput = product.getFilePath();
+//        	byte[] fileContent;
+//    		try {
+//    			fileContent = FileUtils.readFileToByteArray(new File(originalInput));
+//    			String encodedString= Base64.getEncoder().encodeToString(fileContent);
+//    			product.setBase64(encodedString);
+//    		} catch (IOException e1) {
+//    			// TODO Auto-generated catch block
+//    			e1.printStackTrace();
+//    		}
+    		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
+    		
+    		product.setBase64(encodedUrl);
     		
     		product.setMerchant(merchant);
     		product.setProductCategory(category);

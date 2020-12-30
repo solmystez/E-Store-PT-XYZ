@@ -56,12 +56,12 @@ public class Product implements UserDetails{
 	private String fileSize;
 	
 	private String merchantName;
+	private String base64;
 	
 	@NotBlank(message = "product category must be input")
 	private String productCategoryName;
-	
-	
-//	@Temporal(TemporalType.TIMESTAMP)
+
+	//	@Temporal(TemporalType.TIMESTAMP)
 //	@Column(name = "created_date", nullable = false)
 	@JsonFormat(pattern = "yyyy-mm-dd") 
 	private Date created_at;
@@ -102,6 +102,22 @@ public class Product implements UserDetails{
 	@ManyToOne(fetch = FetchType.LAZY)//we dont need load the merchant information, we know the project
 	@JsonIgnore//resolve infinite recursion problem
 	private Merchant merchant;
+	
+	public String getBase64() {
+		return base64;
+	}
+
+	public void setBase64(String base64) {
+		this.base64 = base64;
+	}
+
+	public int getProductWeight() {
+		return productWeight;
+	}
+
+	public void setProductWeight(int productWeight) {
+		this.productWeight = productWeight;
+	}
 	
 	public String getProductCategoryName() {
 		return productCategoryName;
