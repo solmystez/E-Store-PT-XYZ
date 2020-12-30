@@ -96,15 +96,17 @@ public class ProductService {
     		product.setFileSize(productFileSize);
     		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
-    		String fileUrl;
+    		String fileUrl = product.getFilePath();
+    		
+    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+    		
     		if(file.getContentType().equals("image/png")) {
-    			fileUrl = "data:image/png;base64,"+product.getFilePath();
+    			encodedUrl = "data:image/png;base64,"+encodedUrl;
     		}else if(file.getContentType().equals("image/jpg")) {
-    			 fileUrl = "data:image/jpg;base64,"+product.getFilePath();
+    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
     		}else {
     			throw new ProductIdException("product must be png or jpg");
     		}
-    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
     		product.setBase64(encodedUrl);
     		log.info(fileUrl);
     		
@@ -176,16 +178,15 @@ public class ProductService {
         	
     		//1
 //    		byte[] fileUrl = FileUtils.readFileToByteArray(new File(product.getFilePath()));
-    		String fileUrl;
+    		String fileUrl = product.getFilePath();
+    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
     		if(file.getContentType().equals("image/png")) {
-    			fileUrl = "data:image/png;base64,"+product.getFilePath();
+    			encodedUrl = "data:image/png;base64,"+encodedUrl;
     		}else if(file.getContentType().equals("image/jpg")) {
-    			 fileUrl = "data:image/jpg;base64,"+product.getFilePath();
+    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
     		}else {
     			throw new ProductIdException("product must be png or jpg");
     		}
-    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
-    		
     		//2
 //    		String originalUrl ="http://localhost:1233/api/product/loadImageProduct/Screenshot%20(1).png";
 //    		String encodedUrl = Base64.getUrlEncoder().encodeToString(originalURL.getBytes());
