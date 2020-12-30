@@ -96,10 +96,17 @@ public class ProductService {
     		product.setFileSize(productFileSize);
     		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
-    		
-    		String fileUrl = product.getFilePath();
+    		String fileUrl;
+    		if(file.getContentType().equals("image/png")) {
+    			fileUrl = "data:image/png;base64,"+product.getFilePath();
+    		}else if(file.getContentType().equals("image/jpg")) {
+    			 fileUrl = "data:image/jpg;base64,"+product.getFilePath();
+    		}else {
+    			throw new ProductIdException("product must be png or jpg");
+    		}
     		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
     		product.setBase64(encodedUrl);
+    		log.info(fileUrl);
     		
     		product.setMerchant(merchant);
     		product.setProductCategory(category);
@@ -169,7 +176,14 @@ public class ProductService {
         	
     		//1
 //    		byte[] fileUrl = FileUtils.readFileToByteArray(new File(product.getFilePath()));
-    		String fileUrl = product.getFilePath();
+    		String fileUrl;
+    		if(file.getContentType().equals("image/png")) {
+    			fileUrl = "data:image/png;base64,"+product.getFilePath();
+    		}else if(file.getContentType().equals("image/jpg")) {
+    			 fileUrl = "data:image/jpg;base64,"+product.getFilePath();
+    		}else {
+    			throw new ProductIdException("product must be png or jpg");
+    		}
     		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
     		
     		//2
