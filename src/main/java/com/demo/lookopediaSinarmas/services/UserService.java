@@ -14,8 +14,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.demo.lookopediaSinarmas.controller.MerchantController;
 import com.demo.lookopediaSinarmas.entity.Address;
 import com.demo.lookopediaSinarmas.entity.Orders;
+import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.User;
+import com.demo.lookopediaSinarmas.exceptions.address.AddressNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.email.EmailAlreadyExistsException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
+import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.repositories.MerchantRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
@@ -135,13 +139,42 @@ public class UserService {
 		user_address.setAddressPostalCode(user_address.getAddressPostalCode());
 		user_address.setAddressProvince(user_address.getAddressProvince());
 		user_address.setUserAddress(user);
+		user_address.setUsername(username);
+		return userAddressRepository.save(user_address);
+	}
+	
+	public Address updateUserAddress(Long user_id, Address user_address, String username) {
+		
+//		if(user_address.getAddress_id() != null) {
+//			Address existUserAddress = userAddressRepository.findById(user_address.getAddress_id()).get();
+//			
+//			if(existUserAddress != null && (!existUserAddress.getUsername().equals(username))) {
+//				throw new ProductNotFoundException("Product not found in your merchant");
+//			}else if (existUserAddress == null) {
+//				throw new AddressNotFoundException("Address '" + existUserAddress.getAddressLabel() + "' cannot updated, because it doesn't exist");
+//			}
+//		}
+		
+		User user;
+		try {
+			user = userRepository.findById(user_id).get();
+		} catch (Exception e) {
+			throw new UserIdNotFoundException("User not found");
+		}
+		user_address.setAddressLabel(user_address.getAddressLabel());
+		user_address.setAddressCity(user_address.getAddressCity());
+		user_address.setAddressCountry(user_address.getAddressCountry());
+		user_address.setAddressDescription(user_address.getAddressDescription());
+		user_address.setAddressPostalCode(user_address.getAddressPostalCode());
+		user_address.setAddressProvince(user_address.getAddressProvince());
+		user_address.setUserAddress(user);
 		
 		return userAddressRepository.save(user_address);
 	}
 
 	public List<Address> findAllAddressByUserId(String username) {
 		
-		List<Address> addr = null;
+		List<Address> addr;
 		try {
 			addr = userAddressRepository.findAllAddressByUsername(username);
 		} catch (Exception e) {
@@ -149,5 +182,14 @@ public class UserService {
 		}
 		
 		return addr;
+	}
+	
+	public void deleteAddressById(Long address_id) {
+		try {
+			Address address = userAddressRepository.findById(address_id).get();
+			userAddressRepository.delete(address);
+		} catch (Exception e) {
+			throw new ProductIdException("Address with ID '" + address_id +"' cannot delete because doesn't exists");			
+		}
 	}
 }

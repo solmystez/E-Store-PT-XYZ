@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.demo.lookopediaSinarmas.exceptions.address.AddressNotFoundException;
+import com.demo.lookopediaSinarmas.exceptions.address.AddressNotFoundResponse;
 import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsException;
 import com.demo.lookopediaSinarmas.exceptions.category.CategoryAlreadyExistsResponse;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
@@ -98,6 +100,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler
 	public final ResponseEntity<Object> courierException(CourierErrorException ex, WebRequest request) {
 		CourierErrorExceptionResponse exceptionResponse = new CourierErrorExceptionResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> addressException(AddressNotFoundException ex, WebRequest request) {
+		AddressNotFoundResponse exceptionResponse = new AddressNotFoundResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

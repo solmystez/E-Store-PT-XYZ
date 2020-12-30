@@ -27,10 +27,20 @@ public class Address {
 	private String addressProvince;
 	private String addressCountry;
 	
+	private String username;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
 	private User userAddress;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public Long getAddress_id() {
 		return address_id;

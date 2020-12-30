@@ -16,7 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -119,4 +121,20 @@ public class UserController {
 		return new ResponseEntity<List<Address>>(address, HttpStatus.OK);
 	}
 	
+	@PatchMapping("/updateAddress/{address_id}/{user_id}")
+	public ResponseEntity<?> updateAddress(@Valid @RequestBody Address address,
+			BindingResult result, @PathVariable Long user_id, Principal principal) {
+		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+		if(errorMap != null) return errorMap;
+		
+		Address address1 = userService.updateUserAddress(user_id, address, principal.getName());
+		return new ResponseEntity<Address>(address1, HttpStatus.CREATED);
+	}
+	
+	@DeleteMapping("/deleteAddress/{address_id}")
+	public ResponseEntity<?> deleteAddress(@Valid @RequestBody Address address,
+			BindingResult result, @PathVariable Long address_id, Principal principal) {
+		userService.deleteAddressById(address_id);
+		return new ResponseEntity<String>("Address ID '" + address_id  + "' was successfully deleted", HttpStatus.OK);
+	}
 }
