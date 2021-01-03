@@ -121,7 +121,7 @@ public class UserController {
 		return new ResponseEntity<List<Address>>(address, HttpStatus.OK);
 	}
 	
-	@PatchMapping("/updateAddress/{address_id}/{user_id}")
+	@PatchMapping("/updateAddress/{user_id}")
 	public ResponseEntity<?> updateAddress(@Valid @RequestBody Address address,
 			BindingResult result, @PathVariable Long user_id, Principal principal) {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
