@@ -101,7 +101,7 @@ public class ProductController {
 	 }
 	
 	@GetMapping("/findProductByCategory/{category_name}")
-	public Iterable<Product> loadMerchantProduct(@PathVariable String category_name){
+	public Iterable<Product> loadProductByCategoryName(@PathVariable String category_name){
 		return productService.findAllProductByCategory(category_name);
 	}
 	

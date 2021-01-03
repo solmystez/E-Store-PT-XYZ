@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.services.CartService;
+import com.demo.lookopediaSinarmas.services.OrderService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
@@ -33,6 +34,14 @@ public class CartController {
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
+	
+	@Autowired
+	private OrderService orderService;
+	
+	@GetMapping("/loadCart/{user_id}")
+	public Iterable<Orders> loadAllCart(@PathVariable Long user_id, Principal principal){
+		return orderService.loadAllOrderByUserIdForCart(user_id, principal.getName());	
+	}
 	
 	//addProduct to invoice With ProductId
 	@PostMapping("/addProduct/{product_id}/{user_id}")

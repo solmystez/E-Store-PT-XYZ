@@ -168,7 +168,7 @@ public class UserService {
 		user_address.setAddressPostalCode(user_address.getAddressPostalCode());
 		user_address.setAddressProvince(user_address.getAddressProvince());
 		user_address.setUserAddress(user);
-		
+		user_address.setUsername(username);
 		return userAddressRepository.save(user_address);
 	}
 

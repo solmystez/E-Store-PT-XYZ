@@ -62,5 +62,17 @@ public class CommentService {
 //		return commentRepository.findAllCommentByProductIdAndUserId(product_id, user_id);
 		
 	}
+
+	public List<Comment> getAllComentInProductId(Long product_id) {
+		
+		List<Comment> comments;
+		try {
+			comments = commentRepository.findCommentByProductId(product_id);
+			return comments;
+		} catch (Exception e) {
+			throw new CommentNotFoundException("no comment found in this product id");
+		}
+		
+	}
 	
 }

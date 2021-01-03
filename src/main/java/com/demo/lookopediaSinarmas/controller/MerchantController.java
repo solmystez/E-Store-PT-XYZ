@@ -78,7 +78,7 @@ public class MerchantController {
 	private UserRepository userRepository;
 	
 	@PostMapping("/createMerchantToUserId/{user_id}")
-	public ResponseEntity<?> createMerchant(@Valid Merchant merchant, @PathVariable Long user_id,
+	public ResponseEntity<?> registerMerchant(@Valid Merchant merchant, @PathVariable Long user_id,
 			BindingResult result, Principal principal){
 
 			merchantValidator.validate(merchant, result);

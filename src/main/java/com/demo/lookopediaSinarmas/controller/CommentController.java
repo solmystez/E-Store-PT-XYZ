@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.lookopediaSinarmas.entity.Comment;
+import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.services.CommentService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
@@ -46,8 +48,17 @@ public class CommentController {
 	@DeleteMapping("/deleteComment/{product_id}/{user_id}")
 	public ResponseEntity<?> deleteCommentFromProductWithUserId(@PathVariable Long user_id,
 			@PathVariable Long product_id) {
-	Comment comment1 = commentService.removeCommentFromProduct(product_id, user_id);
+		Comment comment1 = commentService.removeCommentFromProduct(product_id, user_id);
+		
+		return new ResponseEntity<Comment>(comment1, HttpStatus.OK);
+	}
 	
-	return new ResponseEntity<Comment>(comment1, HttpStatus.OK);
-}
+	//getCommentInSpecificProduct
+	@GetMapping("/loadCommentInProductId/{product_id}")
+	public ResponseEntity<?> loadCommentInProductId(@PathVariable Long product_id){
+		
+		List<Comment> comment = commentService.getAllComentInProductId(product_id);
+
+		return new ResponseEntity<List<Comment>>(comment, HttpStatus.OK);
+	}
 }

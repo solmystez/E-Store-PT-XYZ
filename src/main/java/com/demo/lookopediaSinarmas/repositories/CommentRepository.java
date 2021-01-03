@@ -41,7 +41,12 @@ public interface CommentRepository extends CrudRepository<Comment, Long>{
 			+ "and"
 			+ "user_id=:user_id", nativeQuery = true)
 	Comment findByProductCommentProduct_idAndUserCommentId(Long product_id, Long user_id);
-//	If you want to provide an object as param, you can do something like this.
+
+	@Query(value = "select * from comment where "
+			+ " product_id=:product_id", nativeQuery = true)
+	List<Comment> findCommentByProductId(@Param("product_id") Long product_id);
+	
+	//	If you want to provide an object as param, you can do something like this.
 //	@Query("UPDATE Entity E SET E.name = :#{#entity.name}")
 //	public void updateEntity(@Param("entity") Entity entity);
 }

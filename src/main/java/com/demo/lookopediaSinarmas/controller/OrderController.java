@@ -34,10 +34,6 @@ public class OrderController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@GetMapping("/loadAllCart/{user_id}")
-	public Iterable<Orders> loadAllCart(@PathVariable Long user_id, Principal principal){
-		return orderService.loadAllOrderByUserIdForCart(user_id, principal.getName());	
-	}
 	
 	@GetMapping("/loadAllHistory/{user_id}")
 	public Iterable<Orders> loadAllHistory(@PathVariable Long user_id){

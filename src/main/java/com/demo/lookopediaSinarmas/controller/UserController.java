@@ -132,8 +132,7 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/deleteAddress/{address_id}")
-	public ResponseEntity<?> deleteAddress(@Valid @RequestBody Address address,
-			BindingResult result, @PathVariable Long address_id, Principal principal) {
+	public ResponseEntity<?> deleteAddress(@PathVariable Long address_id) {
 		userService.deleteAddressById(address_id);
 		return new ResponseEntity<String>("Address ID '" + address_id  + "' was successfully deleted", HttpStatus.OK);
 	}
