@@ -8,10 +8,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.demo.lookopediaSinarmas.entity.Comment;
+import com.demo.lookopediaSinarmas.entity.RatingProduct;
 
 @Repository
-public interface CommentRepository extends CrudRepository<Comment, Long>{
+public interface RatingProductRepository extends CrudRepository<RatingProduct, Long>{
 
 //	@Query(value = "Select * From comment c"
 //			+ "where c.product_id=:product_id")
@@ -20,31 +20,33 @@ public interface CommentRepository extends CrudRepository<Comment, Long>{
 //	List<Comment> findAllByProductId(Long id);
 	
 	@Modifying
-	@Query(value = "delete from comment "
+	@Query(value = "delete from rating_product "
 			+ "where product_id=:product_id "
 			+ "and "
 			+ "user_id=:user_id", nativeQuery = true)
-	void deleteCommentByUserIdAndProductId(
+	void deleteRatingByUserIdAndProductId(
 			@Param("product_id") Long productId,
 			@Param("user_id") Long userId);
 
-	@Query(value = "select * from comment where"
+	@Query(value = "select * from RatingProduct where"
 			+ "product_id=:product_id"
 			+ "and"
 			+ "user_id=:user_id", nativeQuery = true)
-	List<Comment> findAllCommentByProductIdAndUserId(
+	List<RatingProduct> findAllRatingProductByProductIdAndUserId(
 			@Param("product_id") Long productId,
 			@Param("user_id") Long userId);
 	
-	@Query(value = "select * from comment where"
+	@Query(value = "select * from RatingProduct where"
 			+ "product_id=:product_id"
 			+ "and"
 			+ "user_id=:user_id", nativeQuery = true)
-	Comment findByProductCommentProduct_idAndUserCommentId(Long product_id, Long user_id);
+	RatingProduct findByProductRatingProductIdAndUserId(Long product_id, Long user_id);
 
-	@Query(value = "select * from comment where "
+	@Query(value = "select * from RatingProduct where "
 			+ " product_id=:product_id", nativeQuery = true)
-	List<Comment> findCommentByProductId(@Param("product_id") Long product_id);
+	List<RatingProduct> findAllRatingByProductId(@Param("product_id") Long product_id);
+	
+	//loadAllRatingByProductId
 	
 	//	If you want to provide an object as param, you can do something like this.
 //	@Query("UPDATE Entity E SET E.name = :#{#entity.name}")

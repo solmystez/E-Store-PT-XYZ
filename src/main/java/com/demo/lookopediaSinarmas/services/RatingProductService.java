@@ -2,32 +2,34 @@ package com.demo.lookopediaSinarmas.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.entity.Comment;
 import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.entity.RatingProduct;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
-import com.demo.lookopediaSinarmas.repositories.CommentRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
+import com.demo.lookopediaSinarmas.repositories.RatingProductRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
 
 @Service
-public class CommentService {
+public class RatingProductService {
 
-	@Autowired
-	CommentRepository commentRepository;
-	
 	@Autowired
 	UserRepository userRepository;
 	
 	@Autowired
 	ProductRepository productRepository;
 	
-	public Comment postComment(Comment comment, Long product_id, Long user_id) {
+	@Autowired
+	RatingProductRepository ratingProductRepository;
+	
+	public RatingProduct postRatingProduct(RatingProduct rating, Long product_id, Long user_id) {
 		
 		Product product;
 		try {
@@ -43,32 +45,28 @@ public class CommentService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		comment.setComment_message(comment.getComment_message());
-		comment.setProductComment(product);
-		comment.setUserComment(user);
-		
-		return commentRepository.save(comment);
+		rating.setComment_message(rating.getComment_message());
+		rating.setRatingValue(rating.getRatingValue());
+		rating.setRatingProduct(product);
+		rating.setUser(user);
+		return ratingProductRepository.save(rating);
 	}
 	
-	public Comment removeCommentFromProduct(Long product_id, Long user_id) {
-	
+	@Transactional
+	public void removeRatingProductFromProduct(Long product_id, Long user_id) {
 		try {
-			Comment comment = commentRepository.findByProductCommentProduct_idAndUserCommentId(product_id, user_id);
-			return comment;
+			ratingProductRepository.deleteRatingByUserIdAndProductId(product_id, user_id);
 		} catch (Exception e) {
-			throw new CommentNotFoundException("No Comment found");
+			throw new CommentNotFoundException("No Rating in this product found");
 		}
-	
-//		return commentRepository.findAllCommentByProductIdAndUserId(product_id, user_id);
-		
 	}
 
-	public List<Comment> getAllComentInProductId(Long product_id) {
+	public List<RatingProduct> getAllProductRatingInProductId(Long product_id) {
 		
-		List<Comment> comments;
+		List<RatingProduct> ratings;
 		try {
-			comments = commentRepository.findCommentByProductId(product_id);
-			return comments;
+			ratings = ratingProductRepository.findAllRatingByProductId(product_id);
+			return ratings;
 		} catch (Exception e) {
 			throw new CommentNotFoundException("no comment found in this product id");
 		}

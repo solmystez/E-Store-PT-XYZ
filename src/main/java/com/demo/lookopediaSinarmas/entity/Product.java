@@ -84,15 +84,10 @@ public class Product implements UserDetails{
 			orphanRemoval = true)
 	private List<Cart> cart_detail = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "productComment", 
-			cascade = CascadeType.ALL, 
-			orphanRemoval = true)
-	private List<Comment> comment = new ArrayList<>();
-	
-	@OneToMany(mappedBy = "productRating", 
+	@OneToMany(mappedBy = "ratingProduct", 
 		cascade = CascadeType.ALL, 
 		orphanRemoval = true)
-	private List<Rating> rating = new ArrayList<>();
+	private List<RatingProduct> rating = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="productCategory_id")
@@ -167,11 +162,11 @@ public class Product implements UserDetails{
 		this.merchantName = merchantName;
 	}
 	
-	public List<Rating> getRating() {
+	public List<RatingProduct> getRating() {
 		return rating;
 	}
 
-	public void setRating(List<Rating> rating) {
+	public void setRating(List<RatingProduct> rating) {
 		this.rating = rating;
 	}
 
@@ -230,14 +225,6 @@ public class Product implements UserDetails{
 
 	public void setProductStock(int productStock) {
 		this.productStock = productStock;
-	}
-	
-	public List<Comment> getComment() {
-		return comment;
-	}
-
-	public void setComment(List<Comment> comment) {
-		this.comment = comment;
 	}
 
 	public List<Cart> getCart_detail() {

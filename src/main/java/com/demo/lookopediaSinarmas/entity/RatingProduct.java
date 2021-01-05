@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Rating {
+public class RatingProduct {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,16 +23,19 @@ public class Rating {
 	@Max(value = 5, message = "Max Rating value is 5 !")
 	private Integer ratingValue;
 	
+	private String comment_message;
+	
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
 	@JsonIgnore
-	private Product productRating;
+	private Product ratingProduct;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	@JsonIgnore
-	private User userRating;
-	
+	private User user;
+
 	public Long getId() {
 		return id;
 	}
@@ -49,20 +52,28 @@ public class Rating {
 		this.ratingValue = ratingValue;
 	}
 
-	public Product getProductRating() {
-		return productRating;
+	public String getComment_message() {
+		return comment_message;
 	}
 
-	public void setProductRating(Product productRating) {
-		this.productRating = productRating;
+	public void setComment_message(String comment_message) {
+		this.comment_message = comment_message;
 	}
 
-	public User getUserRating() {
-		return userRating;
+	public Product getRatingProduct() {
+		return ratingProduct;
 	}
 
-	public void setUserRating(User userRating) {
-		this.userRating = userRating;
+	public void setRatingProduct(Product ratingProduct) {
+		this.ratingProduct = ratingProduct;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 }

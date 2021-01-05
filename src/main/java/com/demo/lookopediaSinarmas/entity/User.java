@@ -84,15 +84,9 @@ public class User implements UserDetails {
 	
 	@OneToMany(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,
-			mappedBy = "userComment")
+			mappedBy = "ratingProduct")
 	@JsonIgnore
-	private List<Comment> comment = new ArrayList<>();
-	
-	@OneToMany(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,
-			mappedBy = "userRating")
-	@JsonIgnore
-	private List<Rating> rating = new ArrayList<>();
+	private List<RatingProduct> userRating = new ArrayList<>();
 	
 	public User() {
 
@@ -114,20 +108,28 @@ public class User implements UserDetails {
 		return id;
 	}
 
-	public List<Comment> getComment() {
-		return comment;
+	public Integer getCustomerBalance() {
+		return customerBalance;
 	}
 
-	public void setComment(List<Comment> comment) {
-		this.comment = comment;
+	public void setCustomerBalance(Integer customerBalance) {
+		this.customerBalance = customerBalance;
 	}
 
-	public List<Rating> getRating() {
-		return rating;
+	public String getCustomerPhoneNumber() {
+		return customerPhoneNumber;
 	}
 
-	public void setRating(List<Rating> rating) {
-		this.rating = rating;
+	public void setCustomerPhoneNumber(String customerPhoneNumber) {
+		this.customerPhoneNumber = customerPhoneNumber;
+	}
+
+	public List<RatingProduct> getUserRating() {
+		return userRating;
+	}
+
+	public void setUserRating(List<RatingProduct> userRating) {
+		this.userRating = userRating;
 	}
 
 	public void setId(Long id) {

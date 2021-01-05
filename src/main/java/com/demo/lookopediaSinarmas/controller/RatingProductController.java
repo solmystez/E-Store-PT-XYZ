@@ -17,48 +17,47 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.lookopediaSinarmas.entity.Comment;
-import com.demo.lookopediaSinarmas.entity.Product;
-import com.demo.lookopediaSinarmas.services.CommentService;
+import com.demo.lookopediaSinarmas.entity.RatingProduct;
+import com.demo.lookopediaSinarmas.services.RatingProductService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api/comment")
-public class CommentController {
+@RequestMapping("/api/ratingProduct")
+public class RatingProductController {
 	
 	@Autowired
-	private CommentService commentService;
+	private RatingProductService ratingProductService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/postComment/{product_id}/{user_id}")
-	public ResponseEntity<?> addCommentToProductWithUserId(@Valid @RequestBody Comment comment, BindingResult result,
+	@PostMapping("/postRatingProduct/{product_id}/{user_id}")
+	public ResponseEntity<?> addRatingProductToProductWithUserId(@Valid @RequestBody RatingProduct rating, BindingResult result,
 				@PathVariable Long product_id, @PathVariable Long user_id){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Comment comment1 = commentService.postComment(comment, product_id, user_id);
-		return new ResponseEntity<Comment>(comment1, HttpStatus.CREATED);
+		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id);
+		return new ResponseEntity<RatingProduct>(rating1, HttpStatus.CREATED);
 	}
 
 	
-	@DeleteMapping("/deleteComment/{product_id}/{user_id}")
-	public ResponseEntity<?> deleteCommentFromProductWithUserId(@PathVariable Long user_id,
+	@DeleteMapping("/deleteRatingProduct/{product_id}/{user_id}")
+	public ResponseEntity<?> deleteRatingProductFromProductWithUserId(@PathVariable Long user_id,
 			@PathVariable Long product_id) {
-		Comment comment1 = commentService.removeCommentFromProduct(product_id, user_id);
+		ratingProductService.removeRatingProductFromProduct(product_id, user_id);
 		
-		return new ResponseEntity<Comment>(comment1, HttpStatus.OK);
+		return new ResponseEntity<RatingProduct>(HttpStatus.OK);
 	}
 	
 	//getCommentInSpecificProduct
-	@GetMapping("/loadCommentInProductId/{product_id}")
-	public ResponseEntity<?> loadCommentInProductId(@PathVariable Long product_id){
+	@GetMapping("/loadRatingProductId/{product_id}")
+	public ResponseEntity<?> loadRatingProductInProductId(@PathVariable Long product_id){
 		
-		List<Comment> comment = commentService.getAllComentInProductId(product_id);
+		List<RatingProduct> rating = ratingProductService.getAllProductRatingInProductId(product_id);
 
-		return new ResponseEntity<List<Comment>>(comment, HttpStatus.OK);
+		return new ResponseEntity<List<RatingProduct>>(rating, HttpStatus.OK);
 	}
 }

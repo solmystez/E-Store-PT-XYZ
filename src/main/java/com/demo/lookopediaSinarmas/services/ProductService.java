@@ -288,15 +288,12 @@ public class ProductService {
 	public Product findProductById(Long product_id) {
 		
 		Product product;
-		
 		try {
 			product = productRepository.findById(product_id).get();
-	
+			return product;
 		} catch (Exception e) {
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
-		
-		return product;
 	}
 	
 
@@ -304,7 +301,7 @@ public class ProductService {
 		
 		try {
 			Product product = productRepository.findById(product_id).get();
-			 productRepository.delete(product);	
+			productRepository.delete(product);	
 		} catch (Exception e) {
 			throw new ProductIdException("Product with ID '" + product_id +"' cannot delete because doesn't exists");			
 		}
