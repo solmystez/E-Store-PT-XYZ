@@ -91,7 +91,7 @@ public class CartService {
 			Orders order1 = orderRepository.findByMerchantNameAndStatusAndUsername(order.getMerchantName(), status, username);
 			
 			Courier courier = courierRepository.findByCourierName(order.getCourierName());
-			int tempPrice = order1.getTotal_price() + courier.getCourierPrice();
+			double tempPrice = order1.getTotal_price() + courier.getCourierPrice();
 			order1.setTotal_price(tempPrice);
 			order1.setCourier(courier);
 			order1.setCourierName(order.getCourierName());
@@ -150,12 +150,12 @@ public class CartService {
 	}
 	
 
-	public int returnTotalPrice(Long user_id) {
+	public double returnTotalPrice(Long user_id) {
 		String status = "Not Paid";
 		//find semua order yang belum 
 		List<Orders> orders = orderRepository.findAllByUserIdAndStatus(user_id, status);
 		
-		int temp=0;
+		double temp=0;
 		for(int i=0; i<orders.size(); i++) {
 			temp = orders.get(i).getTotal_price();
 			break;

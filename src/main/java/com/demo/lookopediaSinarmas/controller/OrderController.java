@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
+import com.demo.lookopediaSinarmas.services.MerchantService;
 import com.demo.lookopediaSinarmas.services.OrderService;
 import com.demo.lookopediaSinarmas.services.otherService.MapValidationErrorService;
 
@@ -30,6 +31,9 @@ public class OrderController {
 
 	@Autowired
 	private OrderService orderService;
+	
+	@Autowired
+	private MerchantService merchantService;
 	
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
@@ -58,6 +62,29 @@ public class OrderController {
 		Iterable<Orders> order1 = orderService.processItem(orders, user_id, principal.getName());
 				
 		return new ResponseEntity<Iterable<Orders>>(order1, HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/accOrRejectOrder/{order_id}")
+	public ResponseEntity<?> accOrRejectOrderMerchant(@Valid @RequestBody Orders order,
+			BindingResult result, @PathVariable Long order_id){
+
+			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+			if(mapError != null) return mapError;
+			
+			Orders orders1 = merchantService.accOrRejectProductOrder(order, order_id);
+			return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
+	}
+	
+	//post finish button{set status to finish}
+	@PostMapping("/finishOrder/{order_id}")
+	public ResponseEntity<?> userFinishOrder(@Valid @RequestBody Orders order,
+			BindingResult result, @PathVariable Long order_id){
+
+			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+			if(mapError != null) return mapError;
+			
+			Orders orders1 = merchantService.userFinishOrder(order, order_id);
+			return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/getTotal/{user_id}")

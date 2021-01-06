@@ -8,4 +8,5 @@ import com.demo.lookopediaSinarmas.entity.Voucher;
 @Repository
 public interface VoucherRepository extends CrudRepository<Voucher, Long>{
 	
+	Voucher findByVoucherCode(String voucherCode);
 }

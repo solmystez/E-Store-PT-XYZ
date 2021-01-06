@@ -32,6 +32,8 @@ import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitException
 import com.demo.lookopediaSinarmas.exceptions.product.ProductStockLimitExceptionResponse;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundExceptionResponse;
+import com.demo.lookopediaSinarmas.exceptions.voucher.VoucherErrorException;
+import com.demo.lookopediaSinarmas.exceptions.voucher.VoucherErrorResponse;
 
 @ControllerAdvice
 @RestController
@@ -106,6 +108,12 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	@ExceptionHandler
 	public final ResponseEntity<Object> addressException(AddressNotFoundException ex, WebRequest request) {
 		AddressNotFoundResponse exceptionResponse = new AddressNotFoundResponse(ex.getMessage());
+		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler
+	public final ResponseEntity<Object> addressException(VoucherErrorException ex, WebRequest request) {
+		VoucherErrorResponse exceptionResponse = new VoucherErrorResponse(ex.getMessage());
 		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 }

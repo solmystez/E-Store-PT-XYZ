@@ -53,20 +53,6 @@ public class OrderService {
 	// untuk order yg di klik, set statusnya (disini mau masukin alasan tidak?, klo ia, nambah attribute messageMerchant)
 	//
 	
-	//buat tampilin di merchant, pesanan yg udh checkout untuk di acc/ reject
-	public Iterable<Orders> loadIncomingOrderToProcess(String merchantName){
-		String status = "Paid";
-		
-		List<Orders> orders;
-		try {
-			orders = orderRepository.findAllByMerchantNameAndStatus(merchantName, status);
-		} catch (Exception e) {
-			throw new OrderNotFoundException("No order found");
-		}
-		
-		return orders;
-	}
-	
 	//api
 	//kalo udh di tampilin di merchant, bkin API yg req body, process, set process ny
 	public Orders acceptOrRejectOrder(Orders order, Long order_id) {
@@ -236,12 +222,14 @@ public class OrderService {
 		return order;
 	}
 	
-	//2.
 	public List<Orders> loadAllOrderByUserIdForHistory(Long user_id) {
-		String status = "Not Paid";
-		//find all order history if status != not paid
-		List<Orders> list = orderRepository.findAllByUserIdAndStatusForHistory(user_id, status);
-		return list;
+		List<Orders> list;
+		try {
+			list = orderRepository.findAllByUserId(user_id);
+			return list;
+		} catch (Exception e) {
+			throw new OrderNotFoundException("no history transaction yet");
+		}
 	}
 	
 	public List<Orders> countAllTotalForCart(Long user_id) {

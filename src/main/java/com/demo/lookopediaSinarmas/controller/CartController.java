@@ -80,7 +80,7 @@ public class CartController {
 	}
 	
 	@GetMapping("/getTotalPrice/{user_id}")
-	public int getTotalPrice(@PathVariable Long user_id){
+	public double getTotalPrice(@PathVariable Long user_id){
 		return cartService.returnTotalPrice(user_id);
 	}
 	

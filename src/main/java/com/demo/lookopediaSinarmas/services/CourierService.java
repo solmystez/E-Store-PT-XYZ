@@ -3,7 +3,6 @@ package com.demo.lookopediaSinarmas.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.demo.lookopediaSinarmas.entity.Category;
 import com.demo.lookopediaSinarmas.entity.Courier;
 import com.demo.lookopediaSinarmas.exceptions.courier.CourierErrorException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductIdException;
@@ -23,7 +22,7 @@ public class CourierService {
 			courier.setCourierDescription(courier.getCourierDescription());
 			return courierRepository.save(courier);
 		} catch (Exception e) {
-			throw new CourierErrorException("Exception : Courier name already exists !");
+			throw new CourierErrorException("Courier name already exists !");
 		}
 		
 	}

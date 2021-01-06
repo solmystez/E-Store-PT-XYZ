@@ -29,7 +29,7 @@ public class Orders {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Integer total_price;
+	private double total_price;
 	private Integer total_item;
 	private String status;//(process, rejected, finish)
 	private String merchantName;
@@ -55,7 +55,7 @@ public class Orders {
 	@JsonIgnore
 	private User user;
 	
-	@OneToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "voucher_id", updatable = false)
 	@JsonIgnore
 	private Voucher voucher;
@@ -91,6 +91,14 @@ public class Orders {
 
 	public void setMerchantAddress(String merchantAddress) {
 		this.merchantAddress = merchantAddress;
+	}
+
+	public double getTotal_price() {
+		return total_price;
+	}
+
+	public void setTotal_price(double total_price) {
+		this.total_price = total_price;
 	}
 
 	public String getUserAddress() {
@@ -131,14 +139,6 @@ public class Orders {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Integer getTotal_price() {
-		return total_price;
-	}
-
-	public void setTotal_price(Integer total_price) {
-		this.total_price = total_price;
 	}
 
 	public String getStatus() {

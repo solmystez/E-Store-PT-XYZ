@@ -108,17 +108,6 @@ public class MerchantController {
 		return 	merchantService.findAllIncomingOrder(merchant_name);
 	}
 	
-	@PostMapping("/accOrRejectOrder/{order_id}")
-	public ResponseEntity<?> accOrRejectOrder(@Valid @RequestBody Orders order,
-			BindingResult result, @PathVariable Long order_id){
-
-			ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-			if(mapError != null) return mapError;
-			
-			Orders orders1 = merchantService.accOrRejectProductOrder(order, order_id);
-			return new ResponseEntity<Orders>(orders1, HttpStatus.CREATED);
-	}
-	
 	@GetMapping(value = "/loadImageMerchant/{filename:.+}",
 			produces = {MediaType.IMAGE_JPEG_VALUE,
 					MediaType.IMAGE_GIF_VALUE,

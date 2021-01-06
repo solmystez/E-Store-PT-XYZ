@@ -130,13 +130,10 @@ public class MerchantService {
 		return merchant;
 	}
 
-
-
 	public Iterable<Orders> findAllIncomingOrder(String merchant_name) {
-		String status = "Paid";
 		List<Orders> order = null;
 		try {
-			order = orderRepository.findAllByMerchantNameAndStatus(merchant_name, status);
+			order = orderRepository.findAllByMerchantName(merchant_name);
 		} catch (Exception e) {
 			throw new OrderNotFoundException("No order yet");
 		}
@@ -150,6 +147,14 @@ public class MerchantService {
 		if(order.getStatus().equals("Accept")) order1.setStatus("Process");
 		else if(order.getStatus().equals("Reject")) order1.setStatus("Rejected");
 		
+		
+		return orderRepository.save(order1);
+	}
+
+	public Orders userFinishOrder(@Valid Orders order, Long order_id) {
+		
+		Orders order1 = orderRepository.findById(order_id).get();
+		if(order.getStatus().equals("Finish")) order1.setStatus("Finish");
 		
 		return orderRepository.save(order1);
 	}

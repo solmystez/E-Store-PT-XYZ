@@ -1,12 +1,17 @@
 package com.demo.lookopediaSinarmas.entity;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,16 +22,24 @@ public class Voucher {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long voucher_id;
 	
+//	@NotBlank(message = "Voucher name is required !")
 	private String voucherName;
+	
+//	@NotBlank(message = "Voucher Code is required !")
+	@Column(unique = true)
 	private String voucherCode;
-	private Float voucherDiscount;
+	
+//	@Min(value = 1)
+	private double voucherDiscount;
+	
+//	@NotBlank(message = "Voucher Description is required !")
 	private String voucherDescription;
 	
-	@OneToOne(fetch = FetchType.LAZY,
+	@OneToMany(orphanRemoval = true,
 			cascade = CascadeType.ALL,
 			mappedBy = "voucher")
 	@JsonIgnore
-	private Orders order;
+	private List<Orders> order;
 
 	public Long getVoucher_id() {
 		return voucher_id;
@@ -52,11 +65,11 @@ public class Voucher {
 		this.voucherCode = voucherCode;
 	}
 
-	public Float getVoucherDiscount() {
+	public double getVoucherDiscount() {
 		return voucherDiscount;
 	}
 
-	public void setVoucherDiscount(Float voucherDiscount) {
+	public void setVoucherDiscount(double voucherDiscount) {
 		this.voucherDiscount = voucherDiscount;
 	}
 
@@ -68,13 +81,12 @@ public class Voucher {
 		this.voucherDescription = voucherDescription;
 	}
 
-	public Orders getOrder() {
+	public List<Orders> getOrder() {
 		return order;
 	}
 
-	public void setOrder(Orders order) {
+	public void setOrder(List<Orders> order) {
 		this.order = order;
 	}
-	
-	
+
 }
