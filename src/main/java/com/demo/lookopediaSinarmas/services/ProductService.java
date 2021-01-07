@@ -129,7 +129,7 @@ public class ProductService {
 		if(product.getProduct_id() != null) {
 			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
 			
-			if(existingProduct != null && (!existingProduct.getMerchant().getUserName().equals(userName))) {
+			if(existingProduct != null && (!existingProduct.getMerchant().getUsername().equals(userName))) {
 				throw new ProductNotFoundException("Product not found in your merchant");
 			}else if (existingProduct == null) {
 				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");
@@ -174,7 +174,7 @@ public class ProductService {
 		if(product.getProduct_id() != null) {
 			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
 			
-			if(existingProduct != null && (!existingProduct.getMerchant().getUserName().equals(userName))) {
+			if(existingProduct != null && (!existingProduct.getMerchant().getUsername().equals(userName))) {
 				throw new ProductNotFoundException("Product not found in your merchant");
 			}else if (existingProduct == null) {
 				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");

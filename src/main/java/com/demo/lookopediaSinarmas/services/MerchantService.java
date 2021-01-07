@@ -63,7 +63,7 @@ public class MerchantService {
 			user.setHasMerchant(true);
 //			user.setMerchant(merchant);
 			merchant.setUserMerchant(user);
-			merchant.setUserName(user.getUsername());
+			merchant.setUsername(user.getUsername());
 			merchant.setMerchantName(merchant.getMerchantName());
 			merchant.setMerchantAddress(merchant.getMerchantAddress());
 			log.info("merchant created");
@@ -107,7 +107,7 @@ public class MerchantService {
 			
 			if(merchant.getId() != null) {
 				user.setMerchant(merchant);
-				merchant.setUserName(user.getUsername());
+				merchant.setUsername(user.getUsername());
 				merchant.setUserMerchant(user);
 				log.info("merchant updated");
 			}

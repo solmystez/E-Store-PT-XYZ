@@ -36,7 +36,7 @@ public class Merchant implements UserDetails{
 	
 	private Integer merchantBalance = 0;
 	private String merchantAddress;
-	private String userName;
+	private String username;
 	
 	private Integer totalProduct = 0;
 	
@@ -120,12 +120,8 @@ public class Merchant implements UserDetails{
 		this.productList = productList;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getFileName() {
