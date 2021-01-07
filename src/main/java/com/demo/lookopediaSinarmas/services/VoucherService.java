@@ -71,7 +71,7 @@ public class VoucherService {
 		}
 		for(int i=0; i<order.size(); i++) {
 			order.get(i).setTotal_price(temp);
-			order.get(i).setVoucher(true);
+			order.get(i).setHasVoucher("Yes");
 			orderRepository.save(order.get(i));
 		}
 		
@@ -83,7 +83,7 @@ public class VoucherService {
 		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
 		cartService.countOrderPriceAndStock(username);
 		for(int i=0 ;i<order.size(); i++) {
-			order.get(i).setVoucher(false);
+			order.get(i).setHasVoucher("No");
 		}
 		
 		return null;
