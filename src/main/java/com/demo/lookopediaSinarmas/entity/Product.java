@@ -56,7 +56,6 @@ public class Product implements UserDetails{
 	private String fileSize;
 	
 	private String merchantName;
-	private String base64;
 	
 	@NotBlank(message = "product category must be input")
 	private String productCategoryName;
@@ -98,14 +97,6 @@ public class Product implements UserDetails{
 	@JsonIgnore//resolve infinite recursion problem
 	private Merchant merchant;
 	
-	public String getBase64() {
-		return base64;
-	}
-
-	public void setBase64(String base64) {
-		this.base64 = base64;
-	}
-
 	public int getProductWeight() {
 		return productWeight;
 	}

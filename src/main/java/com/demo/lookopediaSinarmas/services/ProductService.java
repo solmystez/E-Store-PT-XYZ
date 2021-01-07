@@ -96,19 +96,18 @@ public class ProductService {
     		product.setFileSize(productFileSize);
     		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
-    		String fileUrl = product.getFilePath();
     		
-    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
-    		
-    		if(file.getContentType().equals("image/png")) {
-    			encodedUrl = "data:image/png;base64,"+encodedUrl;
-    		}else if(file.getContentType().equals("image/jpg")) {
-    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
-    		}else {
-    			throw new ProductIdException("product must be png or jpg");
-    		}
-    		product.setBase64(encodedUrl);
-    		log.info(fileUrl);
+//    		String fileUrl = product.getFilePath();
+//    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+//    		
+//    		if(file.getContentType().equals("image/png")) {
+//    			encodedUrl = "data:image/png;base64,"+encodedUrl;
+//    		}else if(file.getContentType().equals("image/jpg")) {
+//    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
+//    		}else {
+//    			throw new ProductIdException("product must be png or jpg");
+//    		}
+//    		log.info(fileUrl);
     		
     		product.setMerchant(merchant);
     		product.setProductCategory(category);
@@ -220,15 +219,15 @@ public class ProductService {
         	
     		//1
 //    		byte[] fileUrl = FileUtils.readFileToByteArray(new File(product.getFilePath()));
-    		String fileUrl = product.getFilePath();
-    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
-    		if(file.getContentType().equals("image/png")) {
-    			encodedUrl = "data:image/png;base64,"+encodedUrl;
-    		}else if(file.getContentType().equals("image/jpg")) {
-    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
-    		}else {
-    			throw new ProductIdException("product must be png or jpg");
-    		}
+//    		String fileUrl = product.getFilePath();
+//    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+//    		if(file.getContentType().equals("image/png")) {
+//    			encodedUrl = "data:image/png;base64,"+encodedUrl;
+//    		}else if(file.getContentType().equals("image/jpg")) {
+//    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
+//    		}else {
+//    			throw new ProductIdException("product must be png or jpg");
+//    		}
     		//2
 //    		String originalUrl ="http://localhost:1233/api/product/loadImageProduct/Screenshot%20(1).png";
 //    		String encodedUrl = Base64.getUrlEncoder().encodeToString(originalURL.getBytes());
@@ -245,7 +244,6 @@ public class ProductService {
     		
     		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
     		
-    		product.setBase64(encodedUrl);
     		
     		product.setMerchant(merchant);
     		product.setProductCategory(category);
