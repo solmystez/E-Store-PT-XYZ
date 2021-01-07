@@ -71,6 +71,7 @@ public class VoucherService {
 		}
 		for(int i=0; i<order.size(); i++) {
 			order.get(i).setTotal_price(temp);
+			order.get(i).setVoucher(true);
 			orderRepository.save(order.get(i));
 		}
 		
@@ -78,8 +79,12 @@ public class VoucherService {
 	}
 	
 	public Voucher cancelApplyVoucher(Long user_id, String username) {
-	
+		String status = "Not Paid";
+		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
 		cartService.countOrderPriceAndStock(username);
+		for(int i=0 ;i<order.size(); i++) {
+			order.get(i).setVoucher(false);
+		}
 		
 		return null;
 	}

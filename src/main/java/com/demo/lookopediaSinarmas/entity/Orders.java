@@ -38,6 +38,7 @@ public class Orders {
 	private String userAddress;
 	private String courierName;
 	private String invoiceNumber;
+	private boolean isVoucher;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -79,6 +80,14 @@ public class Orders {
 	
 	public String getInvoiceNumber() {
 		return invoiceNumber;
+	}
+
+	public boolean isVoucher() {
+		return isVoucher;
+	}
+
+	public void setVoucher(boolean isVoucher) {
+		this.isVoucher = isVoucher;
 	}
 
 	public void setInvoiceNumber(String invoiceNumber) {
