@@ -74,4 +74,9 @@ public class VoucherController {
 		Voucher voucher1 = voucherService.cancelApplyVoucher(user_id, principal.getName());
 		return new ResponseEntity<Voucher>(voucher1, HttpStatus.OK);
 	}
+	
+	@GetMapping("/getStatusVoucher/{user_id}")
+	public String getVoucherStatusNow(@PathVariable Long user_id) {
+		return voucherService.returnStatusVoucher(user_id);
+	}
 }

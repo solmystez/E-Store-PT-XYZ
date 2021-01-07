@@ -88,4 +88,16 @@ public class VoucherService {
 		
 		return null;
 	}
+
+	public String returnStatusVoucher(Long user_id) {
+		
+		String status = "Not Paid";
+		String temp = "";
+		List<Orders> orders = orderRepository.findAllByUserIdAndStatus(user_id, status);
+		for(int i=0; i<orders.size(); i++) {
+			temp = orders.get(i).getHasVoucher();
+			break;
+		}
+		return temp;
+	}
 }
