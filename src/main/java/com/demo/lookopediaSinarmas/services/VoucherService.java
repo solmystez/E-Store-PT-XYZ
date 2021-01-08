@@ -78,15 +78,16 @@ public class VoucherService {
 		return null;
 	}
 	
-	public Voucher cancelApplyVoucher(Long user_id, String username) {
+	public List<Orders> cancelApplyVoucher(Long user_id, String username) {
 		String status = "Not Paid";
 		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
 		cartService.countOrderPriceAndStock(username);
 		for(int i=0 ;i<order.size(); i++) {
 			order.get(i).setHasVoucher("No");
+			orderRepository.save(order.get(i));
 		}
 		
-		return null;
+		return order;
 	}
 
 	public String returnStatusVoucher(Long user_id) {

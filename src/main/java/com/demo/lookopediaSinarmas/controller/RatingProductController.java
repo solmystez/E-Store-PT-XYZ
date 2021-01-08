@@ -1,5 +1,6 @@
 package com.demo.lookopediaSinarmas.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -34,12 +35,12 @@ public class RatingProductController {
 	
 	@PostMapping("/postRatingProduct/{product_id}/{user_id}")
 	public ResponseEntity<?> addRatingProductToProductWithUserId(@Valid @RequestBody RatingProduct rating, BindingResult result,
-				@PathVariable Long product_id, @PathVariable Long user_id){
+				@PathVariable Long product_id, @PathVariable Long user_id, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id);
+		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id, principal.getName());
 		return new ResponseEntity<RatingProduct>(rating1, HttpStatus.CREATED);
 	}
 

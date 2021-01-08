@@ -29,7 +29,7 @@ public class RatingProductService {
 	@Autowired
 	RatingProductRepository ratingProductRepository;
 	
-	public RatingProduct postRatingProduct(RatingProduct rating, Long product_id, Long user_id) {
+	public RatingProduct postRatingProduct(RatingProduct rating, Long product_id, Long user_id, String username) {
 		
 		Product product;
 		try {
@@ -48,6 +48,7 @@ public class RatingProductService {
 		rating.setComment_message(rating.getComment_message());
 		rating.setRatingValue(rating.getRatingValue());
 		rating.setRatingProduct(product);
+		rating.setUsername(username);
 		rating.setUser(user);
 		return ratingProductRepository.save(rating);
 	}

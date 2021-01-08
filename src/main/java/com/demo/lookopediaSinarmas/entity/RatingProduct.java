@@ -22,9 +22,8 @@ public class RatingProduct {
 	@Min(value = 0, message = "Rating cannot be lower then 0")
 	@Max(value = 5, message = "Max Rating value is 5 !")
 	private Integer ratingValue;
-	
 	private String comment_message;
-	
+	private String username;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
@@ -42,6 +41,14 @@ public class RatingProduct {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public Integer getRatingValue() {

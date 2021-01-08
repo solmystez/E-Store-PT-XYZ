@@ -42,7 +42,7 @@ public interface RatingProductRepository extends CrudRepository<RatingProduct, L
 			+ "user_id=:user_id", nativeQuery = true)
 	RatingProduct findByProductRatingProductIdAndUserId(Long product_id, Long user_id);
 
-	@Query(value = "select * from RatingProduct where "
+	@Query(value = "select * from rating_product where "
 			+ " product_id=:product_id", nativeQuery = true)
 	List<RatingProduct> findAllRatingByProductId(@Param("product_id") Long product_id);
 	

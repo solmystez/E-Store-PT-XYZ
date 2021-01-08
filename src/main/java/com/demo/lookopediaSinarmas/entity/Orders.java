@@ -38,7 +38,7 @@ public class Orders {
 	private String userAddress;
 	private String courierName;
 	private String invoiceNumber;
-	private String hasVoucher = "No";
+	private String hasVoucher;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)

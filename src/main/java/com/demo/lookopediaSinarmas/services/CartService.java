@@ -196,6 +196,7 @@ public class CartService {
 			order.setUsername(username);
 			order.setUser(user);
 			order.setStatus(status);
+			order.setHasVoucher("No");
 			order.setMerchantAddress(product.getMerchant().getMerchantAddress());
 			orderRepository.save(order);
 			countOrderPriceAndStock(username);

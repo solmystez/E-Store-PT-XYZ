@@ -71,8 +71,8 @@ public class VoucherController {
 	@PostMapping("/cancelApplyVoucher/{user_id}")
 	public ResponseEntity<?> cancelApplyVoucher(@PathVariable Long user_id, Principal principal){
 		
-		Voucher voucher1 = voucherService.cancelApplyVoucher(user_id, principal.getName());
-		return new ResponseEntity<Voucher>(voucher1, HttpStatus.OK);
+		List<Orders> order = voucherService.cancelApplyVoucher(user_id, principal.getName());
+		return new ResponseEntity<List<Orders>>(order, HttpStatus.OK);
 	}
 	
 	@GetMapping("/getStatusVoucher/{user_id}")
