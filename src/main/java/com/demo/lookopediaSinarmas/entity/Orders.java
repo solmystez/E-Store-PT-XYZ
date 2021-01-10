@@ -39,6 +39,7 @@ public class Orders {
 	private String courierName;
 	private String invoiceNumber;
 	private String hasVoucher;
+	private String hasRating;
 	
 	@JsonFormat(pattern = "yyyy-mm-dd")
 	@Column(updatable = false)
@@ -214,5 +215,13 @@ public class Orders {
 
 	public void setVoucher(Voucher voucher) {
 		this.voucher = voucher;
+	}
+
+	public String getHasRating() {
+		return hasRating;
+	}
+
+	public void setHasRating(String hasRating) {
+		this.hasRating = hasRating;
 	}	
 }

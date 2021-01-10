@@ -55,27 +55,25 @@ public class VoucherService {
 		}
 	}
 
-	public Voucher applyVoucher(Voucher voucher, Long user_id) {
+	public List<Orders> applyVoucher(Voucher voucher, Long user_id) {
 		
 		Voucher voucher1 = voucherRepository.findByVoucherCode(voucher.getVoucherCode());
 		
 		double discount = voucher1.getVoucherDiscount();
 		double temp = 0;
-		
+		double totalPrice = 0;
 		String status = "Not Paid";
 		List<Orders> order = orderRepository.findAllByUserIdAndStatus(user_id, status);
 		
 		for(int i=0 ;i<order.size(); i++) {
+			temp = 0;
 			temp = order.get(i).getTotal_price() * (discount/100);
-			break;
-		}
-		for(int i=0; i<order.size(); i++) {
-			order.get(i).setTotal_price(temp);
+			totalPrice = order.get(i).getTotal_price() - temp;
+			order.get(i).setTotal_price(totalPrice);
 			order.get(i).setHasVoucher("Yes");
 			orderRepository.save(order.get(i));
 		}
-		
-		return null;
+		return order;
 	}
 	
 	public List<Orders> cancelApplyVoucher(Long user_id, String username) {

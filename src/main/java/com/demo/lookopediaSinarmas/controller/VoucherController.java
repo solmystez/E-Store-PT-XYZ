@@ -64,8 +64,8 @@ public class VoucherController {
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		Voucher voucher1 = voucherService.applyVoucher(voucher, user_id);
-		return new ResponseEntity<Voucher>(voucher1, HttpStatus.OK);
+		List<Orders> voucher1 = voucherService.applyVoucher(voucher, user_id);
+		return new ResponseEntity<List<Orders>>(voucher1, HttpStatus.OK);
 	}
 	
 	@PostMapping("/cancelApplyVoucher/{user_id}")
