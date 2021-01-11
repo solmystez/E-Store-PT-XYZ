@@ -154,9 +154,7 @@ public class MerchantService {
 	public Orders userFinishOrder(@Valid Orders order, Long order_id) {
 		
 		Orders order1 = orderRepository.findById(order_id).get();
-		if(order.getStatus().equals("Finish")) {
-			order1.setHasRating("Done");
-		}
+		if(order.getStatus().equals("Finish")) order1.setStatus("Finish");
 		
 		return orderRepository.save(order1);
 	}
