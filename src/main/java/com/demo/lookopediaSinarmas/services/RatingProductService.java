@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.lookopediaSinarmas.entity.Cart;
 import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.RatingProduct;
@@ -14,6 +15,7 @@ import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.repositories.CartRepository;
 import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.repositories.RatingProductRepository;
@@ -30,6 +32,9 @@ public class RatingProductService {
 	
 	@Autowired
 	OrderRepository orderRepository;
+	
+	@Autowired
+	CartRepository cartRepository;
 	
 	@Autowired
 	RatingProductRepository ratingProductRepository;
@@ -50,9 +55,18 @@ public class RatingProductService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		Orders order = orderRepository.findById(order_id).get();
-		order.setHasRating("Done");
-		orderRepository.save(order);
+		//tarik order, tarik produknya, tarik cart by status  
+		
+//		Orders order = orderRepository.findById(order_id).get();
+//		order.setHasRating("Done");
+//		orderRepository.save(order);
+		
+		String status = "Paid";
+		//find cart by order_id and product_id
+		//set hasRating = done
+		Cart cart = cartRepository.findByOrderIdProductIdAndStatus(order_id, product_id, status);
+		cart.setHasRating("Done");
+		cartRepository.save(cart);
 		
 		rating.setComment_message(rating.getComment_message());
 		rating.setRatingValue(rating.getRatingValue());

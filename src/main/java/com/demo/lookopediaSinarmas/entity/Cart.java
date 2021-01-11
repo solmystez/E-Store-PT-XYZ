@@ -39,6 +39,7 @@ public class Cart {
 	private String p_filePath;
 	private String status; //not paid, paid
 	private int total_price;
+	private String hasRating;
 	
 	private Cart() {}
 	
@@ -72,6 +73,14 @@ public class Cart {
 		this.p_price = p_price;
 	}
 	
+	public String getHasRating() {
+		return hasRating;
+	}
+
+	public void setHasRating(String hasRating) {
+		this.hasRating = hasRating;
+	}
+
 	public String getUsername() {
 		return username;
 	}

@@ -49,17 +49,17 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 //			@Param("product_id") Long productId);
 	
 	@Query(value = "select * from cart "
-			+ "where order_id=:order_id " + 
-			"	and " + 
+			+ "where order_id=:order_id" + 
+			" and " + 
 			" product_id=:product_id", nativeQuery = true)
 	List<Cart> selectCourierByOrderIdAndProductId(
 			@Param("order_id") Long order_id, 
 			@Param("product_id") Long product_id);
 	
 	@Query(value = "select * from cart "
-			+ " order_id=:order_id"
+			+ " where order_id=:order_id"
 			+ " and "
-			+ " where username=:username "
+			+ " username=:username "
 			+ " and "
 			+ " status=:status", nativeQuery = true)
 	List<Cart> findAllByOrderIdUsernameAndStatus(
@@ -67,6 +67,17 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 			@Param("username") String username, 
 			@Param("status") String status);
 
+	@Query(value = "select * from cart "
+			+ " where order_id=:order_id"
+			+ " and"
+			+ " product_id=:product_id"
+			+ " and"
+			+ " status=:status", nativeQuery = true)
+	Cart findByOrderIdProductIdAndStatus(
+			@Param("order_id") Long order_id,
+			@Param("product_id") Long product_id, 
+			@Param("status") String status);
+	
 	//findAllAndSortbyMerchanName
 	//view product
 	List<Cart> findAllByUsernameAndStatus(String username, String status);
