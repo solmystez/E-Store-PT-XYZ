@@ -33,14 +33,14 @@ public class RatingProductController {
 	@Autowired
 	private MapValidationErrorService mapValidationErrorService;
 	
-	@PostMapping("/postRatingProduct/{product_id}/{user_id}")
+	@PostMapping("/postRatingProduct/{product_id}/{user_id}/{order_id}")
 	public ResponseEntity<?> addRatingProductToProductWithUserId(@Valid @RequestBody RatingProduct rating, BindingResult result,
-				@PathVariable Long product_id, @PathVariable Long user_id, Principal principal){
+				@PathVariable Long product_id, @PathVariable Long user_id, @PathVariable Long order_id, Principal principal){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id, principal.getName());
+		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id, order_id, principal.getName());
 		return new ResponseEntity<RatingProduct>(rating1, HttpStatus.CREATED);
 	}
 

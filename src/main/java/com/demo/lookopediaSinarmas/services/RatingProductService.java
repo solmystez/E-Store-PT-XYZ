@@ -7,12 +7,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.demo.lookopediaSinarmas.entity.Orders;
 import com.demo.lookopediaSinarmas.entity.Product;
 import com.demo.lookopediaSinarmas.entity.RatingProduct;
 import com.demo.lookopediaSinarmas.entity.User;
 import com.demo.lookopediaSinarmas.exceptions.comment.CommentNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.product.ProductNotFoundException;
 import com.demo.lookopediaSinarmas.exceptions.user.UserIdNotFoundException;
+import com.demo.lookopediaSinarmas.repositories.OrderRepository;
 import com.demo.lookopediaSinarmas.repositories.ProductRepository;
 import com.demo.lookopediaSinarmas.repositories.RatingProductRepository;
 import com.demo.lookopediaSinarmas.repositories.UserRepository;
@@ -27,9 +29,12 @@ public class RatingProductService {
 	ProductRepository productRepository;
 	
 	@Autowired
+	OrderRepository orderRepository;
+	
+	@Autowired
 	RatingProductRepository ratingProductRepository;
 	
-	public RatingProduct postRatingProduct(RatingProduct rating, Long product_id, Long user_id, String username) {
+	public RatingProduct postRatingProduct(RatingProduct rating, Long product_id, Long user_id, Long order_id, String username) {
 		
 		Product product;
 		try {
@@ -44,6 +49,10 @@ public class RatingProductService {
 		} catch (Exception e) {
 			throw new UserIdNotFoundException("User not found");
 		}
+		
+		Orders order = orderRepository.findById(order_id).get();
+		order.setHasRating("Done");
+		orderRepository.save(order);
 		
 		rating.setComment_message(rating.getComment_message());
 		rating.setRatingValue(rating.getRatingValue());
@@ -69,7 +78,7 @@ public class RatingProductService {
 			ratings = ratingProductRepository.findAllRatingByProductId(product_id);
 			return ratings;
 		} catch (Exception e) {
-			throw new CommentNotFoundException("no comment found in this product id");
+			throw new CommentNotFoundException("no rating found in this product id");
 		}
 		
 	}
