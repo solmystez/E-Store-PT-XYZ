@@ -156,7 +156,6 @@ public class MerchantService {
 		Orders order1 = orderRepository.findById(order_id).get();
 		if(order.getStatus().equals("Finish")) {
 			order1.setStatus("Finish");
-			order1.setHasRating("Done");
 		}
 		
 		return orderRepository.save(order1);

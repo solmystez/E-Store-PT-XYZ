@@ -24,6 +24,7 @@ public class RatingProduct {
 	private Integer ratingValue;
 	private String comment_message;
 	private String username;
+	private String userHasRating;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "product_id")
@@ -41,6 +42,14 @@ public class RatingProduct {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUserHasRating() {
+		return userHasRating;
+	}
+
+	public void setUserHasRating(String userHasRating) {
+		this.userHasRating = userHasRating;
 	}
 
 	public String getUsername() {
