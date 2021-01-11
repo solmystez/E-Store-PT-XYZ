@@ -45,7 +45,6 @@ public class RatingProductService {
 			throw new UserIdNotFoundException("User not found");
 		}
 		
-		rating.setUserHasRating("Done");
 		rating.setComment_message(rating.getComment_message());
 		rating.setRatingValue(rating.getRatingValue());
 		rating.setRatingProduct(product);
@@ -70,7 +69,7 @@ public class RatingProductService {
 			ratings = ratingProductRepository.findAllRatingByProductId(product_id);
 			return ratings;
 		} catch (Exception e) {
-			throw new CommentNotFoundException("no rating found in this product id");
+			throw new CommentNotFoundException("no comment found in this product id");
 		}
 		
 	}
