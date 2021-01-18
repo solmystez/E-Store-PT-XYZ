@@ -45,6 +45,7 @@ public class ProductService {
 	
 	public Product createProduct(Long merchant_id, Product product, MultipartFile file, String userName) {
 
+		
 //		if(file == null || file.isEmpty()) {	
 //		result.addError(new ObjectError("fileName", "please insert image"));
 //		throw new FileNotFoundException("please to store empty0 image");
@@ -59,7 +60,7 @@ public class ProductService {
 //		}
 		
 	    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
+	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found while create");		    	
 	    
 	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
 	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
@@ -120,7 +121,99 @@ public class ProductService {
     		log.info("product created");	
     		return productRepository.save(product);
     	} catch (Exception e) {
-    		throw new MerchantNotFoundException("Merchant not found");
+    		throw new MerchantNotFoundException("Merchant create error");
+    	}
+	}
+	
+	public Product updateProductImgVer(Long merchant_id, Product product, MultipartFile file, String userName) {
+
+		
+//		if(file == null || file.isEmpty()) {	
+//		result.addError(new ObjectError("fileName", "please insert image"));
+//		throw new FileNotFoundException("please to store empty0 image");
+//		return new ResponseEntity<Product>(HttpStatus.BAD_REQUEST);
+//	}
+		
+//		String fileName;
+//		try {
+//			fileName = imageStorageService.storeFile(file);
+//		} catch (Exception e) {
+//			throw new FileNotFoundException("please insert image");
+//		}
+		
+	    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
+	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
+	    
+//	    if(product.getProduct_id() != null) {
+//			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
+//			String merchantName = merchant.getMerchantName();
+//			if(existingProduct != null && (!existingProduct.getMerchant().getUsername().equals(merchantName))) {
+//				throw new ProductNotFoundException("Product not found in your merchant");
+//			}else if (existingProduct == null) {
+//				throw new ProductNotFoundException("Product '" + product.getProductName() + "' cannot updated, because it doesn't exist");
+//			}
+//		}
+	    
+	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
+	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
+	    }
+	    
+	    String fileName = null;
+    	
+    	if(!file.isEmpty()) {
+    		
+    		fileName = imageStorageService.storeFile(file);
+    	}else {
+    		fileName = "nophoto.jpg";
+    	}
+    	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
+    			.path("/api/product/loadImageProduct/")
+    			.path(fileName)
+    			.toUriString();
+    	
+    	String productFileName = file.getOriginalFilename();
+//			String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
+    	String productFileType = file.getContentType();
+    	long size = file.getSize();
+    	String productFileSize = String.valueOf(size);
+    	try {		
+    		product.setProductName(product.getProductName());
+    		product.setProductDescription(product.getProductDescription());
+    		product.setProductCategoryName(product.getProductCategoryName());
+    		product.setProductPrice(product.getProductPrice());
+    		product.setProductStock(product.getProductStock());
+    		
+    		product.setFileName(productFileName);
+    		product.setFilePath(fileDownloadUri);//fileDownloadUri, productFilePath
+    		product.setFileType(productFileType);
+    		product.setFileSize(productFileSize);
+    		
+    		Category category = categoryRepository.findByCategoryName(product.getProductCategoryName()); 
+    		
+//    		String fileUrl = product.getFilePath();
+//    		String encodedUrl = Base64.getUrlEncoder().encodeToString(fileUrl.getBytes());
+//    		
+//    		if(file.getContentType().equals("image/png")) {
+//    			encodedUrl = "data:image/png;base64,"+encodedUrl;
+//    		}else if(file.getContentType().equals("image/jpg")) {
+//    			encodedUrl = "data:image/jpg;base64,"+encodedUrl;
+//    		}else {
+//    			throw new ProductIdException("product must be png or jpg");
+//    		}
+//    		log.info(fileUrl);
+    		
+    		product.setMerchant(merchant);
+    		product.setProductCategory(category);
+    		product.setMerchantName(merchant.getMerchantName());
+    		
+    		Integer totalProduct = merchant.getTotalProduct();
+    		totalProduct++;		    
+    		merchant.setTotalProduct(totalProduct);
+    		
+    		log.info("product updated");	
+    		return productRepository.save(product);
+    	} catch (Exception e) {
+    		throw new MerchantNotFoundException("Merchant update error");
     	}
 	}
 	
@@ -167,6 +260,7 @@ public class ProductService {
     		throw new MerchantNotFoundException("Merchant not found");
     	}
 	}
+	
 	public Product updateProductVerMultipart(Long merchant_id, Product product, MultipartFile file, String userName) {
 	
 		//prevent update product that doesn't belong to this merchant

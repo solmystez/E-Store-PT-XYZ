@@ -45,7 +45,6 @@ public class Product implements UserDetails{
 	private String productDescription;
 	private int productPrice; // belum validator
 	private int productStock;// belum validator
-	private int productWeight;
 //	@Lob
 //	@Column(name = "productImage", length = Integer.MAX_VALUE, nullable = true)
 //	private byte[] productImage;
@@ -96,14 +95,6 @@ public class Product implements UserDetails{
 	@ManyToOne(fetch = FetchType.LAZY)//we dont need load the merchant information, we know the project
 	@JsonIgnore//resolve infinite recursion problem
 	private Merchant merchant;
-	
-	public int getProductWeight() {
-		return productWeight;
-	}
-
-	public void setProductWeight(int productWeight) {
-		this.productWeight = productWeight;
-	}
 	
 	public String getProductCategoryName() {
 		return productCategoryName;
