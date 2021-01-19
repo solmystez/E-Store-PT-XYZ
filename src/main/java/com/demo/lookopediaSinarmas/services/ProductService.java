@@ -158,22 +158,28 @@ public class ProductService {
 //	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
 //	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
 //	    }
+	    Product product1 = productRepository.findById(product.getProduct_id()).get();
+	    String fileName = product1.getFileName();
+	    String productFileName = "";
 	    
-	    String fileName = null;
-    	
     	if(!file.isEmpty()) {
-    		
     		fileName = imageStorageService.storeFile(file);
+    		productFileName = file.getOriginalFilename();
     	}else {
-    		Product product1 = productRepository.findById(product.getProduct_id()).get();
-    		fileName = product1.getFileName();
+//    		if(fileName == null || fileName.equals("")) {  		
+    			fileName = "nophoto.jpg";
+    			productFileName = "nophoto.jpg";
+//    		}
+    		
     	}
+    	
+    	
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
     			.path("/api/product/loadImageProduct/")
     			.path(fileName)
     			.toUriString();
     	
-    	String productFileName = file.getOriginalFilename();
+    	
 //			String productFilePath = Paths.get(uploadDirectory, productFileName).toString();
     	String productFileType = file.getContentType();
     	long size = file.getSize();
