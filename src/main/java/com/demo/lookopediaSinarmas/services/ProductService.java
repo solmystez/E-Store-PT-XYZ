@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -164,7 +165,8 @@ public class ProductService {
     		
     		fileName = imageStorageService.storeFile(file);
     	}else {
-    		fileName = "nophoto.jpg";
+    		Product product1 = productRepository.findById(product.getProduct_id()).get();
+    		fileName = product1.getFileName();
     	}
     	String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
     			.path("/api/product/loadImageProduct/")
