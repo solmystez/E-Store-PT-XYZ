@@ -154,9 +154,9 @@ public class ProductService {
 //			}
 //		}
 	    
-	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
-	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
-	    }
+//	    if(!merchant.getUserMerchant().getUsername().equals(userName)) {
+//	    	throw new MerchantNotFoundException("cannot create product, wrong merchant_id parameter");
+//	    }
 	    
 	    String fileName = null;
     	
