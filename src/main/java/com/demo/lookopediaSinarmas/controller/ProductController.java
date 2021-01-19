@@ -100,20 +100,20 @@ public class ProductController {
 //		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
 //	 }
 	
-	@PatchMapping("/updateProductWithImage/{merchant_id}")
-	public ResponseEntity<?> updateExistProductWithImage(@Valid Product product, 
-			BindingResult result, Principal principal,
-			@PathVariable Long merchant_id,
-			MultipartFile file){
-		
-		productValidator.validate(product, result);
-		
-		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
-		if(mapError != null) return mapError;
-		
-		Product product1 = productService.updateProductVerMultipart(merchant_id, product,file, principal.getName());
-		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
-	 }
+//	@PatchMapping("/updateProductWithImage/{merchant_id}")
+//	public ResponseEntity<?> updateExistProductWithImage(@Valid Product product, 
+//			BindingResult result, Principal principal,
+//			@PathVariable Long merchant_id,
+//			MultipartFile file){
+//		
+//		productValidator.validate(product, result);
+//		
+//		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
+//		if(mapError != null) return mapError;
+//		
+//		Product product1 = productService.updateProductVerMultipart(merchant_id, product,file, principal.getName());
+//		return new ResponseEntity<Product>(product1, HttpStatus.CREATED);
+//	 }
 	
 	@GetMapping("/findProductByCategory/{category_name}")
 	public Iterable<Product> loadProductByCategoryName(@PathVariable String category_name){

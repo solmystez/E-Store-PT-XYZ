@@ -142,7 +142,7 @@ public class ProductService {
 //		}
 		
 	    Merchant merchant = merchantRepository.findMerchantByUserMerchantId(merchant_id);
-	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found");		    	
+	    if(merchant == null) throw new MerchantNotFoundException("Merchant not found while update");		    	
 	    
 //	    if(product.getProduct_id() != null) {
 //			Product existingProduct = productRepository.findById(product.getProduct_id()).get();
