@@ -35,12 +35,12 @@ public class RatingProductController {
 	
 	@PostMapping("/postRatingProduct/{product_id}/{user_id}/{order_id}")
 	public ResponseEntity<?> addRatingProductToProductWithUserId(@Valid @RequestBody RatingProduct rating, BindingResult result,
-				@PathVariable Long product_id, @PathVariable Long user_id, @PathVariable Long order_id, Principal principal){
+				@PathVariable Long product_id, @PathVariable Long user_id, @PathVariable Long order_id){
 
 		ResponseEntity<?> mapError = mapValidationErrorService.MapValidationService(result);
 		if(mapError != null) return mapError;
 		
-		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id, order_id, principal.getName());
+		RatingProduct rating1 = ratingProductService.postRatingProduct(rating, product_id, user_id, order_id);
 		return new ResponseEntity<RatingProduct>(rating1, HttpStatus.CREATED);
 	}
 
