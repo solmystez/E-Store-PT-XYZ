@@ -73,7 +73,7 @@ public interface CartRepository extends PagingAndSortingRepository<Cart, Long>{
 			+ " product_id=:product_id"
 			+ " and"
 			+ " status=:status", nativeQuery = true)
-	Cart findByOrderIdProductIdAndStatus(
+	List<Cart> findByOrderIdProductIdAndStatus(
 			@Param("order_id") Long order_id,
 			@Param("product_id") Long product_id, 
 			@Param("status") String status);

@@ -64,9 +64,13 @@ public class RatingProductService {
 		String status = "Paid";
 		//find cart by order_id and product_id
 		//set hasRating = done
-		Cart cart = cartRepository.findByOrderIdProductIdAndStatus(order_id, product_id, status);
-		cart.setHasRating("Done");
-		cartRepository.save(cart);
+		List<Cart> carts = cartRepository.findByOrderIdProductIdAndStatus(order_id, product_id, status);
+		
+		for(int i=0; i<carts.size(); i++) {
+			carts.get(i).setHasRating("Done");
+		}
+		cartRepository.saveAll(carts);
+		
 		
 		rating.setComment_message(rating.getComment_message());
 		rating.setRatingValue(rating.getRatingValue());
