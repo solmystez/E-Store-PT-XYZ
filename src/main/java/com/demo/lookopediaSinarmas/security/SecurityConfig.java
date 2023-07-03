@@ -103,6 +103,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{ // = default s
 					).permitAll()  //every end with that,  just PermitAll for the route in spring security, 
 			.antMatchers(SIGN_UP_URLS).permitAll()
 			.antMatchers("/api/product/loadAllProductOnCatalog").permitAll()
+			.antMatchers("/api/**").permitAll()
 			.antMatchers("/swagger-ui.html").permitAll()
 			.antMatchers("/api/product/findProduct/{product_id}").permitAll()
 			.antMatchers(H2_URL).permitAll()
